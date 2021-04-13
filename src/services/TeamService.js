@@ -1,11 +1,4 @@
-import axios from "axios";
-
-const customAxios = axios.create({
-	baseURL: "http://localhost:8080",
-	headers: {
-		"Content-type": "application/json",
-	},
-});
+import { customAxios } from "./customAxios";
 
 const createTeam = (team) => {
 	return customAxios.post("/equipe", team);

@@ -9,6 +9,8 @@ import {
 	ThemeProvider,
 } from "@material-ui/core";
 import {Main as ListTeams} from "./components/Teams/Main";
+import {Main as ItResponsables} from "./components/ItResponsables/Main";
+import { ItResponsablesLink, TeamLink } from "./components/Header/StaticLinks";
 
 const theme = createMuiTheme({
 	palette: {
@@ -47,14 +49,9 @@ function App() {
 				<CustomDrawer />
 				<div className={"appMain"}>
 					<Switch>
-						{/* <Route path="/" exact component={HomePage}></Route>
-						<Route path="/New-Project" exact component={CreateProject}></Route>
-						<Route path="/Projects" exact component={ListProjects}></Route> */}
-						{/* <Route exact path="/Projects/:project" component={ListApiProjects}></Route> */}
-						{/* <Route exact path="/Projects/:project/:api/anomalie" component={Anomaly}></Route> */}
-						{/* <Route exact path="/Anomalies" component={ListAnomalies}></Route>
-						<Route path="/CreateTeam" exact component={CreateTeam}></Route> */}
-						<Route path="/ListTeams" exact component={ListTeams}></Route>
+						<Route path={TeamLink} exact component={ListTeams}></Route>
+						<Route path={ItResponsablesLink} exact component={ItResponsables}></Route>
+
 					</Switch>
 				</div>
 				<CssBaseline />

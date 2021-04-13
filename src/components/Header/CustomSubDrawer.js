@@ -53,13 +53,21 @@ function CustomSubDrawer({ item }) {
 	};
 	return (
 		<div>
-			<CustomLink to="/ListTeams" >
+			{item.path ? (
+				<CustomLink to={item.path}>
+					<ListItem button onClick={item.subNavs && showSubnav}>
+						<ListItemIcon>{item.icon}</ListItemIcon>
+						<ListItemText primary={item.title} />
+						{item.subNavs ? subnav ? <ExpandLess /> : <ExpandMore /> : ""}
+					</ListItem>
+				</CustomLink>
+			) : (
 				<ListItem button onClick={item.subNavs && showSubnav}>
 					<ListItemIcon>{item.icon}</ListItemIcon>
 					<ListItemText primary={item.title} />
 					{item.subNavs ? subnav ? <ExpandLess /> : <ExpandMore /> : ""}
 				</ListItem>
-			</CustomLink>
+			)}
 
 			<Collapse in={subnav} timeout="auto" unmountOnExit>
 				<Divider />

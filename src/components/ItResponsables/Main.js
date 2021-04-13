@@ -1,11 +1,11 @@
 import React from 'react'
 
-function index() {
+export function Main() {
   return (
     <div>
-      
+      dddddddd
     </div>
   )
 }
 
-export default index
+
