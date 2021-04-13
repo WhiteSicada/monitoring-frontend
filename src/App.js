@@ -8,9 +8,14 @@ import {
 	createMuiTheme,
 	ThemeProvider,
 } from "@material-ui/core";
-import {Main as ListTeams} from "./components/Teams/Main";
-import {Main as ItResponsables} from "./components/ItResponsables/Main";
-import { ItResponsablesLink, TeamLink } from "./components/Header/StaticLinks";
+import { Main as ListTeams } from "./components/Teams/Main";
+import { Main as ItResponsables } from "./components/ItResponsables/Main";
+import { Main as WorkResponsables } from "./components/WorkResponsable/Main";
+import {
+	ItResponsablesLink,
+	TeamLink,
+	WorkResponsableLink,
+} from "./components/Header/StaticLinks";
 
 const theme = createMuiTheme({
 	palette: {
@@ -40,8 +45,6 @@ const theme = createMuiTheme({
 	},
 });
 
-
-
 function App() {
 	return (
 		<Router>
@@ -50,8 +53,16 @@ function App() {
 				<div className={"appMain"}>
 					<Switch>
 						<Route path={TeamLink} exact component={ListTeams}></Route>
-						<Route path={ItResponsablesLink} exact component={ItResponsables}></Route>
-
+						<Route
+							path={ItResponsablesLink}
+							exact
+							component={ItResponsables}
+						></Route>
+						<Route
+							path={WorkResponsableLink}
+							exact
+							component={WorkResponsables}
+						></Route>
 					</Switch>
 				</div>
 				<CssBaseline />
