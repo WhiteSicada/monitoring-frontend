@@ -25,7 +25,7 @@ function WorkResponsableReducer(state = initialState, action) {
 		case DELETE_WORK_RESPONSABLE:
 			return Object.assign({}, state, {
 				workResponsables: state.workResponsables.filter(
-					(workResponsable) => workResponsable.id === payload.id
+					(workResponsable) => workResponsable.id !== payload.id
 				),
 			});
 

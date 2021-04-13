@@ -4,7 +4,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { Controls } from "../controls/controls";
 
-export default function WorkResponsableTable({
+export default function workResponsableTable({
 	recordsAfterPadingAndSorting,
 	openInPopup,
 	setConfirmDialog,
@@ -12,16 +12,16 @@ export default function WorkResponsableTable({
 }) {
   return (
     <TableBody>
-			{recordsAfterPadingAndSorting().map((itResponsable) => (
-				<TableRow key={itResponsable.id}>
-					<TableCell>{itResponsable.id}</TableCell>
-					<TableCell>{itResponsable.name}</TableCell>
-					<TableCell>{itResponsable.email}</TableCell>
+			{recordsAfterPadingAndSorting().map((workResponsable) => (
+				<TableRow key={workResponsable.id}>
+					<TableCell>{workResponsable.id}</TableCell>
+					<TableCell>{workResponsable.name}</TableCell>
+					<TableCell>{workResponsable.email}</TableCell>
 					<TableCell>
 						<Controls.ActionButton
 							color="primary"
 							onClick={() => {
-								openInPopup(itResponsable);
+								openInPopup(workResponsable);
 							}}
 						>
 							<EditOutlinedIcon fontSize="small" />
@@ -34,7 +34,7 @@ export default function WorkResponsableTable({
 									title: "Are you sure to delete this record?",
 									subTitle: "You can't undo this operation",
 									onConfirm: () => {
-										onDelete(itResponsable.id);
+										onDelete(workResponsable.id);
 									},
 								});
 							}}
