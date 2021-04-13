@@ -1,10 +1,13 @@
 import { combineReducers } from "redux";
+import ItResponsableReducer from "./ItResponsableReducer";
 import TeamReducer from "./TeamReducer";
-// import PokemonMultipleReducer from "./PokemonMultipleReducer";
+import WorkResponsableReducer from "./WorkResponsableReducer";
+
 
 const RootReducer = combineReducers({
 	teamState : TeamReducer,
-	// Pokemon : PokemonMultipleReducer
+	itResponsableState : ItResponsableReducer,
+	workResponsableState : WorkResponsableReducer
 });
 
 export default RootReducer;
