@@ -47,7 +47,7 @@ export const deleteItResponsable = (id) => async (dispatch) => {
 
 export const updateItResponsable = (id, itResponsable) => async (dispatch) => {
 	try {
-		const response = await ItResponsableService.updateTeam(id, itResponsable);
+		const response = await ItResponsableService.updateItResponsable(id, itResponsable);
 		dispatch({
 			type: UPDATE_IT_RESPONSABLE,
 			payload: itResponsable,

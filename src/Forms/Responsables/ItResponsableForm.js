@@ -49,7 +49,6 @@ function ItResponsableForm({ ItResponsableForEdit, setNotify, setOpenPopup }) {
 				resetForm();
 				setSubmitting(false);
 				setOpenPopup(false);
-				dispatch(getItResponsables());
 				setNotify({
 					isOpen: true,
 					message: "Updated Successfully",
