@@ -106,7 +106,7 @@ export function Main() {
 			<PageHeader
 				title="Team Section"
 				subTitle="Manage your teams"
-				icon={<HiIcons.HiOutlineUserGroup />}
+				icon={<HiIcons.HiUserGroup />}
 			/>
 			<Paper className={classes.pageContent}>
 				{/* <EmployeeForm /> */}

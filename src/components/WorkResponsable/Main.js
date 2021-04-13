@@ -111,6 +111,7 @@ export function Main() {
 			<PageHeader
 				title="Work Responsables Section"
 				subTitle="Manage your Work Responsables"
+				active={false}
 				icon={<FaIcons.FaUserTie />}
 			/>
 			<Paper className={classes.pageContent}>

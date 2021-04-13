@@ -11,10 +11,12 @@ import {
 import { Main as ListTeams } from "./components/Teams/Main";
 import { Main as ItResponsables } from "./components/ItResponsables/Main";
 import { Main as WorkResponsables } from "./components/WorkResponsable/Main";
+import { Main as APIs } from "./components/APIs/Main";
 import {
 	ItResponsablesLink,
 	TeamLink,
 	WorkResponsableLink,
+	APIsLink,
 } from "./components/Header/StaticLinks";
 
 const theme = createMuiTheme({
@@ -63,6 +65,7 @@ function App() {
 							exact
 							component={WorkResponsables}
 						></Route>
+						<Route path={APIsLink} exact component={APIs}></Route>
 					</Switch>
 				</div>
 				<CssBaseline />
