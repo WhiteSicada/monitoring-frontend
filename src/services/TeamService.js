@@ -19,10 +19,15 @@ const deleteTeam = (id) => {
 	return customAxios.delete(`/equipe/${id}`);
 };
 
+const updateTeam = (id, team) => {
+	return customAxios.put(`/equipe/${id}`, team);
+};
+
 const TeamService = {
 	createTeam,
 	getTeams,
 	deleteTeam,
+	updateTeam,
 };
 
 export default TeamService;

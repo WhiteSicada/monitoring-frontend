@@ -8,7 +8,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
-import { createTeam } from "../../redux/actions/TeamActions";
+import {
+	createTeam,
+	getTeams,
+	updateTeam,
+} from "../../redux/actions/TeamActions";
 import { Controls } from "../../components/controls/controls";
 
 const initialValues = {
@@ -35,38 +39,53 @@ const useStyles = makeStyles((theme) => ({
 function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	
+
 	const [formValues, setFormValues] = useState(initialValues);
+	const [update, setUpdate] = useState(false);
 
 	const submitForm = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
-		dispatch(createTeam(values))
-			.then((response) => {
+		if (update) {
+			dispatch(updateTeam(values.id, values)).then((response) => {
 				resetForm();
 				setSubmitting(false);
 				setOpenPopup(false);
+				dispatch(getTeams());
 				setNotify({
 					isOpen: true,
-					message: "Created Successfully",
+					message: "Updated Successfully",
 					type: "success",
 				});
-			})
-			.catch((error) => {
-				resetForm();
-				setSubmitting(false);
-				console.log("error");
 			});
+		} else {
+			dispatch(createTeam(values))
+				.then((response) => {
+					resetForm();
+					setSubmitting(false);
+					setOpenPopup(false);
+					setNotify({
+						isOpen: true,
+						message: "Created Successfully",
+						type: "success",
+					});
+				})
+				.catch((error) => {
+					resetForm();
+					setSubmitting(false);
+					console.log("error");
+				});
+		}
 	};
 
 	useEffect(() => {
 		if (teamForEdit != null) {
 			setFormValues(teamForEdit);
+			setUpdate(true);
 		}
 	}, [teamForEdit]);
 
 	return (
 		<div>
-			
 			<Formik
 				enableReinitialize={true}
 				initialValues={formValues}
@@ -81,6 +100,7 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 							<Grid item xs={12}>
 								<Field
 									required
+									autoFocus={true}
 									name="name"
 									className={classes.field}
 									component={TextField}
@@ -97,7 +117,11 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 									type="submit"
 									className={classes.button}
 								>
-									Submit
+									{isSubmitting ? (
+										<BeatLoader size={10} color="#ef630b" />
+									) : (
+										"Submit"
+									)}
 								</Button>
 							</Grid>
 						</Grid>

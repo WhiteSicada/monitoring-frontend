@@ -2,8 +2,8 @@ import TeamService from "../../services/TeamService";
 import {
 	ADD_TEAM,
 	DELETE_TEAM,
-	SET_TEAM,
 	GET_TEAMS,
+	UPDATE_TEAM,
 } from "../types/teamActionTypes";
 
 export const createTeam = (team) => async (dispatch) => {
@@ -43,9 +43,15 @@ export const deleteTeam = (id) => async (dispatch) => {
 	}
 };
 
-export const setTeam = (team) => (dispatch) => {
-	dispatch({
-		type: SET_TEAM,
-		payload: team,
-	});
+export const updateTeam = (id, team) => async (dispatch) => {
+	try {
+		const response = await TeamService.updateTeam(id, team);
+		dispatch({
+			type: UPDATE_TEAM,
+			payload: team,
+		});
+		return Promise.resolve(response.data);
+	} catch (error) {
+		return Promise.reject(error);
+	}
 };

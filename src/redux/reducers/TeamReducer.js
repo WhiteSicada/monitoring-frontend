@@ -1,13 +1,11 @@
 import {
 	ADD_TEAM,
 	GET_TEAMS,
-	SET_TEAM,
 	UPDATE_TEAM,
 	DELETE_TEAM,
 } from "../types/teamActionTypes";
 
 const initialState = {
-	team: {},
 	teams: [],
 };
 
@@ -29,9 +27,14 @@ function TeamReducer(state = initialState, action) {
 				teams: state.teams.filter((team) => team.id !== payload.id),
 			});
 
-		case SET_TEAM:
+		case UPDATE_TEAM:
 			return Object.assign({}, state, {
-				team: payload,
+				teams: state.teams.map((team) => {
+					if (team.id === payload.id) {
+						return { ...team, ...payload };
+					}
+					return team;
+				}),
 			});
 
 		default:

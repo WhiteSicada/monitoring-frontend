@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function useTable(records, headCells, filterFn) {
+export default function useTable(teams, headCells, filterFn) {
 	const classes = useStyles();
 	const pages = [5, 10, 25];
 	const [page, setPage] = useState(0);
@@ -86,27 +86,12 @@ export default function useTable(records, headCells, filterFn) {
 			component="div"
 			page={page}
 			rowsPerPage={rowsPerPage}
-			count={records.length}
+			count={teams.length}
 			rowsPerPageOptions={pages}
 			onChangePage={handleChangePage}
 			onChangeRowsPerPage={handleChangeRowsPerPage}
 		/>
 	);
-
-	function stableSort(array, comparator) {
-		const stabilizedThis = array.map((el, index) => [el, index]);
-		stabilizedThis.sort((a, b) => {
-			const order = comparator(a[0], b[0]);
-			if (order !== 0) return order;
-			return a[1] - b[1];
-		});
-		return stabilizedThis.map((el) => el[0]);
-	}
-	function getComparator(order, orderBy) {
-		return order === "desc"
-			? (a, b) => descendingComparator(a, b, orderBy)
-			: (a, b) => -descendingComparator(a, b, orderBy);
-	}
 
 	function descendingComparator(a, b, orderBy) {
 		if (b[orderBy] < a[orderBy]) {
@@ -118,9 +103,25 @@ export default function useTable(records, headCells, filterFn) {
 		return 0;
 	}
 
-	const recordsAfterPadingAndSorting = () => {
+	function getComparator(order, orderBy) {
+		return order === "desc"
+			? (a, b) => descendingComparator(a, b, orderBy)
+			: (a, b) => -descendingComparator(a, b, orderBy);
+	}
+
+	function stableSort(array, comparator) {
+		const stabilizedThis = array.map((el, index) => [el, index]);
+		stabilizedThis.sort((a, b) => {
+			const order = comparator(a[0], b[0]);
+			if (order !== 0) return order;
+			return a[1] - b[1];
+		});
+		return stabilizedThis.map((el) => el[0]);
+	}
+
+	const teamsAfterPadingAndSorting = () => {
 		return stableSort(
-			filterFn.fn(records),
+			filterFn.fn(teams),
 			getComparator(order, orderBy)
 		).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
 	};
@@ -129,6 +130,6 @@ export default function useTable(records, headCells, filterFn) {
 		TblContainer,
 		TblHead,
 		TblPagination,
-		recordsAfterPadingAndSorting,
+		teamsAfterPadingAndSorting,
 	};
 }

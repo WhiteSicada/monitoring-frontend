@@ -58,18 +58,18 @@ export function Main() {
 	const [teamForEdit, setTeamForEdit] = useState(null);
 	const teams = useSelector((state) => state.teamState.teams);
 	const [filterFn, setFilterFn] = useState({
-		fn: (items) => {
-			return items;
+		fn: (teams) => {
+			return teams;
 		},
 	});
-	
+
 	const [openPopup, setOpenPopup] = useState(false);
 
 	const {
 		TblContainer,
 		TblHead,
 		TblPagination,
-		recordsAfterPadingAndSorting,
+		teamsAfterPadingAndSorting,
 	} = useTable(teams, headCells, filterFn);
 
 	const openInPopup = (team) => {
@@ -79,20 +79,6 @@ export function Main() {
 	useEffect(() => {
 		dispatch(getTeams());
 	}, []);
-
-	const addOrEdit = (employee, resetForm) => {
-		// if (employee.id == 0) employeeService.insertEmployee(employee);
-		// else employeeService.updateEmployee(employee);
-		// resetForm();
-		// setOpenPopup(false);
-		// setRecordForEdit(null);
-		// setRecords(employeeService.getAllEmployees());
-		// setNotify({
-		// 	isOpen: true,
-		// 	message: "Submitted Successfully",
-		// 	type: "success",
-		// });
-	};
 
 	const onDelete = (id) => {
 		setConfirmDialog({
@@ -106,12 +92,24 @@ export function Main() {
 					message: "Deleted Successfully",
 					type: "warning",
 				});
-				
 			})
 			.catch((error) => {
 				console.log("error");
 				console.log(error);
 			});
+	};
+
+	const handleSearch = (e) => {
+		let target = e.target;
+		setFilterFn({
+			fn: (teams) => {
+				if (target.value == "") return teams;
+				else
+					return teams.filter((x) =>
+						x.name.toLowerCase().includes(target.value)
+					);
+			},
+		});
 	};
 
 	return (
@@ -134,7 +132,7 @@ export function Main() {
 								</InputAdornment>
 							),
 						}}
-						// onChange={handleSearch}
+						onChange={handleSearch}
 					/>
 					<Controls.MuiButton
 						text="Add New"
@@ -150,7 +148,7 @@ export function Main() {
 				<TblContainer>
 					<TblHead />
 					<TableBody>
-						{recordsAfterPadingAndSorting().map((team) => (
+						{teamsAfterPadingAndSorting().map((team) => (
 							<TableRow key={team.id}>
 								<TableCell>{team.id}</TableCell>
 								<TableCell>{team.name}</TableCell>
@@ -190,7 +188,11 @@ export function Main() {
 				openPopup={openPopup}
 				setOpenPopup={setOpenPopup}
 			>
-				<TeamForm addOrEdit={addOrEdit} teamForEdit={teamForEdit} setOpenPopup={setOpenPopup} setNotify={setNotify} />
+				<TeamForm
+					teamForEdit={teamForEdit}
+					setOpenPopup={setOpenPopup}
+					setNotify={setNotify}
+				/>
 			</Controls.Popup>
 			<Controls.Notification notify={notify} setNotify={setNotify} />
 			<Controls.ConfirmDialog
