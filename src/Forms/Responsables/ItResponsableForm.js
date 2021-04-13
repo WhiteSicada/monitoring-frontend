@@ -8,14 +8,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import { BeatLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import {
-	createTeam,
-	getTeams,
-	updateTeam,
-} from "../../redux/actions/TeamActions";
+	createItResponsable,
+	getItResponsables,
+	updateItResponsable,
+} from "../../redux/actions/ItResponsablesActions";
 
 const initialValues = {
 	id: null,
 	name: "",
+	email: "",
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
+function ItResponsableForm({ ItResponsableForEdit, setNotify, setOpenPopup }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -44,11 +45,11 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 	const submitForm = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
 		if (update) {
-			dispatch(updateTeam(values.id, values)).then((response) => {
+			dispatch(updateItResponsable(values.id, values)).then((response) => {
 				resetForm();
 				setSubmitting(false);
 				setOpenPopup(false);
-				dispatch(getTeams());
+				dispatch(getItResponsables());
 				setNotify({
 					isOpen: true,
 					message: "Updated Successfully",
@@ -56,7 +57,7 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 				});
 			});
 		} else {
-			dispatch(createTeam(values))
+			dispatch(createItResponsable(values))
 				.then((response) => {
 					resetForm();
 					setSubmitting(false);
@@ -76,11 +77,11 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 	};
 
 	useEffect(() => {
-		if (teamForEdit != null) {
-			setFormValues(teamForEdit);
+		if (ItResponsableForEdit != null) {
+			setFormValues(ItResponsableForEdit);
 			setUpdate(true);
 		}
-	}, [teamForEdit]);
+	}, [ItResponsableForEdit]);
 
 	return (
 		<div>
@@ -95,7 +96,7 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 				{({ isSubmitting, dirty, isValid, resetForm }) => (
 					<Form autoComplete="off" className={classes.root}>
 						<Grid container spacing={8}>
-							<Grid item xs={12}>
+            <Grid item xs={12}>
 								<Field
 									required
 									autoFocus={true}
@@ -104,7 +105,18 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 									component={TextField}
 									variant="outlined"
 									InputLabelProps={{ shrink: true }}
-									label="Nom de l'équipe"
+									label="Name of It Responsable"
+								/>
+							</Grid>
+              <Grid item xs={12}>
+								<Field
+									required
+									name="email"
+									className={classes.field}
+									component={TextField}
+									variant="outlined"
+									InputLabelProps={{ shrink: true }}
+									label="Email of It Responsable"
 								/>
 							</Grid>
 							<Grid container justify="center">
@@ -130,4 +142,4 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 	);
 }
 
-export default TeamForm;
+export default ItResponsableForm;

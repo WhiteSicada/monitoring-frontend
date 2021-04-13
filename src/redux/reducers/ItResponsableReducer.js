@@ -25,7 +25,7 @@ function ItResponsableReducer(state = initialState, action) {
 		case DELETE_IT_RESPONSABLE:
 			return Object.assign({}, state, {
 				itResponsables: state.itResponsables.filter(
-					(itResponsable) => itResponsable.id === payload.id
+					(itResponsable) => itResponsable.id !== payload.id
 				),
 			});
 

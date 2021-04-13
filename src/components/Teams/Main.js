@@ -1,25 +1,14 @@
-import { Grid, Typography } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import * as HiIcons from "react-icons/hi";
 import PageHeader from "../Header/PageHeader";
 import { useDispatch, useSelector } from "react-redux";
-import useTable from "./useTable";
+import useTable from "../controls/useTable";
 import { Controls } from "../controls/controls";
 import AddIcon from "@material-ui/icons/Add";
 import { Search } from "@material-ui/icons";
-import CloseIcon from "@material-ui/icons/Close";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import TeamTable from "./TeamTable";
-import { deleteTeam, getTeams, setTeam } from "../../redux/actions/TeamActions";
-import {
-	Paper,
-	makeStyles,
-	TableBody,
-	TableRow,
-	TableCell,
-	Toolbar,
-	InputAdornment,
-} from "@material-ui/core";
+import { deleteTeam, getTeams } from "../../redux/actions/TeamActions";
+import { Paper, makeStyles, Toolbar, InputAdornment } from "@material-ui/core";
 import TeamForm from "../../Forms/Team/Form";
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +58,7 @@ export function Main() {
 		TblContainer,
 		TblHead,
 		TblPagination,
-		teamsAfterPadingAndSorting,
+		recordsAfterPadingAndSorting,
 	} = useTable(teams, headCells, filterFn);
 
 	const openInPopup = (team) => {
@@ -148,7 +137,7 @@ export function Main() {
 				<TblContainer>
 					<TblHead />
 					<TeamTable
-						teamsAfterPadingAndSorting={teamsAfterPadingAndSorting}
+						recordsAfterPadingAndSorting={recordsAfterPadingAndSorting}
 						openInPopup={openInPopup}
 						onDelete={onDelete}
 						setConfirmDialog={setConfirmDialog}

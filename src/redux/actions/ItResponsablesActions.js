@@ -23,7 +23,7 @@ export const createItResponsable = (itResponsable) => async (dispatch) => {
 
 export const getItResponsables = () => async (dispatch) => {
 	try {
-		const itResponsables = await ItResponsableService.getItResponsable();
+		const itResponsables = await ItResponsableService.getItResponsables();
 		dispatch({
 			type: GET_IT_RESPONSABLES,
 			payload: itResponsables.data,

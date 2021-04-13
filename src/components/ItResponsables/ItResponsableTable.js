@@ -4,23 +4,24 @@ import CloseIcon from "@material-ui/icons/Close";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { Controls } from "../controls/controls";
 
-function TeamTable({
+export default function ItResponsableTable({
 	recordsAfterPadingAndSorting,
 	openInPopup,
 	setConfirmDialog,
 	onDelete,
 }) {
-	return (
-		<TableBody>
-			{recordsAfterPadingAndSorting().map((team) => (
-				<TableRow key={team.id}>
-					<TableCell>{team.id}</TableCell>
-					<TableCell>{team.name}</TableCell>
+  return (
+    <TableBody>
+			{recordsAfterPadingAndSorting().map((itResponsable) => (
+				<TableRow key={itResponsable.id}>
+					<TableCell>{itResponsable.id}</TableCell>
+					<TableCell>{itResponsable.name}</TableCell>
+					<TableCell>{itResponsable.email}</TableCell>
 					<TableCell>
 						<Controls.ActionButton
 							color="primary"
 							onClick={() => {
-								openInPopup(team);
+								openInPopup(itResponsable);
 							}}
 						>
 							<EditOutlinedIcon fontSize="small" />
@@ -33,7 +34,7 @@ function TeamTable({
 									title: "Are you sure to delete this record?",
 									subTitle: "You can't undo this operation",
 									onConfirm: () => {
-										onDelete(team.id);
+										onDelete(itResponsable.id);
 									},
 								});
 							}}
@@ -44,7 +45,5 @@ function TeamTable({
 				</TableRow>
 			))}
 		</TableBody>
-	);
+  )
 }
-
-export default TeamTable;

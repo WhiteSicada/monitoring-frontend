@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function useTable(teams, headCells, filterFn) {
+export default function useTable(records, headCells, filterFn) {
 	const classes = useStyles();
 	const pages = [5, 10, 25];
 	const [page, setPage] = useState(0);
@@ -86,7 +86,7 @@ export default function useTable(teams, headCells, filterFn) {
 			component="div"
 			page={page}
 			rowsPerPage={rowsPerPage}
-			count={teams.length}
+			count={records.length}
 			rowsPerPageOptions={pages}
 			onChangePage={handleChangePage}
 			onChangeRowsPerPage={handleChangeRowsPerPage}
@@ -119,9 +119,9 @@ export default function useTable(teams, headCells, filterFn) {
 		return stabilizedThis.map((el) => el[0]);
 	}
 
-	const teamsAfterPadingAndSorting = () => {
+	const recordsAfterPadingAndSorting = () => {
 		return stableSort(
-			filterFn.fn(teams),
+			filterFn.fn(records),
 			getComparator(order, orderBy)
 		).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
 	};
@@ -130,6 +130,6 @@ export default function useTable(teams, headCells, filterFn) {
 		TblContainer,
 		TblHead,
 		TblPagination,
-		teamsAfterPadingAndSorting,
+		recordsAfterPadingAndSorting,
 	};
 }

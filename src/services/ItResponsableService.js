@@ -4,7 +4,7 @@ const createItResponsable = (itResponsable) => {
 	return customAxios.post("/responsableit", itResponsable);
 };
 
-const getItResponsable = () => {
+const getItResponsables = () => {
 	return customAxios.get("/responsableits");
 };
 
@@ -18,7 +18,7 @@ const updateItResponsable = (id, itResponsable) => {
 
 const ItResponsableService = {
 	createItResponsable,
-	getItResponsable,
+	getItResponsables,
 	deleteItResponsable,
 	updateItResponsable,
 };
