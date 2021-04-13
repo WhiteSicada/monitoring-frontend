@@ -2,7 +2,6 @@ import { Grid, Typography } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import * as HiIcons from "react-icons/hi";
 import PageHeader from "../Header/PageHeader";
-import ListTeams from "./ListTeams";
 import { useDispatch, useSelector } from "react-redux";
 import useTable from "./useTable";
 import { Controls } from "../controls/controls";
@@ -10,6 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { Search } from "@material-ui/icons";
 import CloseIcon from "@material-ui/icons/Close";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import TeamTable from "./TeamTable";
 import { deleteTeam, getTeams, setTeam } from "../../redux/actions/TeamActions";
 import {
 	Paper,
@@ -147,39 +147,12 @@ export function Main() {
 				</Toolbar>
 				<TblContainer>
 					<TblHead />
-					<TableBody>
-						{teamsAfterPadingAndSorting().map((team) => (
-							<TableRow key={team.id}>
-								<TableCell>{team.id}</TableCell>
-								<TableCell>{team.name}</TableCell>
-								<TableCell>
-									<Controls.ActionButton
-										color="primary"
-										onClick={() => {
-											openInPopup(team);
-										}}
-									>
-										<EditOutlinedIcon fontSize="small" />
-									</Controls.ActionButton>
-									<Controls.ActionButton
-										color="secondary"
-										onClick={() => {
-											setConfirmDialog({
-												isOpen: true,
-												title: "Are you sure to delete this record?",
-												subTitle: "You can't undo this operation",
-												onConfirm: () => {
-													onDelete(team.id);
-												},
-											});
-										}}
-									>
-										<CloseIcon fontSize="small" />
-									</Controls.ActionButton>
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
+					<TeamTable
+						teamsAfterPadingAndSorting={teamsAfterPadingAndSorting}
+						openInPopup={openInPopup}
+						onDelete={onDelete}
+						setConfirmDialog={setConfirmDialog}
+					/>
 				</TblContainer>
 				<TblPagination />
 			</Paper>
