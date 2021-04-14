@@ -5,7 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Controls } from "../controls/controls";
 import AddIcon from "@material-ui/icons/Add";
 import { Search } from "@material-ui/icons";
-import { Paper, makeStyles, Toolbar, InputAdornment } from "@material-ui/core";
+import {
+	Paper,
+	makeStyles,
+	Toolbar,
+	InputAdornment,
+	Grid,
+} from "@material-ui/core";
+import ApiForm from "../../Forms/Api/ApiForm";
+import { getAPIs } from "../../redux/actions/ApiActions";
+import ApiItem from "./ApiItem";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -19,10 +28,24 @@ const useStyles = makeStyles((theme) => ({
 		position: "absolute",
 		right: "10px",
 	},
+	apiSection: {
+		marginTop: theme.spacing(4),
+	},
 }));
 
 export function Main() {
 	const classes = useStyles();
+	const dispatch = useDispatch();
+	const [notify, setNotify] = useState({
+		isOpen: false,
+		message: "",
+		type: "",
+	});
+	const [confirmDialog, setConfirmDialog] = useState({
+		isOpen: false,
+		title: "",
+		subTitle: "",
+	});
 	const handleSearch = (e) => {
 		let target = e.target;
 		// setFilterFn({
@@ -41,7 +64,10 @@ export function Main() {
 		setApiForEdit(api);
 		setOpenPopup(true);
 	};
-	useEffect(() => {}, []);
+	const apis = useSelector((state) => state.apiState.apis);
+	useEffect(() => {
+		dispatch(getAPIs());
+	}, []);
 	return (
 		<div>
 			<PageHeader
@@ -75,7 +101,30 @@ export function Main() {
 						}}
 					/>
 				</Toolbar>
+				<Grid container spacing={4} className={classes.apiSection}>
+					{apis.map((api) => (
+						<Grid item xs={6}>
+							<ApiItem api={api} />
+						</Grid>
+					))}
+				</Grid>
 			</Paper>
+			<Controls.Popup
+				title="Api Form"
+				openPopup={openPopup}
+				setOpenPopup={setOpenPopup}
+			>
+				<ApiForm
+					apiForEdit={apiForEdit}
+					setOpenPopup={setOpenPopup}
+					setNotify={setNotify}
+				/>
+			</Controls.Popup>
+			<Controls.Notification notify={notify} setNotify={setNotify} />
+			<Controls.ConfirmDialog
+				confirmDialog={confirmDialog}
+				setConfirmDialog={setConfirmDialog}
+			/>
 		</div>
 	);
 }

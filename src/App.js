@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import React from "react";
 import CustomDrawer from "./components/Header/CustomDrawer";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";

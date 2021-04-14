@@ -1,8 +1,7 @@
 import React from "react";
 import { TableBody, TableRow, TableCell } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { Controls } from "../controls/controls";
+import * as AiIcons from "react-icons/ai";
 
 export default function WorkResponsableTable({
 	recordsAfterPadingAndSorting,
@@ -10,8 +9,8 @@ export default function WorkResponsableTable({
 	setConfirmDialog,
 	onDelete,
 }) {
-  return (
-    <TableBody>
+	return (
+		<TableBody>
 			{recordsAfterPadingAndSorting().map((itResponsable) => (
 				<TableRow key={itResponsable.id}>
 					<TableCell>{itResponsable.id}</TableCell>
@@ -19,14 +18,16 @@ export default function WorkResponsableTable({
 					<TableCell>{itResponsable.email}</TableCell>
 					<TableCell>
 						<Controls.ActionButton
+							text={"Edit"}
 							color="primary"
 							onClick={() => {
 								openInPopup(itResponsable);
 							}}
 						>
-							<EditOutlinedIcon fontSize="small" />
+							<AiIcons.AiOutlineEdit fontSize="large" />
 						</Controls.ActionButton>
 						<Controls.ActionButton
+							text={"Delete"}
 							color="secondary"
 							onClick={() => {
 								setConfirmDialog({
@@ -39,11 +40,11 @@ export default function WorkResponsableTable({
 								});
 							}}
 						>
-							<CloseIcon fontSize="small" />
+							<AiIcons.AiOutlineDelete fontSize="large" />
 						</Controls.ActionButton>
 					</TableCell>
 				</TableRow>
 			))}
 		</TableBody>
-  )
+	);
 }
