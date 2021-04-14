@@ -13,7 +13,6 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Controls } from "../controls/controls";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -55,7 +54,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function ApiItem({ api }) {
+export default function ApiItem({
+	api,
+	openInPopup,
+	setConfirmDialog,
+	onDelete,
+}) {
 	const classes = useStyles(api);
 
 	return (
@@ -76,9 +80,9 @@ export default function ApiItem({ api }) {
 							<Controls.ActionButton
 								text={"Consulter l'erreur"}
 								color="primary"
-								onClick={() => {
-									// openInPopup(team);
-								}}
+								// onClick={() => {
+								// 	openInPopup();
+								// }}
 							>
 								Consulter l'erreur
 							</Controls.ActionButton>
@@ -95,7 +99,7 @@ export default function ApiItem({ api }) {
 								text={"Edit"}
 								color="primary"
 								onClick={() => {
-									// openInPopup(team);
+									openInPopup(api);
 								}}
 							>
 								<AiIcons.AiOutlineEdit size={"1.2rem"} />
@@ -104,7 +108,14 @@ export default function ApiItem({ api }) {
 								text={"Delete"}
 								color="primary"
 								onClick={() => {
-									// openInPopup(team);
+									setConfirmDialog({
+										isOpen: true,
+										title: "Are you sure to delete this record?",
+										subTitle: "You can't undo this operation",
+										onConfirm: () => {
+											onDelete(api.id);
+										},
+									});
 								}}
 							>
 								<AiIcons.AiOutlineDelete size={"1.2rem"} />

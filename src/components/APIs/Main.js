@@ -13,7 +13,7 @@ import {
 	Grid,
 } from "@material-ui/core";
 import ApiForm from "../../Forms/Api/ApiForm";
-import { getAPIs } from "../../redux/actions/ApiActions";
+import { deleteAPI, getAPIs } from "../../redux/actions/ApiActions";
 import ApiItem from "./ApiItem";
 
 const useStyles = makeStyles((theme) => ({
@@ -68,6 +68,25 @@ export function Main() {
 	useEffect(() => {
 		dispatch(getAPIs());
 	}, []);
+
+	const onDelete = (id) => {
+		setConfirmDialog({
+			...confirmDialog,
+			isOpen: false,
+		});
+		dispatch(deleteAPI(id))
+			.then((response) => {
+				setNotify({
+					isOpen: true,
+					message: "Deleted Successfully",
+					type: "warning",
+				});
+			})
+			.catch((error) => {
+				console.log("error");
+				console.log(error);
+			});
+	};
 	return (
 		<div>
 			<PageHeader
@@ -104,7 +123,12 @@ export function Main() {
 				<Grid container spacing={4} className={classes.apiSection}>
 					{apis.map((api) => (
 						<Grid item xs={6}>
-							<ApiItem api={api} />
+							<ApiItem
+								api={api}
+								openInPopup={openInPopup}
+								setConfirmDialog={setConfirmDialog}
+								onDelete={onDelete}
+							/>
 						</Grid>
 					))}
 				</Grid>
