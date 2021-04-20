@@ -10,26 +10,27 @@ import {
 	TeamLink,
 	WorkResponsableLink,
 	APIsLink,
+	ProjectLink,
 } from "./StaticLinks";
 
 export const DrawerData = [
 	{
 		title: "Projetcs",
 		icon: <TiIcons.TiFolderOpen style={{ fontSize: 35, color: "#2c0b06" }} />,
-		path: "",
+		path: ProjectLink,
 
-		subNavs: [
-			{
-				title: "All Projects",
-				path: "/Projects",
-				icon: <BsIcons.BsArchive style={{ color: "#ec6413" }} />,
-			},
-			{
-				title: "Create Project",
-				path: "/New-Project",
-				icon: <FiIcons.FiFolderPlus style={{ color: "#ec6413" }} />,
-			},
-		],
+		// subNavs: [
+		// 	{
+		// 		title: "All Projects",
+		// 		path: "/Projects",
+		// 		icon: <BsIcons.BsArchive style={{ color: "#ec6413" }} />,
+		// 	},
+		// 	{
+		// 		title: "Create Project",
+		// 		path: "/New-Project",
+		// 		icon: <FiIcons.FiFolderPlus style={{ color: "#ec6413" }} />,
+		// 	},
+		// ],
 	},
 	{
 		title: "APIs",

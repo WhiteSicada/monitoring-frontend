@@ -1,5 +1,4 @@
 import React from "react";
-
 import { makeStyles } from "@material-ui/core/styles";
 import * as FaIcons from "react-icons/fa";
 import * as IoIcons from "react-icons/io5";
@@ -59,6 +58,7 @@ export default function ApiItem({
 	openInPopup,
 	setConfirmDialog,
 	onDelete,
+	openInViewPopup,
 }) {
 	const classes = useStyles(api);
 
@@ -90,7 +90,7 @@ export default function ApiItem({
 								text={"View"}
 								color="primary"
 								onClick={() => {
-									// openInPopup(team);
+									openInViewPopup(api);
 								}}
 							>
 								<IoIcons.IoEyeOutline size={"1.2rem"} />

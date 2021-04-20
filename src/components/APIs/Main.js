@@ -15,6 +15,8 @@ import {
 import ApiForm from "../../Forms/Api/ApiForm";
 import { deleteAPI, getAPIs } from "../../redux/actions/ApiActions";
 import ApiItem from "./ApiItem";
+import ViewApi from "./ViewApi";
+import ViewPopup from "./ViewPopup";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -59,10 +61,15 @@ export function Main() {
 		// });
 	};
 	const [openPopup, setOpenPopup] = useState(false);
+	const [openViewPopup, setOpenViewPopup] = useState(false);
 	const [apiForEdit, setApiForEdit] = useState(null);
 	const openInPopup = (api) => {
 		setApiForEdit(api);
 		setOpenPopup(true);
+	};
+	const openInViewPopup = (api) => {
+		setApiForEdit(api);
+		setOpenViewPopup(true);
 	};
 	const apis = useSelector((state) => state.apiState.apis);
 	useEffect(() => {
@@ -127,6 +134,7 @@ export function Main() {
 								api={api}
 								openInPopup={openInPopup}
 								setConfirmDialog={setConfirmDialog}
+								openInViewPopup={openInViewPopup}
 								onDelete={onDelete}
 							/>
 						</Grid>
@@ -143,6 +151,13 @@ export function Main() {
 					setOpenPopup={setOpenPopup}
 					setNotify={setNotify}
 				/>
+			</Controls.Popup>
+			<Controls.Popup
+				title="View Api"
+				openPopup={openViewPopup}
+				setOpenPopup={setOpenViewPopup}
+			>
+				<ViewPopup apiForEdit={apiForEdit} />
 			</Controls.Popup>
 			<Controls.Notification notify={notify} setNotify={setNotify} />
 			<Controls.ConfirmDialog
