@@ -12,7 +12,7 @@ import {
 	StepLabel,
 	MenuItem,
 } from "@material-ui/core";
-import { BeatLoader } from "react-spinners";
+import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import {
 	createProject,
@@ -81,22 +81,33 @@ export default function ProjectCreationForm({
 		setSubmitting(true);
 		dispatch(createProject(values))
 			.then((response) => {
-				dispatch(addApiToProject(response.id, { apis: values.apis }))
-					.then((e) => {
-						resetForm();
-						setSubmitting(false);
-						setOpenPopup(false);
-						setNotify({
-							isOpen: true,
-							message: "Created Successfully",
-							type: "success",
+				if (values.apis.length !== 0) {
+					dispatch(addApiToProject(response.id, { apis: values.apis }))
+						.then((e) => {
+							resetForm();
+							setSubmitting(false);
+							setOpenPopup(false);
+							setNotify({
+								isOpen: true,
+								message: "Created Successfully",
+								type: "success",
+							});
+						})
+						.catch((error) => {
+							resetForm();
+							setSubmitting(false);
+							console.log(error);
 						});
-					})
-					.catch((error) => {
-						resetForm();
-						setSubmitting(false);
-						console.log(error);
+				} else {
+					resetForm();
+					setSubmitting(false);
+					setOpenPopup(false);
+					setNotify({
+						isOpen: true,
+						message: "Created Successfully",
+						type: "success",
 					});
+				}
 			})
 			.catch((error) => {
 				resetForm();
@@ -258,7 +269,7 @@ export default function ProjectCreationForm({
 											}}
 										>
 											{isSubmitting ? (
-												<BeatLoader size={10} color="#ef630b" />
+												<CircleLoader size={10} color="#ef630b" />
 											) : (
 												"Submit"
 											)}

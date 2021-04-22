@@ -202,7 +202,12 @@ export function Main() {
 				openPopup={openTransferListPopup}
 				setOpenPopup={setOpenTransferListPopup}
 			>
-				<ManageApisTransferList />
+				<ManageApisTransferList
+					apis={apis}
+					projectForEdit={projectForEdit}
+					setProjectForEdit={setProjectForEdit}
+					setOpenTransferListPopup={setOpenTransferListPopup}
+				/>
 			</Controls.Popup>
 			<Controls.Notification notify={notify} setNotify={setNotify} />
 			<Controls.ConfirmDialog

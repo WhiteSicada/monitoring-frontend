@@ -51,7 +51,7 @@ function ProjectUpdateForm({
 		}
 	}, [projectForEdit]);
 
-	const submitForm = (values, { setSubmitting, resetForm }) => {
+	const submitForm = (values, { setSubmitting }) => {
 		setSubmitting(true);
 		dispatch(updateProject(values.id, values)).then((response) => {
 			setSubmitting(false);
@@ -88,13 +88,13 @@ function ProjectUpdateForm({
 				validationSchema={validationSchema}
 				initialValues={formValues}
 				enableReinitialize={true}
-				onSubmit={(values, { setSubmitting, resetForm }) =>
-					submitForm(values, { setSubmitting, resetForm })
+				onSubmit={(values, { setSubmitting }) =>
+					submitForm(values, { setSubmitting })
 				}
 			>
-				{({ isSubmitting, dirty, isValid, resetForm }) => (
+				{({ isSubmitting, dirty, isValid }) => (
 					<Form autoComplete="off" className={classes.root}>
-						<Grid container spacing={8}>
+						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<Field
 									required

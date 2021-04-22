@@ -4,7 +4,7 @@ import { TextField } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
 import Button from "@material-ui/core/Button";
 import { Grid, makeStyles } from "@material-ui/core";
-import { BeatLoader } from "react-spinners";
+import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { createAPI, getAPIs, updateAPI } from "../../redux/actions/ApiActions";
 
@@ -141,7 +141,7 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 									className={classes.button}
 								>
 									{isSubmitting ? (
-										<BeatLoader size={10} color="#ef630b" />
+										<CircleLoader size={10} color="#ef630b" />
 									) : (
 										"Submit"
 									)}

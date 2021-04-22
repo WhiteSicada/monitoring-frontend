@@ -1,25 +1,40 @@
-import React from "react";
+import React, { useEffect, useState, useDebugValue } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
-import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
+import {
+	Grid,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Checkbox,
+	Button,
+	Card,
+	CardHeader,
+	Divider,
+} from "@material-ui/core";
+import { CircleLoader } from "react-spinners";
+import { useDispatch } from "react-redux";
+import {
+	addApiToProject,
+	removeApiToProject,
+} from "../../redux/actions/ProjectActions";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		margin: "auto",
 	},
-	paper: {
-		width: 200,
-		height: 230,
-		overflow: "auto",
+	cardHeader: {
+		padding: theme.spacing(2),
+		borderLeft: "2px solid #ef630b",
+	},
+	list: {
+		height: 350,
 	},
 	button: {
-		margin: theme.spacing(0.5, 0),
+		width: "40%",
+		border: "1px solid #ef630b",
+		padding: 10,
+		marginTop: 25,
 	},
 }));
 
@@ -31,12 +46,26 @@ function intersection(a, b) {
 	return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function ManageApisTransferList() {
-	const classes = useStyles();
-	const [checked, setChecked] = React.useState([]);
-	const [left, setLeft] = React.useState([0, 1, 2, 3]);
-	const [right, setRight] = React.useState([4, 5, 6, 7]);
+function useStateWithLabel(initialValue, name) {
+	const [value, setValue] = useState(initialValue);
+	useDebugValue(`${name}: ${value}`);
+	return [value, setValue];
+}
 
+export default function ManageApisTransferList({
+	apis,
+	projectForEdit,
+	setProjectForEdit,
+	setOpenTransferListPopup,
+}) {
+	const classes = useStyles();
+	const [checked, setChecked] = useStateWithLabel([], "checked");
+	const dispatch = useDispatch();
+	const fullListAPI = apis.map((api) => api.name);
+	const [left, setLeft] = useStateWithLabel(fullListAPI, "left");
+	const [initialeList, setInitialeList] = useStateWithLabel([], "initialeList");
+	const [loading, setLoading] = useStateWithLabel(false, "loading");
+	const [right, setRight] = useStateWithLabel([], "right");
 	const leftChecked = intersection(checked, left);
 	const rightChecked = intersection(checked, right);
 
@@ -53,11 +82,6 @@ export default function ManageApisTransferList() {
 		setChecked(newChecked);
 	};
 
-	const handleAllRight = () => {
-		setRight(right.concat(left));
-		setLeft([]);
-	};
-
 	const handleCheckedRight = () => {
 		setRight(right.concat(leftChecked));
 		setLeft(not(left, leftChecked));
@@ -70,39 +94,56 @@ export default function ManageApisTransferList() {
 		setChecked(not(checked, rightChecked));
 	};
 
-	const handleAllLeft = () => {
-		setLeft(left.concat(right));
-		setRight([]);
+	useEffect(() => {
+		if (projectForEdit != null) {
+			const projectListAPIs = projectForEdit.listAPIs.map((api) => api.name);
+			setLeft(not(fullListAPI, projectListAPIs));
+			setRight(projectListAPIs);
+			setInitialeList(projectListAPIs);
+		}
+	}, [projectForEdit]);
+
+	const updateListAPIS = (id) => {
+		setLoading(true);
+		const removedAPIS = not(initialeList, right);
+		const addedAPIs = not(right, initialeList);
+		console.log(removedAPIS.length);
+		if (removedAPIS.length !== 0) {
+			dispatch(removeApiToProject(id, { apis: removedAPIS }));
+		}
+		if (addedAPIs.length !== 0) {
+			dispatch(addApiToProject(id, { apis: addedAPIs }));
+		}
+		setLoading(false);
+		setOpenTransferListPopup(false);
+		setProjectForEdit(null);
 	};
 
-	const customList = (items) => (
-		<Paper className={classes.paper}>
-			<List dense component="div" role="list">
-				{items.map((value) => {
-					const labelId = `transfer-list-item-${value}-label`;
+	const customList = (title, items) => (
+		<Card>
+			<CardHeader className={classes.cardHeader} title={title} />
+			<Divider />
 
-					return (
-						<ListItem
-							key={value}
-							role="listitem"
-							button
-							onClick={handleToggle(value)}
-						>
-							<ListItemIcon>
-								<Checkbox
-									checked={checked.indexOf(value) !== -1}
-									tabIndex={-1}
-									disableRipple
-									inputProps={{ "aria-labelledby": labelId }}
-								/>
-							</ListItemIcon>
-							<ListItemText id={labelId} primary={`List item ${value + 1}`} />
-						</ListItem>
-					);
-				})}
-				<ListItem />
+			<List dense className={classes.list}>
+				<Grid container>
+					{items.map((api) => (
+						<Grid item xs={6} key={Math.random()}>
+							<ListItem role="listitem" button onClick={handleToggle(api)}>
+								<ListItemIcon>
+									<Checkbox
+										checked={checked.indexOf(api) !== -1}
+										tabIndex={-1}
+										disableRipple
+									/>
+								</ListItemIcon>
+								<ListItemText primary={api} />
+							</ListItem>
+						</Grid>
+					))}
+					<ListItem />
+				</Grid>
 			</List>
-		</Paper>
+		</Card>
 	);
 
 	return (
@@ -113,19 +154,11 @@ export default function ManageApisTransferList() {
 			alignItems="center"
 			className={classes.root}
 		>
-			<Grid item>{customList(left)}</Grid>
+			<Grid item xs={5}>
+				{customList("Available APIs", left)}
+			</Grid>
 			<Grid item>
 				<Grid container direction="column" alignItems="center">
-					<Button
-						variant="outlined"
-						size="small"
-						className={classes.button}
-						onClick={handleAllRight}
-						disabled={left.length === 0}
-						aria-label="move all right"
-					>
-						≫
-					</Button>
 					<Button
 						variant="outlined"
 						size="small"
@@ -146,19 +179,23 @@ export default function ManageApisTransferList() {
 					>
 						&lt;
 					</Button>
-					<Button
-						variant="outlined"
-						size="small"
-						className={classes.button}
-						onClick={handleAllLeft}
-						disabled={right.length === 0}
-						aria-label="move all left"
-					>
-						≪
-					</Button>
 				</Grid>
 			</Grid>
-			<Grid item>{customList(right)}</Grid>
+			<Grid item xs={5}>
+				{customList("Project APIs", right)}
+			</Grid>
+			<Grid container justify="center">
+				<Button
+					variant="outlined"
+					color="primary"
+					className={classes.button}
+					onClick={() => {
+						updateListAPIS(projectForEdit.id);
+					}}
+				>
+					{loading ? <CircleLoader size={10} color="#ef630b" /> : "Submit"}
+				</Button>
+			</Grid>
 		</Grid>
 	);
 }

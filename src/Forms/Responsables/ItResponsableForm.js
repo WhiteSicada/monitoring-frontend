@@ -5,7 +5,7 @@ import { validationSchema } from "./validationSchema";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { BeatLoader } from "react-spinners";
+import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import {
 	createItResponsable,
@@ -127,7 +127,7 @@ function ItResponsableForm({ ItResponsableForEdit, setNotify, setOpenPopup }) {
 									className={classes.button}
 								>
 									{isSubmitting ? (
-										<BeatLoader size={10} color="#ef630b" />
+										<CircleLoader size={10} color="#ef630b" />
 									) : (
 										"Submit"
 									)}

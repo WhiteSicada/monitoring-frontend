@@ -53,10 +53,12 @@ function ProjectReducer(state = initialState, action) {
 			return Object.assign({}, state, {
 				projects: state.projects.map((project) => {
 					if (project.id === payload.id) {
-						let newApiList = project.listAPIs.filter(
-							(element) => !payload.list.includes(element)
-						);
-						return { ...project, listAPIs: newApiList };
+						return {
+							...project,
+							listAPIs: project.listAPIs.filter(
+								(element) => payload.list.apis.indexOf(element.name) === -1
+							),
+						};
 					}
 					return project;
 				}),
