@@ -13,7 +13,7 @@ export default function WorkResponsableTable({
 		<TableBody>
 			{recordsAfterPadingAndSorting().map((itResponsable) => (
 				<TableRow key={itResponsable.id}>
-					<TableCell>{itResponsable.id}</TableCell>
+					{/* <TableCell>{itResponsable.id}</TableCell> */}
 					<TableCell>{itResponsable.name}</TableCell>
 					<TableCell>{itResponsable.email}</TableCell>
 					<TableCell>

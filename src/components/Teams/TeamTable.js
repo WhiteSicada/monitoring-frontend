@@ -11,12 +11,13 @@ function TeamTable({
 }) {
 	return (
 		<TableBody>
-			{recordsAfterPadingAndSorting().map((team) => (
+			{recordsAfterPadingAndSorting().map((team, index) => (
 				<TableRow key={team.id}>
 					<TableCell>{team.id}</TableCell>
 					<TableCell>{team.name}</TableCell>
 					<TableCell>
 						<Controls.ActionButton
+							id={`update`}
 							text={"Edit"}
 							color="primary"
 							onClick={() => {
@@ -26,6 +27,7 @@ function TeamTable({
 							<AiIcons.AiOutlineEdit fontSize="large" />
 						</Controls.ActionButton>
 						<Controls.ActionButton
+							id={`delete${index}`}
 							text={"Delete"}
 							color="secondary"
 							onClick={() => {

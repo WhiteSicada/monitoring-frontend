@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const headCells = [
-	{ id: "id", label: "Responsable Id" },
+	// { id: "id", label: "Responsable Id" },
 	{ id: "name", label: "Responsable Name" },
 	{ id: "email", label: "Responsable Email" },
 	{ id: "actions", label: "Actions", disableSorting: true },

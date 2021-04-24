@@ -51,7 +51,7 @@ const theme = createMuiTheme({
 
 function App() {
 	return (
-		<Router>
+		<Router  id="root">
 			<ThemeProvider theme={theme}>
 				<CustomDrawer />
 				<div className={"appMain"}>

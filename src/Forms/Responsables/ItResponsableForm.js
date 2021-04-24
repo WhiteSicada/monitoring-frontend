@@ -93,13 +93,18 @@ function ItResponsableForm({ ItResponsableForEdit, setNotify, setOpenPopup }) {
 				}
 			>
 				{({ isSubmitting, dirty, isValid, resetForm }) => (
-					<Form autoComplete="off" className={classes.root}>
+					<Form
+						autoComplete="off"
+						id="ItResponsableForm"
+						className={classes.root}
+					>
 						<Grid container spacing={8}>
-            <Grid item xs={12}>
+							<Grid item xs={12}>
 								<Field
 									required
 									autoFocus={true}
 									name="name"
+									id="name"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"
@@ -107,10 +112,11 @@ function ItResponsableForm({ ItResponsableForEdit, setNotify, setOpenPopup }) {
 									label="Name of It Responsable"
 								/>
 							</Grid>
-              <Grid item xs={12}>
+							<Grid item xs={12}>
 								<Field
 									required
 									name="email"
+									id="email"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"

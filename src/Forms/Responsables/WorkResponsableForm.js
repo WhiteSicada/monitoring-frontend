@@ -34,7 +34,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function WorkResponsableForm({ WorkResponsableForEdit, setNotify, setOpenPopup }) {
+function WorkResponsableForm({
+	WorkResponsableForEdit,
+	setNotify,
+	setOpenPopup,
+}) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -92,13 +96,18 @@ function WorkResponsableForm({ WorkResponsableForEdit, setNotify, setOpenPopup }
 				}
 			>
 				{({ isSubmitting, dirty, isValid, resetForm }) => (
-					<Form autoComplete="off" className={classes.root}>
+					<Form
+						autoComplete="off"
+						id="WorkResponsableForm"
+						className={classes.root}
+					>
 						<Grid container spacing={8}>
-            <Grid item xs={12}>
+							<Grid item xs={12}>
 								<Field
 									required
 									autoFocus={true}
 									name="name"
+									id="name"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"
@@ -106,10 +115,11 @@ function WorkResponsableForm({ WorkResponsableForEdit, setNotify, setOpenPopup }
 									label="Name of Work Responsable"
 								/>
 							</Grid>
-              <Grid item xs={12}>
+							<Grid item xs={12}>
 								<Field
 									required
 									name="email"
+									id="email"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"
