@@ -87,7 +87,7 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 				}
 			>
 				{({ isSubmitting, dirty, isValid, resetForm }) => (
-					<Form autoComplete="off" className={classes.root}>
+					<Form autoComplete="off" id="apiForm" className={classes.root}>
 						<Grid container spacing={5}>
 							<Grid item xs={12}>
 								<Field
@@ -141,7 +141,7 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 									className={classes.button}
 								>
 									{isSubmitting ? (
-										<CircleLoader size={10} color="#ef630b" />
+										<CircleLoader size={15} color="#ef630b" />
 									) : (
 										"Submit"
 									)}

@@ -13,7 +13,7 @@ function TeamTable({
 		<TableBody>
 			{recordsAfterPadingAndSorting().map((team, index) => (
 				<TableRow key={team.id}>
-					<TableCell>{team.id}</TableCell>
+					{/* <TableCell>{team.id}</TableCell> */}
 					<TableCell>{team.name}</TableCell>
 					<TableCell>
 						<Controls.ActionButton

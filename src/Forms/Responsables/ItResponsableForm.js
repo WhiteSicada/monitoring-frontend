@@ -104,7 +104,6 @@ function ItResponsableForm({ ItResponsableForEdit, setNotify, setOpenPopup }) {
 									required
 									autoFocus={true}
 									name="name"
-									id="name"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"
@@ -116,7 +115,6 @@ function ItResponsableForm({ ItResponsableForEdit, setNotify, setOpenPopup }) {
 								<Field
 									required
 									name="email"
-									id="email"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"

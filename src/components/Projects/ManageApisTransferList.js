@@ -119,12 +119,12 @@ export default function ManageApisTransferList({
 		setProjectForEdit(null);
 	};
 
-	const customList = (title, items) => (
-		<Card>
+	const customList = (title, items,id) => (
+		<Card >
 			<CardHeader className={classes.cardHeader} title={title} />
 			<Divider />
 
-			<List dense className={classes.list}>
+			<List dense className={classes.list} id={id}>
 				<Grid container>
 					{items.map((api) => (
 						<Grid item xs={6} key={Math.random()}>
@@ -155,13 +155,14 @@ export default function ManageApisTransferList({
 			className={classes.root}
 		>
 			<Grid item xs={5}>
-				{customList("Available APIs", left)}
+				{customList("Available APIs", left, "AvailableAPIs")}
 			</Grid>
 			<Grid item>
 				<Grid container direction="column" alignItems="center">
 					<Button
 						variant="outlined"
 						size="small"
+						id="moveApisToRight"
 						className={classes.button}
 						onClick={handleCheckedRight}
 						disabled={leftChecked.length === 0}
@@ -172,6 +173,7 @@ export default function ManageApisTransferList({
 					<Button
 						variant="outlined"
 						size="small"
+						id="moveApisToLeft"
 						className={classes.button}
 						onClick={handleCheckedLeft}
 						disabled={rightChecked.length === 0}
@@ -182,12 +184,13 @@ export default function ManageApisTransferList({
 				</Grid>
 			</Grid>
 			<Grid item xs={5}>
-				{customList("Project APIs", right)}
+				{customList("Project APIs", right, "ProjectAPIs")}
 			</Grid>
 			<Grid container justify="center">
 				<Button
 					variant="outlined"
 					color="primary"
+					id="manageApisSubmit"
 					className={classes.button}
 					onClick={() => {
 						updateListAPIS(projectForEdit.id);

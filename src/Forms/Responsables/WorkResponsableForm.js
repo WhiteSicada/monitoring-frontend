@@ -107,7 +107,6 @@ function WorkResponsableForm({
 									required
 									autoFocus={true}
 									name="name"
-									id="name"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"
@@ -119,7 +118,6 @@ function WorkResponsableForm({
 								<Field
 									required
 									name="email"
-									id="email"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"

@@ -4,6 +4,7 @@ import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
+import InputLabel from "@material-ui/core/InputLabel";
 import {
 	makeStyles,
 	Typography,
@@ -11,23 +12,28 @@ import {
 	Step,
 	StepLabel,
 	MenuItem,
+	Card,
+	CardHeader,
+	Divider,
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
 } from "@material-ui/core";
 import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import {
 	createProject,
 	addApiToProject,
-	updateProject,
 } from "../../redux/actions/ProjectActions";
-import { ApiCards } from "./ApiCards";
 
 const initialValues = {
 	id: null,
-	name: "aa",
+	name: "",
 	responsableIt: "",
 	responsableMetier: "",
 	equipe: "",
-	description: "aaa",
+	description: "",
 	apis: [],
 };
 
@@ -44,6 +50,17 @@ const useStyles = makeStyles((theme) => ({
 		border: "1px solid #ef630b",
 		padding: 10,
 		marginRight: 25,
+	},
+	cardHeader: {
+		padding: theme.spacing(2),
+		borderLeft: "2px solid #ef630b",
+	},
+	list: {
+		height: 350,
+	},
+	card: {
+		marginRight: 25,
+		marginLeft: 25,
 	},
 }));
 
@@ -160,7 +177,7 @@ export default function ProjectCreationForm({
 						setSubmitting,
 						resetForm,
 					}) => (
-						<Form autoComplete="off" className={classes.root}>
+						<Form autoComplete="off" id="projectForm" className={classes.root}>
 							<Grid container spacing={8}>
 								{activeStep === 0 && (
 									<Grid item xs={12}>
@@ -237,17 +254,36 @@ export default function ProjectCreationForm({
 
 								{activeStep === 2 && (
 									<Grid item container xs={12} spacing={4}>
-										{apis.map((api) => (
-											<Grid item key={api.id} xs={6}>
-												<Field
-													component={CheckboxWithLabel}
-													type="checkbox"
-													name="apis"
-													Label={{ label: api.name }}
-													value={api.name}
-												/>
-											</Grid>
-										))}
+										<Card className={classes.card}>
+											<CardHeader
+												className={classes.cardHeader}
+												title="Available APIs"
+											/>
+											<Divider />
+
+											<List
+												dense
+												className={classes.list}
+												id="listApisForProject"
+											>
+												<Grid container>
+													{apis.map((api) => (
+														<Grid item xs={4} key={api.id}>
+															<ListItem>
+																<Field
+																	component={CheckboxWithLabel}
+																	type="checkbox"
+																	name="apis"
+																	Label={{ label: api.name }}
+																	value={api.name}
+																/>
+															</ListItem>
+														</Grid>
+													))}
+													<ListItem />
+												</Grid>
+											</List>
+										</Card>
 									</Grid>
 								)}
 
@@ -261,9 +297,11 @@ export default function ProjectCreationForm({
 									</Button>
 									{activeStep === steps.length - 1 ? (
 										<Button
-											variant="outlined"
+											variant="contained"
 											color="primary"
+											id="submit"
 											disabled={!isValid}
+											className={classes.button}
 											onClick={() => {
 												submitForm(values, { setSubmitting, resetForm });
 											}}
@@ -279,6 +317,7 @@ export default function ProjectCreationForm({
 											size="small"
 											variant="contained"
 											color="primary"
+											id="next"
 											onClick={handleNext}
 											className={classes.button}
 										>

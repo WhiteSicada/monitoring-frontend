@@ -101,7 +101,7 @@ export function Main() {
 				if (target.value == "") return itResponsables;
 				else
 					return itResponsables.filter((x) =>
-						x.name.toLowerCase().includes(target.value)
+						x.name.includes(target.value)
 					);
 			},
 		});
@@ -119,6 +119,7 @@ export function Main() {
 					<Controls.Input
 						label="Search Employees"
 						className={classes.searchInput}
+						id="search"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">

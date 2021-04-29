@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const headCells = [
-	{ id: "id", label: "Team Id" },
+	// { id: "id", label: "Team Id" },
 	{ id: "name", label: "Team Name" },
 	{ id: "actions", label: "Actions", disableSorting: true },
 ];
@@ -93,10 +93,7 @@ export function Main() {
 		setFilterFn({
 			fn: (teams) => {
 				if (target.value == "") return teams;
-				else
-					return teams.filter((x) =>
-						x.name.toLowerCase().includes(target.value)
-					);
+				else return teams.filter((x) => x.name.includes(target.value));
 			},
 		});
 	};
@@ -114,6 +111,7 @@ export function Main() {
 					<Controls.Input
 						label="Search Employees"
 						className={classes.searchInput}
+						id="search"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">

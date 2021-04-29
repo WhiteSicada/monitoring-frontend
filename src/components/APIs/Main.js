@@ -10,13 +10,12 @@ import {
 	makeStyles,
 	Toolbar,
 	InputAdornment,
-	Grid,
 } from "@material-ui/core";
 import ApiForm from "../../Forms/Api/ApiForm";
 import { deleteAPI, getAPIs } from "../../redux/actions/ApiActions";
-import ApiItem from "./ApiItem";
-import ViewApi from "./ViewApi";
 import ViewPopup from "./ViewPopup";
+import useTable from "../controls/useTable";
+import ApiTable from "./ApiTable";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -35,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const headCells = [
+	// { id: "id", label: "Team Id" },
+	{ id: "name", label: "API Name" },
+	{ id: "actions", label: "Actions", disableSorting: true },
+];
+
 export function Main() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
@@ -50,16 +55,21 @@ export function Main() {
 	});
 	const handleSearch = (e) => {
 		let target = e.target;
-		// setFilterFn({
-		// 	fn: (teams) => {
-		// 		if (target.value == "") return teams;
-		// 		else
-		// 			return teams.filter((x) =>
-		// 				x.name.toLowerCase().includes(target.value)
-		// 			);
-		// 	},
-		// });
+		setFilterFn({
+			fn: (apis) => {
+				if (target.value == "") return apis;
+				else
+					return apis.filter((x) =>
+						x.name.includes(target.value)
+					);
+			},
+		});
 	};
+	const [filterFn, setFilterFn] = useState({
+		fn: (apis) => {
+			return apis;
+		},
+	});
 	const [openPopup, setOpenPopup] = useState(false);
 	const [openViewPopup, setOpenViewPopup] = useState(false);
 	const [apiForEdit, setApiForEdit] = useState(null);
@@ -72,6 +82,13 @@ export function Main() {
 		setOpenViewPopup(true);
 	};
 	const apis = useSelector((state) => state.apiState.apis);
+	const {
+		TblContainer,
+		TblHead,
+		TblPagination,
+		recordsAfterPadingAndSorting,
+	} = useTable(apis, headCells, filterFn);
+
 	useEffect(() => {
 		dispatch(getAPIs());
 	}, []);
@@ -107,6 +124,7 @@ export function Main() {
 					<Controls.Input
 						label="Search Employees"
 						className={classes.searchInput}
+						id="search"
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
@@ -127,19 +145,17 @@ export function Main() {
 						}}
 					/>
 				</Toolbar>
-				<Grid container spacing={4} className={classes.apiSection}>
-					{apis.map((api) => (
-						<Grid item xs={6}>
-							<ApiItem
-								api={api}
-								openInPopup={openInPopup}
-								setConfirmDialog={setConfirmDialog}
-								openInViewPopup={openInViewPopup}
-								onDelete={onDelete}
-							/>
-						</Grid>
-					))}
-				</Grid>
+				<TblContainer>
+					<TblHead />
+					<ApiTable
+						recordsAfterPadingAndSorting={recordsAfterPadingAndSorting}
+						openInPopup={openInPopup}
+						openInViewPopup={openInViewPopup}
+						onDelete={onDelete}
+						setConfirmDialog={setConfirmDialog}
+					/>
+				</TblContainer>
+				<TblPagination />
 			</Paper>
 			<Controls.Popup
 				title="Api Form"

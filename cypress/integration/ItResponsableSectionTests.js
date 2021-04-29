@@ -22,13 +22,35 @@ describe("Use cypress react selector to test the form", () => {
 		{ name: "IT Responsable Test", email: "itresponsable@gmail.com" },
 	];
 
+	it("display all", () => {
+		cy.wait(1000);
+		cy.contains("Rows per page")
+			.parent("div")
+			.within(() => {
+				cy.get(".MuiTablePagination-select").click();
+			});
+		cy.get(".MuiTablePagination-menuItem").eq(3).click();
+	});
+
 	it("create new IT Responsable", () => {
 		cy.wrap(itResponsables).each((itResponsable) => {
 			cy.contains("Add New").click();
-			cy.get("#name").type(itResponsable.name);
-			cy.get("#email").type(itResponsable.email);
+			cy.react("TextField", { props: { field: { name: "name" } } }).clear();
+			cy.react("TextField", { props: { field: { name: "email" } } }).clear();
+			cy.react("TextField", { props: { field: { name: "name" } } }).type(
+				itResponsable.name
+			);
+			cy.react("TextField", { props: { field: { name: "email" } } }).type(
+				itResponsable.email
+			);
 			cy.get("#ItResponsableForm").should("not.be.disabled").submit();
 			cy.wait(1000);
+		});
+	});
+
+	it("search for IT Responsable", () => {
+		cy.wrap(itResponsables).each((itResponsable) => {
+			cy.get("#search").type(itResponsable.name);
 		});
 	});
 
@@ -63,5 +85,9 @@ describe("Use cypress react selector to test the form", () => {
 		cy.get(".MuiDialogActions-root").within(() => {
 			cy.get("button").eq(1).click();
 		});
+	});
+
+	it("clear search for IT Responsable", () => {
+		cy.get("#search").clear();
 	});
 });

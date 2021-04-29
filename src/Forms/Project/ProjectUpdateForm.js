@@ -93,7 +93,7 @@ function ProjectUpdateForm({
 				}
 			>
 				{({ isSubmitting, dirty, isValid }) => (
-					<Form autoComplete="off" className={classes.root}>
+					<Form autoComplete="off" id="projectUpdateForm" className={classes.root}>
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<Field
@@ -175,7 +175,7 @@ function ProjectUpdateForm({
 									className={classes.button}
 								>
 									{isSubmitting ? (
-										<BeatLoader size={10} color="#ef630b" />
+										<BeatLoader size={15} color="#ef630b" />
 									) : (
 										"Submit"
 									)}

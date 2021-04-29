@@ -4495,12 +4495,12 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cypress-react-selector@2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/cypress-react-selector/-/cypress-react-selector-2.0.4.tgz#542f707d5c6cdea77b4b1efc6721cb265757e4f3"
-  integrity sha512-Fc/tjg+rfqap5A2ItqqUHPVSR3+G3XWjb2S4qVDAgBdvSzMT9INnlHEjXGqLd1lKMOZa+AdH9U7v+sWrGDYsjA==
+cypress-react-selector@^2.0.4:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/cypress-react-selector/-/cypress-react-selector-2.3.6.tgz#f884292c22c5cd783bfad4c991842e5be4df9380"
+  integrity sha512-fK1jpsOIfIqjObyuMQiopkf18HZ8p0j8Gk9H2bzIbRL3KzTqkJhhLkMLOOEUNZ7P52v1U4wdUN7iaF0brAAIGA==
   dependencies:
-    resq "1.8.0"
+    resq "1.10.0"
 
 cypress@^7.1.0:
   version "7.1.0"
@@ -10893,10 +10893,10 @@ resolve@^1.10.0, resolve@^1.12.0, resolve@^1.13.1, resolve@^1.14.2, resolve@^1.1
     is-core-module "^2.2.0"
     path-parse "^1.0.6"
 
-resq@1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/resq/-/resq-1.8.0.tgz#06c738e122bd024395cd729fb1e07248a1d2c340"
-  integrity sha512-VObcnfPcE6/EKfHqsi5qoJ0+BF9qfl5181CytP1su3HgzilqF03DrQ+Y7kZQrd+5myfmantl9W3/5uUcpwvKeg==
+resq@1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/resq/-/resq-1.10.0.tgz#40b5e3515ff984668e6b6b7c2401f282b08042ea"
+  integrity sha512-hCUd0xMalqtPDz4jXIqs0M5Wnv/LZXN8h7unFOo4/nvExT9dDPbhwd3udRxLlp0HgBnHcV009UlduE9NZi7A6w==
   dependencies:
     fast-deep-equal "^2.0.1"
 
