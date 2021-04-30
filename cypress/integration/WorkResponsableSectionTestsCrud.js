@@ -32,63 +32,68 @@ describe("Use cypress react selector to test the form", () => {
 		cy.get(".MuiTablePagination-menuItem").eq(3).click();
 	});
 
-	it("create new Work Responsable", () => {
-		cy.wrap(workResponsables).each((workResponsable) => {
+	workResponsables.forEach((workResponsable) => {
+		it("create new Work Responsable", () => {
+			// click on Add new project button
 			cy.contains("Add New").click();
-			cy.react("TextField", { props: { field: { name: "name" } } }).clear();
-			cy.react("TextField", { props: { field: { name: "name" } } }).type(
-				workResponsable.name + " updated"
-			);
-			cy.react("TextField", { props: { field: { name: "email" } } }).clear();
-
-			cy.react("TextField", { props: { field: { name: "email" } } }).type(
-				workResponsable.email
-			);
+			// fill the workResponsable name
+			fillInput("name", workResponsable.name);
+			// fill the workResponsable email
+			fillInput("email", workResponsable.email);
+			// submit
 			cy.get("#WorkResponsableForm").should("not.be.disabled").submit();
 			cy.wait(1000);
 		});
-	});
 
-	it("search for Work Responsable", () => {
-		cy.wrap(workResponsables).each((workResponsable) => {
+		it("search for Work Responsable", () => {
+			// search for the current workResponsable name in the list
 			cy.get("#search").type(workResponsable.name);
 		});
-	});
 
-	it("update the new Work Responsable", () => {
-		cy.wrap(workResponsables).each((workResponsable) => {
-			cy.contains(workResponsable.name)
-				.parent("tr")
-				.within(() => {
-					cy.get("td").eq(1).get("button").eq(0).click();
-				});
-			cy.react("TextField", { props: { field: { name: "name" } } }).clear();
-			cy.react("TextField", { props: { field: { name: "email" } } }).clear();
-			cy.react("TextField", { props: { field: { name: "name" } } }).type(
-				workResponsable.name + " updated"
-			);
-			cy.react("TextField", { props: { field: { name: "email" } } }).type(
-				workResponsable.email
-			);
+		it("update the new Work Responsable", () => {
+			// search for tr of project.name, target the second column and the second button
+			clickOnActionButton(workResponsable.name, 1, 0);
+			// clear input name
+			clearInput("name");
+			// fill input name
+			fillInput("name", workResponsable.name + " updated");
+			// clear input email
+			clearInput("email");
+			// fill input email
+			fillInput("email", workResponsable.email);
+			// submit
 			cy.get("#WorkResponsableForm").should("not.be.disabled").submit();
 			cy.wait(1000);
 		});
+
+		it("delete the new Work Responsable", () => {
+			// search for tr of project.name, target the 4 column and the third button
+			clickOnActionButton(workResponsable.name, 1, 1);
+			// confirm choice to delete
+			cy.get(".MuiDialogActions-root").within(() => {
+				cy.get("button").eq(1).click();
+			});
+		});
+
+		it("clear search for Work Responsable", () => {
+			// clear search for Work Responsable project
+			cy.get("#search").clear();
+		});
 	});
 
-	it("delete the new Work Responsable", () => {
-		cy.wrap(workResponsables).each((workResponsable) => {
-			cy.contains(workResponsable.name)
-				.parent("tr")
-				.within(() => {
-					cy.get("td").eq(1).get("button").eq(1).click();
-				});
-		});
-		cy.get(".MuiDialogActions-root").within(() => {
-			cy.get("button").eq(1).click();
-		});
-	});
+	function fillInput(prop, data) {
+		cy.react("TextField", { props: { field: { name: prop } } }).type(data);
+	}
 
-	it("clear search for Work Responsable", () => {
-		cy.get("#search").clear();
-	});
+	function clearInput(prop) {
+		cy.react("TextField", { props: { field: { name: prop } } }).clear();
+	}
+
+	function clickOnActionButton(searcheName, columnNumber, buttonOrder) {
+		cy.contains(searcheName)
+			.parents("tr")
+			.within(() => {
+				cy.get("td").eq(columnNumber).get("button").eq(buttonOrder).click();
+			});
+	}
 });

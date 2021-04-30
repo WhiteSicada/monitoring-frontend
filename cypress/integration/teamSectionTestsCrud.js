@@ -30,54 +30,62 @@ describe("Use cypress react selector to test the form", () => {
 		cy.get(".MuiTablePagination-menuItem").eq(3).click();
 	});
 
-	it("create new team", () => {
-		cy.wrap(teams).each((team) => {
+	teams.forEach((team) => {
+		it("create new team", () => {
+			// click on Add new project button
 			cy.contains("Add New").click();
-			cy.react("TextField", { props: { field: { name: "name" } } }).clear();
-			cy.react("TextField", { props: { field: { name: "name" } } }).type(
-				team.name
-			);
+			// fill the team name
+			fillInput("name", team.name);
+			// submit
 			cy.get("#teamForm").should("not.be.disabled").submit();
 			cy.wait(1000);
 		});
-	});
 
-	it("search for Team", () => {
-		cy.wrap(teams).each((team) => {
+		it("search for Team", () => {
+			// search for the current team name in the list
 			cy.get("#search").type(team.name);
 		});
-	});
 
-	it("update the new team", () => {
-		cy.wrap(teams).each((team) => {
-			cy.contains(team.name)
-				.parent("tr")
-				.within(() => {
-					cy.get("td").eq(1).get("button").eq(0).click();
-				});
-			cy.react("TextField", { props: { field: { name: "name" } } }).clear();
-			cy.react("TextField", { props: { field: { name: "name" } } }).type(
-				team.name + " updated"
-			);
+		it("update the new team", () => {
+			// search for tr of project.name, target the second column and the second button
+			clickOnActionButton(team.name, 1, 0);
+			// clear input name
+			clearInput("name");
+			// fill input name
+			fillInput("name", team.name + " updated");
+			// submit
 			cy.get("#teamForm").should("not.be.disabled").submit();
 			cy.wait(1000);
 		});
+
+		it("delete the new team", () => {
+			// search for tr of team.name, target the 4 column and the third button
+			clickOnActionButton(team.name, 1, 1);
+			// confirm choice to delete
+			cy.get(".MuiDialogActions-root").within(() => {
+				cy.get("button").eq(1).click();
+			});
+		});
+
+		it("clear search for Team", () => {
+			// clear search for current Team
+			cy.get("#search").clear();
+		});
 	});
 
-	it("delete the new team", () => {
-		cy.wrap(teams).each((team) => {
-			cy.contains(team.name)
-				.parent("tr")
-				.within(() => {
-					cy.get("td").eq(1).get("button").eq(1).click();
-				});
-		});
-		cy.get(".MuiDialogActions-root").within(() => {
-			cy.get("button").eq(1).click();
-		});
-	});
+	function fillInput(prop, data) {
+		cy.react("TextField", { props: { field: { name: prop } } }).type(data);
+	}
 
-	it("clear search for Team", () => {
-		cy.get("#search").clear();
-	});
+	function clearInput(prop) {
+		cy.react("TextField", { props: { field: { name: prop } } }).clear();
+	}
+
+	function clickOnActionButton(searcheName, columnNumber, buttonOrder) {
+		cy.contains(searcheName)
+			.parents("tr")
+			.within(() => {
+				cy.get("td").eq(columnNumber).get("button").eq(buttonOrder).click();
+			});
+	}
 });

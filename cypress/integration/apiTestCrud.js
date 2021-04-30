@@ -37,73 +37,81 @@ describe("Use cypress react selector to test the form", () => {
 		cy.get(".MuiTablePagination-menuItem").eq(3).click();
 	});
 
-	it("create new API", () => {
-		cy.wrap(apis).each((api) => {
-			cy.contains("Add New").click();
-			cy.react("TextField", { props: { field: { name: "name" } } }).type(
-				api.name
-			);
-			cy.react("TextField", { props: { field: { name: "ip" } } }).type(api.ip);
-			cy.react("TextField", { props: { field: { name: "port" } } }).type(
-				api.port
-			);
-			cy.react("TextField", { props: { field: { name: "description" } } }).type(
-				api.description
-			);
-			cy.get("#apiForm").should("not.be.disabled").submit();
-			cy.wait(1000);
+	apis.forEach((api) => {
+		it("create new API", () => {
+			cy.wrap(apis).each((api) => {
+				// click on Add new api button
+				cy.contains("Add New").click();
+				// fill the api name
+				fillInput("name", api.name);
+				// fill the api ip
+				fillInput("ip", api.ip);
+				// fill the api port
+				fillInput("port", api.port);
+				// fill the api description
+				fillInput("description", api.description);
+				cy.get("#apiForm").should("not.be.disabled").submit();
+				cy.wait(1000);
+			});
 		});
-	});
 
-	it("search for API", () => {
-		cy.wrap(apis).each((api) => {
+		it("search for API", () => {
+			// search for the current api name in the list
 			cy.get("#search").type(api.name);
 		});
-	});
 
-	it("update the new IT Responsable", () => {
-		cy.wrap(apis).each((api) => {
-			cy.contains(api.name)
-				.parents("tr")
-				.within(() => {
-					cy.get("td").eq(1).get("button").eq(2).click();
-				});
-			cy.react("TextField", { props: { field: { name: "name" } } }).clear();
-			cy.react("TextField", { props: { field: { name: "ip" } } }).clear();
-			cy.react("TextField", { props: { field: { name: "port" } } }).clear();
-			cy.react("TextField", {
-				props: { field: { name: "description" } },
-			}).clear();
-
-			cy.react("TextField", { props: { field: { name: "name" } } }).type(
-				api.name + " updated"
-			);
-			cy.react("TextField", { props: { field: { name: "ip" } } }).type(
-				"127.0.0.3"
-			);
-			cy.react("TextField", { props: { field: { name: "port" } } }).type(9999);
-			cy.react("TextField", { props: { field: { name: "description" } } }).type(
-				api.description + " updated"
-			);
+		it("update the new IT Responsable", () => {
+			// search for tr of api.name, target the second column and the third button
+			clickOnActionButton(api.name, 1, 2);
+			// clear input name
+			clearInput("name");
+			// fill input name
+			fillInput("name", api.name + " updated");
+			// clear input ip
+			clearInput("ip");
+			// fill input name
+			fillInput("ip", api.ip);
+			// clear input port
+			clearInput("port");
+			// fill input name
+			fillInput("port", api.port + 1);
+			// clear input description
+			clearInput("description");
+			// fill input name
+			fillInput("description", api.description + " updated");
+			// submit
 			cy.get("#apiForm").should("not.be.disabled").submit();
 			cy.wait(1000);
 		});
+
+		it("delete the new api", () => {
+			// search for tr of api.name, target the second column and the third button
+			clickOnActionButton(api.name, 1, 3);
+			// confirm choice to delete
+			cy.get(".MuiDialogActions-root").within(() => {
+				cy.get("button").eq(1).click();
+			});
+		});
+
+		it("clear search for API", () => {
+			// clear search for current project
+			cy.get("#search").clear();
+		});
 	});
 
-	it("delete the new api", () => {
-		cy.wrap(apis).each((api) => {
-			cy.contains(api.name)
-				.parents("tr")
-				.within(() => {
-					cy.get("td").eq(1).get("button").eq(3).click();
-				});
-		});
-		cy.get(".MuiDialogActions-root").within(() => {
-			cy.get("button").eq(1).click();
-		});
-	});
+	function fillInput(prop, data) {
+		cy.react("TextField", { props: { field: { name: prop } } }).type(data);
+	}
 
-	it("clear search for API", () => {
-		cy.get("#search").clear();
-	});
+	function clearInput(prop) {
+		cy.react("TextField", { props: { field: { name: prop } } }).clear();
+	}
+
+	function clickOnActionButton(searcheName, columnNumber, buttonOrder) {
+		cy.contains(searcheName)
+			.parents("tr")
+			.within(() => {
+				cy.get("td").eq(columnNumber).get("button").eq(buttonOrder).click();
+			});
+	}
 });
