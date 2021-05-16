@@ -16,7 +16,6 @@ import WorkResponsableForm from "../../Forms/Responsables/WorkResponsableForm";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
-		marginTop: theme.spacing(5),
 		padding: theme.spacing(3),
 	},
 	searchInput: {

@@ -16,10 +16,10 @@ import { deleteAPI, getAPIs } from "../../redux/actions/ApiActions";
 import ViewPopup from "./ViewPopup";
 import useTable from "../controls/useTable";
 import ApiTable from "./ApiTable";
+import ManageEndpoints from "./ManageEndpoints";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
-		marginTop: theme.spacing(5),
 		padding: theme.spacing(3),
 	},
 	searchInput: {
@@ -73,6 +73,7 @@ export function Main() {
 	const [openPopup, setOpenPopup] = useState(false);
 	const [openViewPopup, setOpenViewPopup] = useState(false);
 	const [apiForEdit, setApiForEdit] = useState(null);
+	const [openManageEndpoints, setOpenManageEndpoints] = useState(false);
 	const openInPopup = (api) => {
 		setApiForEdit(api);
 		setOpenPopup(true);
@@ -80,6 +81,10 @@ export function Main() {
 	const openInViewPopup = (api) => {
 		setApiForEdit(api);
 		setOpenViewPopup(true);
+	};
+	const openInManageEndpoints = (api) => {
+		setApiForEdit(api);
+		setOpenManageEndpoints(true);
 	};
 	const apis = useSelector((state) => state.apiState.apis);
 	const {
@@ -92,6 +97,7 @@ export function Main() {
 	useEffect(() => {
 		dispatch(getAPIs());
 	}, []);
+
 
 	const onDelete = (id) => {
 		setConfirmDialog({
@@ -153,6 +159,7 @@ export function Main() {
 						openInViewPopup={openInViewPopup}
 						onDelete={onDelete}
 						setConfirmDialog={setConfirmDialog}
+						openInManageEndpoints={openInManageEndpoints}
 					/>
 				</TblContainer>
 				<TblPagination />
@@ -174,6 +181,14 @@ export function Main() {
 				setOpenPopup={setOpenViewPopup}
 			>
 				<ViewPopup apiForEdit={apiForEdit} />
+			</Controls.Popup>
+			<Controls.Popup
+				title="Manage Endpoints"
+				openPopup={openManageEndpoints}
+				setOpenPopup={setOpenManageEndpoints}
+				maxWidth="xl"
+			>
+				<ManageEndpoints />
 			</Controls.Popup>
 			<Controls.Notification notify={notify} setNotify={setNotify} />
 			<Controls.ConfirmDialog

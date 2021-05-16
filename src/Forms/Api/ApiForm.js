@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
-import Button from "@material-ui/core/Button";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Button } from "@material-ui/core";
 import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { createAPI, getAPIs, updateAPI } from "../../redux/actions/ApiActions";
 
-const initialValues = {
+const initialValuesForApi = {
 	id: null,
-	name: "",
-	description: "",
-	ip: "",
+	name: "testAPI",
+	description: "aa",
+	ip: "127.0.0.1",
 	port: 0,
+	context: "",
+	endpointList: [],
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -30,12 +31,16 @@ const useStyles = makeStyles((theme) => ({
 		padding: 10,
 		marginRight: 25,
 	},
+	endpointForm: {
+		marginBottom: theme.spacing(3),
+	},
 }));
 
 export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const [formValues, setFormValues] = useState(initialValues);
+	const [formValues, setFormValues] = useState(initialValuesForApi);
+
 	const [update, setUpdate] = useState(false);
 	const submitForm = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
@@ -70,6 +75,25 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 		}
 	};
 
+	const endpointMethods = [
+		{
+			value: "GET",
+			label: "GET",
+		},
+		{
+			value: "POST",
+			label: "POST",
+		},
+		{
+			value: "PUT",
+			label: "PUT",
+		},
+		{
+			value: "DELETE",
+			label: "DELETE",
+		},
+	];
+
 	useEffect(() => {
 		if (apiForEdit != null) {
 			setFormValues(apiForEdit);
@@ -82,13 +106,10 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 				enableReinitialize={true}
 				initialValues={formValues}
 				validationSchema={validationSchema}
-				onSubmit={(values, { setSubmitting, resetForm }) =>
-					submitForm(values, { setSubmitting, resetForm })
-				}
 			>
-				{({ isSubmitting, dirty, isValid, resetForm }) => (
+				{({ values, isSubmitting, setSubmitting, isValid, resetForm }) => (
 					<Form autoComplete="off" id="apiForm" className={classes.root}>
-						<Grid container spacing={5}>
+						<Grid container spacing={4}>
 							<Grid item xs={12}>
 								<Field
 									required
@@ -100,7 +121,7 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 									label="API Name"
 								/>
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={4}>
 								<Field
 									required
 									name="ip"
@@ -110,7 +131,7 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 									label="API Ip Adress"
 								/>
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={3}>
 								<Field
 									required
 									name="port"
@@ -118,6 +139,16 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 									variant="outlined"
 									InputLabelProps={{ shrink: true }}
 									label="API Port"
+								/>
+							</Grid>
+							<Grid item xs={5}>
+								<Field
+									required
+									name="context"
+									component={TextField}
+									variant="outlined"
+									InputLabelProps={{ shrink: true }}
+									label="API Context"
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -132,13 +163,16 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 									label="API Description"
 								/>
 							</Grid>
+
 							<Grid container justify="center">
 								<Button
-									variant="outlined"
+									variant="contained"
 									color="primary"
-									disabled={isSubmitting || !dirty || !isValid}
-									type="submit"
+									id="submit"
 									className={classes.button}
+									onClick={() => {
+										submitForm(values, { setSubmitting, resetForm });
+									}}
 								>
 									{isSubmitting ? (
 										<CircleLoader size={15} color="#ef630b" />

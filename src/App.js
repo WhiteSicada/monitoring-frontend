@@ -13,12 +13,14 @@ import { Main as ItResponsables } from "./components/ItResponsables/Main";
 import { Main as WorkResponsables } from "./components/WorkResponsable/Main";
 import { Main as APIs } from "./components/APIs/Main";
 import { Main as Projects } from "./components/Projects/Main";
+import { Main as Anomalies } from "./components/Anomalies/Main";
 import {
 	ItResponsablesLink,
 	TeamLink,
 	WorkResponsableLink,
 	APIsLink,
-	ProjectLink
+	ProjectLink,
+	AnomalieLink,
 } from "./components/Header/StaticLinks";
 
 const theme = createMuiTheme({
@@ -51,7 +53,7 @@ const theme = createMuiTheme({
 
 function App() {
 	return (
-		<Router  id="root">
+		<Router id="root">
 			<ThemeProvider theme={theme}>
 				<CustomDrawer />
 				<div className={"appMain"}>
@@ -69,6 +71,7 @@ function App() {
 						></Route>
 						<Route path={APIsLink} exact component={APIs}></Route>
 						<Route path={ProjectLink} exact component={Projects}></Route>
+						<Route path={AnomalieLink} exact component={Anomalies}></Route>
 					</Switch>
 				</div>
 				<CssBaseline />

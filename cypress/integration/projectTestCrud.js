@@ -1,4 +1,4 @@
-describe("Use Cypress to tes project crud functionalities", () => {
+describe("Test Project Crud functionalities", () => {
 	before(() => {
 		it("should have the right initial state", function () {
 			cy.window()
@@ -44,54 +44,54 @@ describe("Use Cypress to tes project crud functionalities", () => {
 
 	projects.forEach((project) => {
 		it("create new project", () => {
-      // click on Add new project button
+			// click on Add new project button
 			cy.contains("Add New").click();
-      // fill the project name
+			// fill the project name
 			fillInput("name", project.name);
-      // fill the project name
+			// fill the project name
 			fillInput("description", project.description);
-      // next step
+			// next step
 			cy.get("#next").click();
 			// fill the project responsableIt
-      fillSelectInput("responsableIt", project.responsableIt);
+			fillSelectInput("responsableIt", project.responsableIt);
 			// fill the project responsableMetier
-      fillSelectInput("responsableMetier", project.responsableMetier);
+			fillSelectInput("responsableMetier", project.responsableMetier);
 			// fill the project equipe
-      fillSelectInput("equipe", project.equipe);
-      // next step
+			fillSelectInput("equipe", project.equipe);
+			// next step
 			cy.get("#next").click();
-      // check the wanted aPIs for project
+			// check the wanted aPIs for project
 			cy.wrap(project.apis).each((api) => {
 				cy.contains(api).click({ force: true });
 			});
-      // submit
+			// submit
 			cy.get("#submit").click();
 			cy.wait(1000);
 		});
 
 		it("search for project", () => {
-      // search for the current project name in the list
+			// search for the current project name in the list
 			cy.get("#search").type(project.name);
 		});
 
 		it("update the new project", () => {
-      // search for tr of project.name, target the second column and the second button
-      clickOnActionButton(project.name, 1, 1);
-      // clear input name
+			// search for tr of project.name, target the second column and the second button
+			clickOnActionButton(project.name, 1, 1);
+			// clear input name
 			clearInput("name");
-      // fill input name
+			// fill input name
 			fillInput("name", project.name + " updated");
 			// clear input description
-      clearInput("description");
-      // fill input description
+			clearInput("description");
+			// fill input description
 			fillInput("description", project.description + " updated");
 			// fill input responsableIt
-      fillSelectInput("responsableIt", "fouad");
+			fillSelectInput("responsableIt", "fouad");
 			// fill input responsableMetier
-      fillSelectInput("responsableMetier", "Sitaleb Ali");
+			fillSelectInput("responsableMetier", "Sitaleb Ali");
 			// fill input equipe
-      fillSelectInput("equipe", "Equipe Chaabi Net");
-      // submit
+			fillSelectInput("equipe", "Equipe Chaabi Net");
+			// submit
 			cy.get("#projectUpdateForm").should("not.be.disabled").submit();
 			cy.wait(500);
 		});
@@ -99,25 +99,26 @@ describe("Use Cypress to tes project crud functionalities", () => {
 		it("update Project APIS", () => {
 			// search for tr of project.name, target the 4 column and the first button
 			clickOnActionButton(project.name, 3, 0);
-      // add the available apis selected to the current project apis
+			// add the available apis selected to the current project apis
 			addApis();
-      // remove the available apis selected from the current project apis
+			// remove the available apis selected from the current project apis
 			removeApis();
-      // submit
+			// submit
 			cy.get("#manageApisSubmit").click();
+			cy.wait(1000);
 		});
 
 		it("delete the new project", () => {
-      // search for tr of project.name, target the 4 column and the third button
-      clickOnActionButton(project.name, 3, 2);
-      // confirm choice to delete
+			// search for tr of project.name, target the 4 column and the third button
+			clickOnActionButton(project.name, 3, 2);
+			// confirm choice to delete
 			cy.get(".MuiDialogActions-root").within(() => {
 				cy.get("button").eq(1).click();
 			});
 		});
 
 		it("clear search for a project", () => {
-      // clear search for current project
+			// clear search for current project
 			cy.get("#search").clear();
 		});
 	});

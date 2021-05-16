@@ -10,6 +10,7 @@ import {
 	makeStyles,
 	ListItemText,
 } from "@material-ui/core";
+import { BiCube } from "react-icons/bi";
 import { FaCube } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { Controls } from "../controls/controls";
@@ -21,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: "transparent",
 		color: "#2c0b06",
 	},
-	td : {
-		padding : 2
-	}
+	td: {
+		padding: 2,
+	},
 }));
 
 function ApiTable({
@@ -32,6 +33,7 @@ function ApiTable({
 	setConfirmDialog,
 	onDelete,
 	openInViewPopup,
+	openInManageEndpoints
 }) {
 	const classes = useStyles();
 	return (
@@ -62,6 +64,15 @@ function ApiTable({
 							// }}
 						>
 							Consulter l'erreur
+						</Controls.ActionButton>
+						<Controls.ActionButton
+							text={"Manage Endponts"}
+							color="primary"
+							onClick={() => {
+								openInManageEndpoints(api);
+							}}
+						>
+							<BiCube fontSize="large" />
 						</Controls.ActionButton>
 						<Controls.ActionButton
 							text={"View"}

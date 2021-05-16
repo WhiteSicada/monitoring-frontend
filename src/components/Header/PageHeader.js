@@ -8,9 +8,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	pageHeader: {
 		paddingTop: theme.spacing(2),
-		paddingBottom: theme.spacing(2),
 		display: "flex",
-		marginBottom: theme.spacing(2),
+		marginBottom: theme.spacing(1),
 	},
 	pageIcon: {
 		display: "inline-block",

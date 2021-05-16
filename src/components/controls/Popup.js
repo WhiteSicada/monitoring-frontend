@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Popup(props) {
-	const { title, children, openPopup, setOpenPopup } = props;
+	const { title, children, openPopup, setOpenPopup, maxWidth } = props;
 	const classes = useStyles();
 
 	return (
@@ -30,7 +30,7 @@ export default function Popup(props) {
 			onClose={() => {
 				setOpenPopup(false);
 			}}
-			maxWidth="md"
+			maxWidth={maxWidth ? maxWidth : "md"}
 			fullWidth
 			classes={{ paper: classes.dialogWrapper }}
 		>

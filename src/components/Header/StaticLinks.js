@@ -3,3 +3,4 @@ export const ItResponsablesLink = "/It-Responsables";
 export const WorkResponsableLink = "/Work-Responsables";
 export const APIsLink = "/APIs";
 export const ProjectLink = "/Projects";
+export const AnomalieLink = "/Anomalies";

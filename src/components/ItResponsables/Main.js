@@ -16,7 +16,6 @@ import ItResponsableForm from "../../Forms/Responsables/ItResponsableForm";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
-		marginTop: theme.spacing(5),
 		padding: theme.spacing(3),
 	},
 	searchInput: {
