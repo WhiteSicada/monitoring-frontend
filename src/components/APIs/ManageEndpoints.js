@@ -40,16 +40,22 @@ function useStateWithLabel(initialValue, name) {
 	useDebugValue(`${name}: ${value}`);
 	return [value, setValue];
 }
-function ManageEndpoints() {
+function ManageEndpoints({ apiForEdit }) {
 	const classes = useStyles();
-	const [endpointList, setEndpointList] = useState([]);
+	const [endpointList, setEndpointList] = useState(apiForEdit.endpoints);
 	const [currentEndpoint, setCurrentEndpoint] = useState(null);
 	const [endpointListAdded, setEndpointListAdded] = useStateWithLabel(
 		[],
 		"endpointListAdded"
 	);
 	const [endpointListUpdated, setEndpointListUpdated] = useState([]);
-	const [endpointListDeleted, setEndpointListDeleted] = useStateWithLabel([],"endpointListDeleted");
+	const [endpointListDeleted, setEndpointListDeleted] = useStateWithLabel(
+		[],
+		"endpointListDeleted"
+	);
+	const submit = () => {
+		alert("hn");
+	};
 	return (
 		<div>
 			<Grid
@@ -90,6 +96,9 @@ function ManageEndpoints() {
 							color="primary"
 							id="submit"
 							className={classes.button}
+							onClick={() => {
+								submit();
+							}}
 						>
 							Submit
 						</Button>

@@ -188,7 +188,7 @@ export function Main() {
 				setOpenPopup={setOpenManageEndpoints}
 				maxWidth="xl"
 			>
-				<ManageEndpoints />
+				<ManageEndpoints apiForEdit={apiForEdit} />
 			</Controls.Popup>
 			<Controls.Notification notify={notify} setNotify={setNotify} />
 			<Controls.ConfirmDialog
