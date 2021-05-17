@@ -1,4 +1,12 @@
-import { ADD_API, DELETE_API, GET_APIs, UPDATE_API } from "../types/ApiTypes";
+import {
+	ADD_API,
+	DELETE_API,
+	GET_APIs,
+	UPDATE_API,
+	ADD_ENDPOINT_TO_API,
+	REMOVE_ENDPOINT_TO_API,
+	UPDATE_ENDPOINTS_OF_API,
+} from "../types/ApiTypes";
 
 const initialState = {
 	apis: [],
@@ -27,6 +35,31 @@ function ApiReducer(state = initialState, action) {
 				apis: state.apis.map((api) => {
 					if (api.id === payload.id) {
 						return { ...api, ...payload };
+					}
+					return api;
+				}),
+			});
+
+		case ADD_ENDPOINT_TO_API:
+			return Object.assign({}, state, {
+				apis: state.apis.map((api) => {
+					if (api.id === payload.id) {
+						return { ...api, ...payload };
+					}
+					return api;
+				}),
+			});
+
+		case REMOVE_ENDPOINT_TO_API:
+			return Object.assign({}, state, {
+				apis: state.apis.map((api) => {
+					if (api.id === payload.id) {
+						return {
+							...api,
+							endpoints: api.endpoints.filter(
+								(element) => payload.endpoints.endpoints.indexOf(element.name) === -1
+							),
+						};
 					}
 					return api;
 				}),

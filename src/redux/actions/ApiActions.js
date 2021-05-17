@@ -1,5 +1,13 @@
 import APIService from "../../services/APIService";
-import { ADD_API, DELETE_API, GET_APIs, UPDATE_API } from "../types/ApiTypes";
+import {
+	ADD_API,
+	DELETE_API,
+	GET_APIs,
+	UPDATE_API,
+	ADD_ENDPOINT_TO_API,
+	REMOVE_ENDPOINT_TO_API,
+	UPDATE_ENDPOINTS_OF_API,
+} from "../types/ApiTypes";
 
 export const createAPI = (api) => async (dispatch) => {
 	try {
@@ -48,5 +56,42 @@ export const updateAPI = (id, api) => async (dispatch) => {
 		return Promise.resolve(response.data);
 	} catch (error) {
 		return Promise.reject(error);
+	}
+};
+
+export const addEndpointToApi = (id, endpoints) => async (dispatch) => {
+	try {
+		const response = await APIService.addEndpointsToApi(id, endpoints);
+		dispatch({
+			type: ADD_ENDPOINT_TO_API,
+			payload: response.data,
+		});
+		return Promise.resolve(response.data);
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
+export const removeEndpointsToApi = (id, endpoints) => async (dispatch) => {
+	try {
+		await APIService.removeEndpointsToApi(id, endpoints);
+		dispatch({
+			type: REMOVE_ENDPOINT_TO_API,
+			payload: { id, endpoints },
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const updateEndpointsForApi = (id, endpoints) => async (dispatch) => {
+	try {
+		await APIService.updateEndpointsForApi(id, endpoints);
+		dispatch({
+			type: UPDATE_ENDPOINTS_OF_API,
+			payload: { id, endpoints },
+		});
+	} catch (error) {
+		console.log(error);
 	}
 };

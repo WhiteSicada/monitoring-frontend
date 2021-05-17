@@ -5,12 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Controls } from "../controls/controls";
 import AddIcon from "@material-ui/icons/Add";
 import { Search } from "@material-ui/icons";
-import {
-	Paper,
-	makeStyles,
-	Toolbar,
-	InputAdornment,
-} from "@material-ui/core";
+import { Paper, makeStyles, Toolbar, InputAdornment } from "@material-ui/core";
 import ApiForm from "../../Forms/Api/ApiForm";
 import { deleteAPI, getAPIs } from "../../redux/actions/ApiActions";
 import ViewPopup from "./ViewPopup";
@@ -58,10 +53,7 @@ export function Main() {
 		setFilterFn({
 			fn: (apis) => {
 				if (target.value == "") return apis;
-				else
-					return apis.filter((x) =>
-						x.name.includes(target.value)
-					);
+				else return apis.filter((x) => x.name.includes(target.value));
 			},
 		});
 	};
@@ -87,17 +79,12 @@ export function Main() {
 		setOpenManageEndpoints(true);
 	};
 	const apis = useSelector((state) => state.apiState.apis);
-	const {
-		TblContainer,
-		TblHead,
-		TblPagination,
-		recordsAfterPadingAndSorting,
-	} = useTable(apis, headCells, filterFn);
+	const { TblContainer, TblHead, TblPagination, recordsAfterPadingAndSorting } =
+		useTable(apis, headCells, filterFn);
 
 	useEffect(() => {
 		dispatch(getAPIs());
 	}, []);
-
 
 	const onDelete = (id) => {
 		setConfirmDialog({
@@ -188,7 +175,7 @@ export function Main() {
 				setOpenPopup={setOpenManageEndpoints}
 				maxWidth="xl"
 			>
-				<ManageEndpoints apiForEdit={apiForEdit} />
+				<ManageEndpoints apiForEdit={apiForEdit} setNotify={setNotify} />
 			</Controls.Popup>
 			<Controls.Notification notify={notify} setNotify={setNotify} />
 			<Controls.ConfirmDialog

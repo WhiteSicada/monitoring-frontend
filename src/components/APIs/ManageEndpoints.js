@@ -6,8 +6,14 @@ import {
 	Divider,
 	Button,
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import EndpointForm from "../../Forms/Api/EndpointForm";
 import ListEndpoints from "./ListEndpoints";
+import {
+	removeEndpointsToApi,
+	addEndpointToApi,
+	updateEndpointsForApi,
+} from "../../redux/actions/ApiActions";
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -40,8 +46,9 @@ function useStateWithLabel(initialValue, name) {
 	useDebugValue(`${name}: ${value}`);
 	return [value, setValue];
 }
-function ManageEndpoints({ apiForEdit }) {
+function ManageEndpoints({ apiForEdit, setNotify }) {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	const [endpointList, setEndpointList] = useState(apiForEdit.endpoints);
 	const [currentEndpoint, setCurrentEndpoint] = useState(null);
 	const [endpointListAdded, setEndpointListAdded] = useStateWithLabel(
@@ -54,7 +61,26 @@ function ManageEndpoints({ apiForEdit }) {
 		"endpointListDeleted"
 	);
 	const submit = () => {
-		alert("hn");
+		if (endpointListDeleted.length > 0) {
+			dispatch(
+				removeEndpointsToApi(apiForEdit.id, { endpoints: endpointListDeleted })
+			);
+		}
+		if (endpointListAdded.length > 0) {
+			dispatch(
+				addEndpointToApi(apiForEdit.id, { endpoints: endpointListAdded })
+			);
+		}
+		if (endpointListUpdated.length > 0) {
+			dispatch(
+				updateEndpointsForApi(apiForEdit.id, { endpoints: endpointListUpdated })
+			);
+		}
+		setNotify({
+			isOpen: true,
+			message: "Operations executed successfully",
+			type: "success",
+		});
 	};
 	return (
 		<div>
@@ -74,6 +100,7 @@ function ManageEndpoints({ apiForEdit }) {
 						setEndpointList={setEndpointList}
 						setCurrentEndpoint={setCurrentEndpoint}
 						setEndpointListAdded={setEndpointListAdded}
+						setEndpointListUpdated={setEndpointListUpdated}
 					/>
 				</Grid>
 				<Grid item xs={9}>
@@ -88,6 +115,7 @@ function ManageEndpoints({ apiForEdit }) {
 							setEndpointListAdded={setEndpointListAdded}
 							endpointListAdded={endpointListAdded}
 							setEndpointListDeleted={setEndpointListDeleted}
+							
 						/>
 					</div>
 					<div className={classes.center}>

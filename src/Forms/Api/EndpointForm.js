@@ -42,6 +42,7 @@ function EndpointForm({
 	currentEndpoint,
 	setCurrentEndpoint,
 	setEndpointListAdded,
+	setEndpointListUpdated,
 }) {
 	const classes = useStyles();
 	const endpointMethods = [
@@ -76,10 +77,14 @@ function EndpointForm({
 		}
 	}, [currentEndpoint]);
 
+	const customReset = () => {
+		setCurrentEndpoint(null);
+		setFormValues(initialValuesForEndpoint);
+		setUpdate(false);
+	};
+
 	const submitForm = (values, { resetForm }) => {
 		if (update) {
-			setUpdate(false);
-
 			setEndpointList(
 				endpointList.map((endpoint) => {
 					if (endpoint.id === currentEndpoint.id) {
@@ -89,9 +94,12 @@ function EndpointForm({
 					}
 				})
 			);
-			setCurrentEndpoint(null);
-			setFormValues(initialValuesForEndpoint);
-			console.log(endpointList);
+
+			setEndpointListUpdated((endpointListUpdated) => [
+				...endpointListUpdated,
+				{ ...values },
+			]);
+			customReset();
 		} else {
 			const generatedId = getRandomInt(1000);
 			setEndpointList((endpointList) => [
@@ -187,6 +195,19 @@ function EndpointForm({
 								>
 									{update ? "Update" : "Add"}
 								</Button>
+								{update && (
+									<Button
+										variant="contained"
+										color="primary"
+										id="resetForm"
+										className={classes.button}
+										onClick={() => {
+											customReset();
+										}}
+									>
+										Reset Form
+									</Button>
+								)}
 							</Grid>
 						</Grid>
 					</Form>

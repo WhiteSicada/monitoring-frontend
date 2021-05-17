@@ -2,3 +2,6 @@ export const ADD_API = "ADD_API";
 export const GET_APIs = "GET_APIs";
 export const UPDATE_API = "UPDATE_API";
 export const DELETE_API = "DELETE_API";
+export const ADD_ENDPOINT_TO_API = "ADD_ENDPOINT_TO_API";
+export const REMOVE_ENDPOINT_TO_API = "REMOVE_ENDPOINT_TO_API";
+export const UPDATE_ENDPOINTS_OF_API = "UPDATE_ENDPOINTS_OF_API";

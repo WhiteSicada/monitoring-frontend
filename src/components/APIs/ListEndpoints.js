@@ -62,7 +62,7 @@ function ListEndpoints({
 		} else {
 			setEndpointListDeleted((endpointListDeleted) => [
 				...endpointListDeleted,
-				endpoint,
+				endpoint.id,
 			]);
 		}
 		setEndpointList(endpointList.filter((item) => item.id !== endpoint.id));
