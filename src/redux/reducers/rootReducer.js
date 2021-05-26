@@ -4,6 +4,7 @@ import ItResponsableReducer from "./ItResponsableReducer";
 import TeamReducer from "./TeamReducer";
 import WorkResponsableReducer from "./WorkResponsableReducer";
 import ProjectReducer from "./ProjectReducer";
+import TestReducer from "./TestReducer";
 
 
 const RootReducer = combineReducers({
@@ -11,7 +12,8 @@ const RootReducer = combineReducers({
 	itResponsableState : ItResponsableReducer,
 	workResponsableState : WorkResponsableReducer,
 	apiState : ApiReducer,
-	projectState : ProjectReducer
+	projectState : ProjectReducer,
+	testState : TestReducer
 });
 
 export default RootReducer;

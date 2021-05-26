@@ -57,9 +57,24 @@ function ApiReducer(state = initialState, action) {
 						return {
 							...api,
 							endpoints: api.endpoints.filter(
-								(element) => payload.endpoints.endpoints.indexOf(element.name) === -1
+								(element) => payload.data.endpoints.indexOf(element.id) === -1
 							),
 						};
+					}
+					return api;
+				}),
+			});
+
+		case UPDATE_ENDPOINTS_OF_API:
+			return Object.assign({}, state, {
+				apis: state.apis.map((api) => {
+					if (api.id === payload.id) {
+						payload.data.endpoints.map((updatedEndpoint) => {
+							const index = api.endpoints.findIndex(
+								(el) => el.id === updatedEndpoint.id
+							);
+							api.endpoints[index] = updatedEndpoint;
+						});
 					}
 					return api;
 				}),

@@ -43,6 +43,9 @@ function EndpointForm({
 	setCurrentEndpoint,
 	setEndpointListAdded,
 	setEndpointListUpdated,
+	endpointListAdded,
+	endpointListUpdated,
+	endpointListDeleted,
 }) {
 	const classes = useStyles();
 	const endpointMethods = [
@@ -186,7 +189,7 @@ function EndpointForm({
 								<Button
 									variant="contained"
 									color="primary"
-									id="submit"
+									id="submitEndpoint"
 									disabled={!dirty || !isValid}
 									className={classes.button}
 									onClick={() => {

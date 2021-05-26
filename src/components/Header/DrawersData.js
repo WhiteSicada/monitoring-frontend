@@ -4,7 +4,7 @@ import { TiFolderOpen } from "react-icons/ti";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { BsArchive } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi";
-import { FaCubes } from "react-icons/fa";
+import { FaCubes,FaTasks } from "react-icons/fa";
 import { AiOutlineBug } from "react-icons/ai";
 import {
 	ItResponsablesLink,
@@ -13,9 +13,15 @@ import {
 	APIsLink,
 	ProjectLink,
 	AnomalieLink,
+	TestLink,
 } from "./StaticLinks";
 
 export const DrawerData = [
+	{
+		title: "Tests",
+		icon: <FaTasks style={{ fontSize: 35, color: "#2c0b06" }} />,
+		path: TestLink,
+	},
 	{
 		title: "Projetcs",
 		icon: <TiFolderOpen style={{ fontSize: 35, color: "#2c0b06" }} />,

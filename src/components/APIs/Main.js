@@ -12,6 +12,7 @@ import ViewPopup from "./ViewPopup";
 import useTable from "../controls/useTable";
 import ApiTable from "./ApiTable";
 import ManageEndpoints from "./ManageEndpoints";
+import { getProjects } from "../../redux/actions/ProjectActions";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -79,18 +80,43 @@ export function Main() {
 		setOpenManageEndpoints(true);
 	};
 	const apis = useSelector((state) => state.apiState.apis);
+	const projects = useSelector((state) => state.projectState.projects);
 	const { TblContainer, TblHead, TblPagination, recordsAfterPadingAndSorting } =
 		useTable(apis, headCells, filterFn);
 
 	useEffect(() => {
+		dispatch(getProjects());
 		dispatch(getAPIs());
 	}, []);
+
+	function checkIfApiIsLinkedToProject(projects, id) {
+		var found = false,
+			name = "";
+		for (let i = 0; i < projects.length; i++) {
+			if (projects[i].listAPIs.findIndex((el) => el.id === id) !== -1) {
+				found = true;
+				name = projects[i].name;
+				break;
+			}
+		}
+		return { found, name };
+	}
 
 	const onDelete = (id) => {
 		setConfirmDialog({
 			...confirmDialog,
 			isOpen: false,
 		});
+		// i need to check if the api belongs to a project or not
+		const { found, name } = checkIfApiIsLinkedToProject(projects, id);
+		if (found) {
+			//if it belongs show notif that you need to delete the link between them both then you can delete the api
+			setNotify({
+				isOpen: true,
+				message: `This API is linked to the Project ${name}, you need to destroy the association between the projectand the api`,
+				type: "warning",
+			});
+		} else {
 		dispatch(deleteAPI(id))
 			.then((response) => {
 				setNotify({
@@ -100,9 +126,9 @@ export function Main() {
 				});
 			})
 			.catch((error) => {
-				console.log("error");
 				console.log(error);
 			});
+		}
 	};
 	return (
 		<div>

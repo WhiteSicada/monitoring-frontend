@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
 		width: "20%",
 		border: "1px solid #ef630b",
 		padding: 10,
-		marginTop: 25,
 	},
 	listendpoint: {
 		paddingLeft: 20,
@@ -55,7 +54,10 @@ function ManageEndpoints({ apiForEdit, setNotify }) {
 		[],
 		"endpointListAdded"
 	);
-	const [endpointListUpdated, setEndpointListUpdated] = useState([]);
+	const [endpointListUpdated, setEndpointListUpdated] = useStateWithLabel(
+		[],
+		"endpointListUpdated"
+	);
 	const [endpointListDeleted, setEndpointListDeleted] = useStateWithLabel(
 		[],
 		"endpointListDeleted"
@@ -64,23 +66,39 @@ function ManageEndpoints({ apiForEdit, setNotify }) {
 		if (endpointListDeleted.length > 0) {
 			dispatch(
 				removeEndpointsToApi(apiForEdit.id, { endpoints: endpointListDeleted })
-			);
+			).then((response) => {
+				setNotify({
+					isOpen: true,
+					message: "Operations executed successfully",
+					type: "success",
+				});
+			});
+			setEndpointListDeleted([]);
 		}
 		if (endpointListAdded.length > 0) {
 			dispatch(
 				addEndpointToApi(apiForEdit.id, { endpoints: endpointListAdded })
-			);
+			).then((response) => {
+				setNotify({
+					isOpen: true,
+					message: "Operations executed successfully",
+					type: "success",
+				});
+			});
+			setEndpointListAdded([]);
 		}
 		if (endpointListUpdated.length > 0) {
 			dispatch(
 				updateEndpointsForApi(apiForEdit.id, { endpoints: endpointListUpdated })
-			);
+			).then((response) => {
+				setNotify({
+					isOpen: true,
+					message: "Operations executed successfully",
+					type: "success",
+				});
+			});
+			setEndpointListUpdated([]);
 		}
-		setNotify({
-			isOpen: true,
-			message: "Operations executed successfully",
-			type: "success",
-		});
 	};
 	return (
 		<div>
@@ -101,6 +119,9 @@ function ManageEndpoints({ apiForEdit, setNotify }) {
 						setCurrentEndpoint={setCurrentEndpoint}
 						setEndpointListAdded={setEndpointListAdded}
 						setEndpointListUpdated={setEndpointListUpdated}
+						endpointListAdded={endpointListAdded}
+						endpointListUpdated={endpointListUpdated}
+						endpointListDeleted={endpointListDeleted}
 					/>
 				</Grid>
 				<Grid item xs={9}>
@@ -115,22 +136,28 @@ function ManageEndpoints({ apiForEdit, setNotify }) {
 							setEndpointListAdded={setEndpointListAdded}
 							endpointListAdded={endpointListAdded}
 							setEndpointListDeleted={setEndpointListDeleted}
-							
 						/>
 					</div>
-					<div className={classes.center}>
-						<Button
-							variant="contained"
-							color="primary"
-							id="submit"
-							className={classes.button}
-							onClick={() => {
-								submit();
-							}}
-						>
-							Submit
-						</Button>
-					</div>
+					<Grid container spacing={5} alignItems="center">
+						<Grid item xs={6} className={classes.center}>
+							<Button
+								variant="contained"
+								color="primary"
+								id="submitAllEndpoints"
+								className={classes.button}
+								onClick={() => {
+									submit();
+								}}
+							>
+								Submit
+							</Button>
+						</Grid>
+						<Grid item xs={6}>
+							{endpointListAdded.length} endpoints Added ,{" "}
+							{endpointListUpdated.length} endpoints Updated ,{" "}
+							{endpointListDeleted.length} endpoints Deleted.
+						</Grid>
+					</Grid>
 				</Grid>
 			</Grid>
 		</div>

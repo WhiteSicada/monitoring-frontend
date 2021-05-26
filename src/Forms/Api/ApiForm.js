@@ -9,11 +9,12 @@ import { createAPI, getAPIs, updateAPI } from "../../redux/actions/ApiActions";
 
 const initialValuesForApi = {
 	id: null,
-	name: "testAPI",
-	description: "aa",
-	ip: "127.0.0.1",
+	name: "",
+	description: "",
+	ip: "",
 	port: 0,
 	context: "",
+	token: "",
 	endpointList: [],
 };
 
@@ -56,6 +57,7 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 				});
 			});
 		} else {
+			console.log(JSON.stringify(values));
 			dispatch(createAPI(values))
 				.then((response) => {
 					resetForm();
@@ -152,6 +154,16 @@ export default function ApiForm({ apiForEdit, setNotify, setOpenPopup }) {
 								/>
 							</Grid>
 							<Grid item xs={12}>
+								<Field
+									required
+									multiline
+									rows={8}
+									name="token"
+									component={TextField}
+									variant="outlined"
+									InputLabelProps={{ shrink: true }}
+									label="API Token"
+								/>
 								<Field
 									required
 									multiline
