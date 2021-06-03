@@ -7,15 +7,12 @@ import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
-import {
-	createTest,
-	updateTest,
-} from "../../redux/actions/TestActions";
+import { createTest, updateTest } from "../../redux/actions/TestActions";
 
 const initialValues = {
 	id: null,
 	name: "",
-  interval : 0
+	interval: 0,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -39,45 +36,24 @@ function TestForm({ testForEdit, setNotify, setOpenPopup }) {
 	const dispatch = useDispatch();
 
 	const [formValues, setFormValues] = useState(initialValues);
-	const [update, setUpdate] = useState(false);
 
 	const submitForm = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
-		if (update) {
-			dispatch(updateTest(values.id, values)).then((response) => {
-				resetForm();
-				setSubmitting(false);
-				setOpenPopup(false);
-				setNotify({
-					isOpen: true,
-					message: "Updated Successfully",
-					type: "success",
-				});
+		dispatch(updateTest(values.id, values)).then((response) => {
+			resetForm();
+			setSubmitting(false);
+			setOpenPopup(false);
+			setNotify({
+				isOpen: true,
+				message: "Updated Successfully",
+				type: "success",
 			});
-		} else {
-			dispatch(createTest(values))
-				.then((response) => {
-					resetForm();
-					setSubmitting(false);
-					setOpenPopup(false);
-					setNotify({
-						isOpen: true,
-						message: "Created Successfully",
-						type: "success",
-					});
-				})
-				.catch((error) => {
-					resetForm();
-					setSubmitting(false);
-					console.log("error");
-				});
-		}
+		});
 	};
 
 	useEffect(() => {
 		if (testForEdit != null) {
 			setFormValues(testForEdit);
-			setUpdate(true);
 		}
 	}, [testForEdit]);
 
@@ -99,7 +75,7 @@ function TestForm({ testForEdit, setNotify, setOpenPopup }) {
 									required
 									autoFocus={true}
 									name="name"
-									id='name'
+									id="name"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"
@@ -107,12 +83,11 @@ function TestForm({ testForEdit, setNotify, setOpenPopup }) {
 									label="Test Name"
 								/>
 							</Grid>
-              <Grid item xs={4}>
+							<Grid item xs={4}>
 								<Field
 									required
-									autoFocus={true}
 									name="interval"
-									id='interval'
+									id="interval"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"

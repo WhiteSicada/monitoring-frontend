@@ -39,7 +39,7 @@ export default function ViewPopup({ apiForEdit }) {
 						<ListItemText primary="API Name" secondary={apiForEdit.name} />
 					</ListItem>
 				</Grid>
-				<Grid item xs={6}>
+				<Grid item xs={3}>
 					<ListItem>
 						<ListItemAvatar>
 							<Avatar className={classes.avatar}>
@@ -49,7 +49,7 @@ export default function ViewPopup({ apiForEdit }) {
 						<ListItemText primary="Ip Adress" secondary={apiForEdit.ip} />
 					</ListItem>
 				</Grid>
-				<Grid item xs={6}>
+				<Grid item xs={3}>
 					<DialogContentText>
 						<ListItem>
 							<ListItemAvatar>
@@ -58,6 +58,18 @@ export default function ViewPopup({ apiForEdit }) {
 								</Avatar>
 							</ListItemAvatar>
 							<ListItemText primary="Port" secondary={apiForEdit.port} />
+						</ListItem>
+					</DialogContentText>
+				</Grid>
+				<Grid item xs={3}>
+					<DialogContentText>
+						<ListItem>
+							<ListItemAvatar>
+								<Avatar className={classes.avatar}>
+									<BiIcons.BiDoorOpen />
+								</Avatar>
+							</ListItemAvatar>
+							<ListItemText primary="Context" secondary={apiForEdit.context} />
 						</ListItem>
 					</DialogContentText>
 				</Grid>

@@ -14,8 +14,12 @@ const initialValuesForApi = {
 	ip: "",
 	port: 0,
 	context: "",
-	token: "",
-	endpointList: [],
+	status: false,
+	db: false,
+	diskspace: false,
+	ping: false,
+	endpoints: [],
+  "anomalies": [],
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -37,45 +41,30 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function ApiForm({  setNotify, setOpenPopup }) {
+export default function ApiFormUpdate({ apiForEdit, setNotify, setOpenPopup }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const [formValues, setFormValues] = useState(initialValuesForApi);
 
-	const [update, setUpdate] = useState(false);
 	const submitForm = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
-		if (update) {
-			dispatch(updateAPI(values.id, values)).then((response) => {
-				resetForm();
-				setSubmitting(false);
-				setOpenPopup(false);
-				setNotify({
-					isOpen: true,
-					message: "Updated Successfully",
-					type: "success",
-				});
+		dispatch(updateAPI(values.id, values)).then((response) => {
+			resetForm();
+			setSubmitting(false);
+			setOpenPopup(false);
+			setNotify({
+				isOpen: true,
+				message: "Updated Successfully",
+				type: "success",
 			});
-		} else {
-			console.log(JSON.stringify(values));
-			dispatch(createAPI(values))
-				.then((response) => {
-					resetForm();
-					setSubmitting(false);
-					setOpenPopup(false);
-					setNotify({
-						isOpen: true,
-						message: "Created Successfully",
-						type: "success",
-					});
-				})
-				.catch((error) => {
-					resetForm();
-					setSubmitting(false);
-					console.log("error");
-				});
-		}
+		});
 	};
+
+	useEffect(() => {
+		if (apiForEdit != null) {
+			setFormValues(apiForEdit);
+		}
+	}, [apiForEdit]);
 	return (
 		<div>
 			<Formik
@@ -128,16 +117,6 @@ export default function ApiForm({  setNotify, setOpenPopup }) {
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<Field
-									required
-									multiline
-									rows={8}
-									name="token"
-									component={TextField}
-									variant="outlined"
-									InputLabelProps={{ shrink: true }}
-									label="API Token"
-								/>
 								<Field
 									required
 									multiline

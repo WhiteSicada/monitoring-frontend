@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as HiIcons from "react-icons/hi";
+import { FaTasks } from "react-icons/fa";
 import PageHeader from "../Header/PageHeader";
 import { useDispatch, useSelector } from "react-redux";
 import useTable from "../controls/useTable";
@@ -9,7 +9,9 @@ import { Search } from "@material-ui/icons";
 import { Paper, makeStyles, Toolbar, InputAdornment } from "@material-ui/core";
 import TestTable from "./TestTable";
 import { deleteTest, getTests } from "../../redux/actions/TestActions";
+import { getAPIs } from "../../redux/actions/ApiActions";
 import TestForm from "../../Forms/Test/TestForm";
+import TestCreationForm from "../../Forms/Test/TestFormCreation";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -28,14 +30,15 @@ const headCells = [
 	// { id: "id", label: "Team Id" },
 	{ id: "name", label: "Test Name" },
 	{ id: "interval", label: "Test Interval" },
+	{ id: "apis", label: "Test Apis" },
 	{ id: "actions", label: "Actions", disableSorting: true },
 ];
 
-
 export function Main() {
-  const classes = useStyles();
+	const classes = useStyles();
 	const dispatch = useDispatch();
 	const [openPopup, setOpenPopup] = useState(false);
+	const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
 	const [testForEdit, setTestForEdit] = useState(null);
 	const [notify, setNotify] = useState({
 		isOpen: false,
@@ -47,7 +50,7 @@ export function Main() {
 		title: "",
 		subTitle: "",
 	});
-  
+
 	const [filterFn, setFilterFn] = useState({
 		fn: (tests) => {
 			return tests;
@@ -55,7 +58,7 @@ export function Main() {
 	});
 	const openInPopup = (test) => {
 		setTestForEdit(test);
-		setOpenPopup(true);
+		setOpenUpdatePopup(true);
 	};
 	const handleSearch = (e) => {
 		let target = e.target;
@@ -86,23 +89,21 @@ export function Main() {
 	};
 	useEffect(() => {
 		dispatch(getTests());
+		dispatch(getAPIs());
 	}, []);
 	const tests = useSelector((state) => state.testState.tests);
-	const {
-		TblContainer,
-		TblHead,
-		TblPagination,
-		recordsAfterPadingAndSorting,
-	} = useTable(tests, headCells, filterFn);
-  
-  return (
-    <div>
-      <PageHeader
+	const apis = useSelector((state) => state.apiState.apis);
+	const { TblContainer, TblHead, TblPagination, recordsAfterPadingAndSorting } =
+		useTable(tests, headCells, filterFn);
+
+	return (
+		<div>
+			<PageHeader
 				title="Test Section"
 				subTitle="Manage your tests"
-				icon={<HiIcons.HiUserGroup />}
+				icon={<FaTasks />}
 			/>
-      <Paper className={classes.pageContent}>
+			<Paper className={classes.pageContent}>
 				{/* <EmployeeForm /> */}
 				<Toolbar>
 					<Controls.Input
@@ -141,16 +142,32 @@ export function Main() {
 				<TblPagination />
 			</Paper>
 			<Controls.Popup
-				title="Test Form"
+				title="Test Form Creation"
 				openPopup={openPopup}
 				setOpenPopup={setOpenPopup}
 			>
-				<TestForm
-					testForEdit={testForEdit}
+				<TestCreationForm
+					apis={apis}
 					setOpenPopup={setOpenPopup}
 					setNotify={setNotify}
 				/>
 			</Controls.Popup>
-    </div>
-  )
+			<Controls.Popup
+				title="Test Form"
+				openPopup={openUpdatePopup}
+				setOpenPopup={setOpenUpdatePopup}
+			>
+				<TestForm
+					testForEdit={testForEdit}
+					setOpenPopup={setOpenUpdatePopup}
+					setNotify={setNotify}
+				/>
+			</Controls.Popup>
+			<Controls.Notification notify={notify} setNotify={setNotify} />
+			<Controls.ConfirmDialog
+				confirmDialog={confirmDialog}
+				setConfirmDialog={setConfirmDialog}
+			/>
+		</div>
+	);
 }

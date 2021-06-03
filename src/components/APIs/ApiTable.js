@@ -12,9 +12,11 @@ import {
 } from "@material-ui/core";
 import { BiCube } from "react-icons/bi";
 import { FaCube } from "react-icons/fa";
+import { SiAuth0 } from "react-icons/si";
+import { RiEditLine } from "react-icons/ri";
 import { IoEyeOutline } from "react-icons/io5";
 import { Controls } from "../controls/controls";
-import * as AiIcons from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
 const useStyles = makeStyles((theme) => ({
 	avatar: {
@@ -33,7 +35,8 @@ function ApiTable({
 	setConfirmDialog,
 	onDelete,
 	openInViewPopup,
-	openInManageEndpoints
+	openInManageEndpoints,
+	openInUpdatePopup
 }) {
 	const classes = useStyles();
 	return (
@@ -87,10 +90,19 @@ function ApiTable({
 							text={"Edit"}
 							color="primary"
 							onClick={() => {
+								openInUpdatePopup(api);
+							}}
+						>
+							<AiOutlineEdit fontSize="large" />
+						</Controls.ActionButton>
+						<Controls.ActionButton
+							text={"Update Token"}
+							color="primary"
+							onClick={() => {
 								openInPopup(api);
 							}}
 						>
-							<AiIcons.AiOutlineEdit fontSize="large" />
+							<SiAuth0 fontSize="large" />
 						</Controls.ActionButton>
 						<Controls.ActionButton
 							text={"Delete"}
@@ -106,7 +118,7 @@ function ApiTable({
 								});
 							}}
 						>
-							<AiIcons.AiOutlineDelete fontSize="large" />
+							<AiOutlineDelete fontSize="large" />
 						</Controls.ActionButton>
 					</TableCell>
 				</TableRow>

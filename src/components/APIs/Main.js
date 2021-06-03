@@ -13,6 +13,7 @@ import useTable from "../controls/useTable";
 import ApiTable from "./ApiTable";
 import ManageEndpoints from "./ManageEndpoints";
 import { getProjects } from "../../redux/actions/ProjectActions";
+import ApiFormUpdate from "../../Forms/Api/ApiFormUpdate";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -64,12 +65,17 @@ export function Main() {
 		},
 	});
 	const [openPopup, setOpenPopup] = useState(false);
+	const [openUpdatePopup, setOpenUpdatePopup] = useState(false);
 	const [openViewPopup, setOpenViewPopup] = useState(false);
 	const [apiForEdit, setApiForEdit] = useState(null);
 	const [openManageEndpoints, setOpenManageEndpoints] = useState(false);
 	const openInPopup = (api) => {
 		setApiForEdit(api);
 		setOpenPopup(true);
+	};
+	const openInUpdatePopup = (api) => {
+		setApiForEdit(api);
+		setOpenUpdatePopup(true);
 	};
 	const openInViewPopup = (api) => {
 		setApiForEdit(api);
@@ -170,6 +176,7 @@ export function Main() {
 						recordsAfterPadingAndSorting={recordsAfterPadingAndSorting}
 						openInPopup={openInPopup}
 						openInViewPopup={openInViewPopup}
+						openInUpdatePopup={openInUpdatePopup}
 						onDelete={onDelete}
 						setConfirmDialog={setConfirmDialog}
 						openInManageEndpoints={openInManageEndpoints}
@@ -183,8 +190,18 @@ export function Main() {
 				setOpenPopup={setOpenPopup}
 			>
 				<ApiForm
-					apiForEdit={apiForEdit}
 					setOpenPopup={setOpenPopup}
+					setNotify={setNotify}
+				/>
+			</Controls.Popup>
+			<Controls.Popup
+				title="Api Form Update"
+				openPopup={openUpdatePopup}
+				setOpenPopup={setOpenUpdatePopup}
+			>
+				<ApiFormUpdate
+					apiForEdit={apiForEdit}
+					setOpenPopup={setOpenUpdatePopup}
 					setNotify={setNotify}
 				/>
 			</Controls.Popup>

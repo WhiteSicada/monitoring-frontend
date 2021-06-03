@@ -4,36 +4,25 @@ import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
 import {
 	makeStyles,
-	Typography,
 	Stepper,
 	Step,
 	StepLabel,
-	MenuItem,
 	Card,
 	CardHeader,
 	Divider,
 	List,
 	ListItem,
-	ListItemIcon,
-	ListItemText,
 } from "@material-ui/core";
 import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
-import {
-	createProject,
-	addApiToProject,
-} from "../../redux/actions/ProjectActions";
+import { createTest, addApisToTest } from "../../redux/actions/TestActions";
 
 const initialValues = {
 	id: null,
 	name: "",
-	responsableIt: "",
-	responsableMetier: "",
-	equipe: "",
-	description: "",
+	interval: 0,
 	apis: [],
 };
 
@@ -65,13 +54,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-	return ["Project Infos", "Select Project Members", "Select APIs"];
+	return ["Test Name", "Test Interval", "Select APIs"];
 }
 
-export default function ProjectCreationForm({
-	teams,
-	itResponsables,
-	workResponsables,
+export default function TestCreationForm({
 	apis,
 	setNotify,
 	setOpenPopup,
@@ -91,15 +77,13 @@ export default function ProjectCreationForm({
 	};
 
 	const [formValues, setFormValues] = useState(initialValues);
-	// const [apiItems, setApiItems] = useState([]);
 
 	const submitForm = (values, { setSubmitting, resetForm }) => {
-		// console.log(values.id + " " + values.apis);
 		setSubmitting(true);
-		dispatch(createProject(values))
+		dispatch(createTest({name : values.name , interval : values.interval , listAPIs : []}))
 			.then((response) => {
 				if (values.apis.length !== 0) {
-					dispatch(addApiToProject(response.id, { apis: values.apis }))
+					dispatch(addApisToTest(response.id, { apis: values.apis }))
 						.then((e) => {
 							resetForm();
 							setSubmitting(false);
@@ -133,25 +117,6 @@ export default function ProjectCreationForm({
 			});
 	};
 
-	const itResponsableItems = itResponsables.map((itResponsable) => {
-		return {
-			value: itResponsable.name,
-			label: itResponsable.name,
-		};
-	});
-	const workResponsableItems = workResponsables.map((workResponsable) => {
-		return {
-			value: workResponsable.name,
-			label: workResponsable.name,
-		};
-	});
-	const teamsItems = teams.map((teamsItem) => {
-		return {
-			value: teamsItem.name,
-			label: teamsItem.name,
-		};
-	});
-
 	return (
 		<div>
 			<Stepper activeStep={activeStep}>
@@ -177,7 +142,11 @@ export default function ProjectCreationForm({
 						setSubmitting,
 						resetForm,
 					}) => (
-						<Form autoComplete="off" id="projectForm" className={classes.root}>
+						<Form
+							autoComplete="off"
+							id="testCreattionForm"
+							className={classes.root}
+						>
 							<Grid container spacing={8}>
 								{activeStep === 0 && (
 									<Grid item xs={12}>
@@ -187,17 +156,7 @@ export default function ProjectCreationForm({
 											component={TextField}
 											variant="outlined"
 											InputLabelProps={{ shrink: true }}
-											label="Name of Project"
-										/>
-										<Field
-											required
-											name="description"
-											component={TextField}
-											multiline
-											rows={4}
-											variant="outlined"
-											InputLabelProps={{ shrink: true }}
-											label="Description"
+											label="Name of Test"
 										/>
 									</Grid>
 								)}
@@ -206,49 +165,13 @@ export default function ProjectCreationForm({
 									<Grid item xs={12}>
 										<Field
 											required
-											name="responsableIt"
-											type="text"
-											select
+											name="interval"
+											className={classes.field}
 											component={TextField}
-											label="Select It Responsable"
 											variant="outlined"
-										>
-											{itResponsableItems.map((option) => (
-												<MenuItem key={option.value} value={option.value}>
-													{option.label}
-												</MenuItem>
-											))}
-										</Field>
-										<Field
-											required
-											name="responsableMetier"
-											type="text"
-											select
-											component={TextField}
-											label="Select Work Responsable"
-											variant="outlined"
-										>
-											{workResponsableItems.map((option) => (
-												<MenuItem key={option.value} value={option.value}>
-													{option.label}
-												</MenuItem>
-											))}
-										</Field>
-										<Field
-											required
-											name="equipe"
-											type="text"
-											select
-											component={TextField}
-											label="Select Team"
-											variant="outlined"
-										>
-											{teamsItems.map((option) => (
-												<MenuItem key={option.value} value={option.value}>
-													{option.label}
-												</MenuItem>
-											))}
-										</Field>
+											InputLabelProps={{ shrink: true }}
+											label="Test Interval"
+										/>
 									</Grid>
 								)}
 
@@ -264,7 +187,7 @@ export default function ProjectCreationForm({
 											<List
 												dense
 												className={classes.list}
-												id="listApisForProject"
+												id="listApisForTest"
 											>
 												<Grid container>
 													{apis.map((api) => (
