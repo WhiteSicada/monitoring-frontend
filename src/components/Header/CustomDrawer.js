@@ -20,7 +20,7 @@ import { DrawerData } from "./DrawersData";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
-		// "& ."
+		
 	},
 	appBar: {
 		flexGrow: 1,
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	drawerPaper: {
 		width: 235,
-		marginTop: 100,
+		marginTop: 85,
 	},
 	largeLogo: {
 		marginTop: "10px",

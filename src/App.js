@@ -15,6 +15,7 @@ import { Main as APIs } from "./components/APIs/Main";
 import { Main as Projects } from "./components/Projects/Main";
 import { Main as Anomalies } from "./components/Anomalies/Main";
 import { Main as Tests } from "./components/Tests/Main";
+import { Main as Auth } from "./components/Auth/Main";
 import {
 	ItResponsablesLink,
 	TeamLink,
@@ -22,7 +23,8 @@ import {
 	APIsLink,
 	ProjectLink,
 	AnomalieLink,
-	TestLink
+	TestLink,
+	AuthLink,
 } from "./components/Header/StaticLinks";
 
 const theme = createMuiTheme({
@@ -75,6 +77,7 @@ function App() {
 						<Route path={ProjectLink} exact component={Projects}></Route>
 						<Route path={AnomalieLink} exact component={Anomalies}></Route>
 						<Route path={TestLink} exact component={Tests}></Route>
+						<Route path={AuthLink} exact component={Auth}></Route>
 					</Switch>
 				</div>
 				<CssBaseline />

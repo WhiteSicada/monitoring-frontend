@@ -16,7 +16,7 @@ function TestTable({
 					{/* <TableCell>{team.id}</TableCell> */}
 					<TableCell>{test.name}</TableCell>
 					<TableCell>{test.interval} minutes</TableCell>
-					<TableCell>{test.listAPIs.length}</TableCell>
+					<TableCell>{test.listAPIs ? test.listAPIs.length : 0} APIs</TableCell>
 					<TableCell>
 						<Controls.ActionButton
 							id={`update`}

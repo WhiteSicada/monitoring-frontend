@@ -54,14 +54,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-	return ["Test Name", "Test Interval", "Select APIs"];
+	return ["Test Infos", "Select APIs"];
 }
 
-export default function TestCreationForm({
-	apis,
-	setNotify,
-	setOpenPopup,
-}) {
+export default function TestCreationForm({ apis, setNotify, setOpenPopup }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 
@@ -80,9 +76,11 @@ export default function TestCreationForm({
 
 	const submitForm = (values, { setSubmitting, resetForm }) => {
 		setSubmitting(true);
-		dispatch(createTest({name : values.name , interval : values.interval , listAPIs : []}))
+		dispatch(
+			createTest({ name: values.name, interval: values.interval, listAPIs: [] })
+		)
 			.then((response) => {
-				if (values.apis.length !== 0) {
+				if (values.apis.length > 0) {
 					dispatch(addApisToTest(response.id, { apis: values.apis }))
 						.then((e) => {
 							resetForm();
@@ -158,11 +156,6 @@ export default function TestCreationForm({
 											InputLabelProps={{ shrink: true }}
 											label="Name of Test"
 										/>
-									</Grid>
-								)}
-
-								{activeStep === 1 && (
-									<Grid item xs={12}>
 										<Field
 											required
 											name="interval"
@@ -175,7 +168,7 @@ export default function TestCreationForm({
 									</Grid>
 								)}
 
-								{activeStep === 2 && (
+								{activeStep === 1 && (
 									<Grid item xs={12}>
 										<Card className={classes.card}>
 											<CardHeader
@@ -184,11 +177,7 @@ export default function TestCreationForm({
 											/>
 											<Divider />
 
-											<List
-												dense
-												className={classes.list}
-												id="listApisForTest"
-											>
+											<List dense className={classes.list} id="listApisForTest">
 												<Grid container>
 													{apis.map((api) => (
 														<Grid item xs={4} key={api.id}>

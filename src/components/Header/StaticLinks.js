@@ -5,3 +5,4 @@ export const APIsLink = "/APIs";
 export const ProjectLink = "/Projects";
 export const AnomalieLink = "/Anomalies";
 export const TestLink = "/tests";
+export const AuthLink = "/auth"
