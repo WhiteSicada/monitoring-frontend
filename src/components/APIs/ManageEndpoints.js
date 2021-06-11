@@ -1,9 +1,12 @@
 import React, { useState, useDebugValue } from "react";
+import PropTypes from "prop-types";
 import {
 	Grid,
 	Typography,
 	makeStyles,
-	Divider,
+	Tabs,
+	Tab,
+	Box,
 	Button,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
@@ -40,11 +43,45 @@ const useStyles = makeStyles((theme) => ({
 	center: { textAlign: "center" },
 }));
 
+function TabPanel(props) {
+	const { children, value, index, ...other } = props;
+
+	return (
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}
+		>
+			{value === index && (
+				<Box p={3}>
+					<Typography>{children}</Typography>
+				</Box>
+			)}
+		</div>
+	);
+}
+
+TabPanel.propTypes = {
+	children: PropTypes.node,
+	index: PropTypes.any.isRequired,
+	value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+	return {
+		id: `simple-tab-${index}`,
+		"aria-controls": `simple-tabpanel-${index}`,
+	};
+}
+
 function useStateWithLabel(initialValue, name) {
 	const [value, setValue] = useState(initialValue);
 	useDebugValue(`${name}: ${value}`);
 	return [value, setValue];
 }
+
 function ManageEndpoints({ apiForEdit, setNotify }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
@@ -100,45 +137,56 @@ function ManageEndpoints({ apiForEdit, setNotify }) {
 			setEndpointListUpdated([]);
 		}
 	};
+	const [value, setValue] = React.useState(0);
+
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
+	};
 	return (
 		<div>
-			<Grid
-				container
-				justify="center"
-				direction="row"
-				className={classes.container}
+			<Tabs
+				value={value}
+				onChange={handleChange}
+				indicatorColor="primary"
+				textColor="primary"
+				centered
 			>
-				<Grid item xs={3} className={classes.border}>
-					<Typography variant="h6" component="div" className={classes.title}>
-						Endpoint Form
-					</Typography>
-					<EndpointForm
-						endpointList={endpointList}
-						currentEndpoint={currentEndpoint}
-						setEndpointList={setEndpointList}
-						setCurrentEndpoint={setCurrentEndpoint}
-						setEndpointListAdded={setEndpointListAdded}
-						setEndpointListUpdated={setEndpointListUpdated}
-						endpointListAdded={endpointListAdded}
-						endpointListUpdated={endpointListUpdated}
-						endpointListDeleted={endpointListDeleted}
-					/>
-				</Grid>
-				<Grid item xs={9}>
-					<Typography variant="h6" component="div" className={classes.title}>
-						List Of Endoints
-					</Typography>
-					<div className={classes.listendpoint}>
-						<ListEndpoints
-							endpointList={endpointList}
-							setCurrentEndpoint={setCurrentEndpoint}
-							setEndpointList={setEndpointList}
-							setEndpointListAdded={setEndpointListAdded}
-							endpointListAdded={endpointListAdded}
-							setEndpointListDeleted={setEndpointListDeleted}
-						/>
-					</div>
-					<Grid container spacing={5} alignItems="center">
+				<Tab
+					style={{ color: "black" }}
+					label="Endpoint Form"
+					{...a11yProps(0)}
+				/>
+				<Tab
+					style={{ color: "black" }}
+					label="List Endpoints"
+					{...a11yProps(1)}
+				/>
+			</Tabs>
+			<TabPanel value={value} index={0}>
+				<EndpointForm
+					endpointList={endpointList}
+					currentEndpoint={currentEndpoint}
+					setEndpointList={setEndpointList}
+					setCurrentEndpoint={setCurrentEndpoint}
+					setEndpointListAdded={setEndpointListAdded}
+					setEndpointListUpdated={setEndpointListUpdated}
+					endpointListAdded={endpointListAdded}
+					endpointListUpdated={endpointListUpdated}
+					endpointListDeleted={endpointListDeleted}
+					setValue={setValue}
+				/>
+			</TabPanel>
+			<TabPanel value={value} index={1}>
+				<ListEndpoints
+					endpointList={endpointList}
+					setCurrentEndpoint={setCurrentEndpoint}
+					setEndpointList={setEndpointList}
+					setEndpointListAdded={setEndpointListAdded}
+					endpointListAdded={endpointListAdded}
+					setEndpointListDeleted={setEndpointListDeleted}
+					setValue={setValue}
+				/>
+				<Grid container spacing={5} alignItems="center">
 						<Grid item xs={6} className={classes.center}>
 							<Button
 								variant="contained"
@@ -153,13 +201,12 @@ function ManageEndpoints({ apiForEdit, setNotify }) {
 							</Button>
 						</Grid>
 						<Grid item xs={6}>
-							{endpointListAdded.length} endpoints Added ,{" "}
-							{endpointListUpdated.length} endpoints Updated ,{" "}
-							{endpointListDeleted.length} endpoints Deleted.
+							{endpointListAdded.length} Added ,{" "}
+							{endpointListUpdated.length} Updated ,{" "}
+							{endpointListDeleted.length} Deleted.
 						</Grid>
 					</Grid>
-				</Grid>
-			</Grid>
+			</TabPanel>	
 		</div>
 	);
 }

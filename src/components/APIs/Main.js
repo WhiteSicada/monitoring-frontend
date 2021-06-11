@@ -216,7 +216,7 @@ export function Main() {
 				title="Manage Endpoints"
 				openPopup={openManageEndpoints}
 				setOpenPopup={setOpenManageEndpoints}
-				maxWidth="xl"
+				maxWidth="md"
 			>
 				<ManageEndpoints apiForEdit={apiForEdit} setNotify={setNotify} />
 			</Controls.Popup>

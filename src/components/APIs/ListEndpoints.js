@@ -17,7 +17,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 const useStyles = makeStyles((theme) => ({
-	root: { marginTop: 31 },
+	root: { marginTop: 31, height: 400 },
 	avatar: {
 		border: "2px solid #ef630b",
 		backgroundColor: "transparent",
@@ -34,7 +34,7 @@ function ListEndpoints({
 	setEndpointList,
 	setEndpointListAdded,
 	endpointListAdded,
-	setEndpointListDeleted,
+	setEndpointListDeleted,setValue
 }) {
 	const classes = useStyles();
 	const methodColor = (type) => {
@@ -58,7 +58,6 @@ function ListEndpoints({
 			setEndpointListAdded(
 				endpointListAdded.filter((item) => item.name !== endpoint.name)
 			);
-			
 		} else {
 			setEndpointListDeleted((endpointListDeleted) => [
 				...endpointListDeleted,
@@ -72,7 +71,7 @@ function ListEndpoints({
 			<List dense>
 				<Grid container spacing={2}>
 					{endpointList.map((endpoint, index) => (
-						<Grid item xs={3} key={index}>
+						<Grid item xs={4} key={index}>
 							<ListItem className={classes.endpointStyle}>
 								<ListItemAvatar>
 									<Avatar className={classes.avatar}>
@@ -96,6 +95,7 @@ function ListEndpoints({
 										color="secondary"
 										onClick={() => {
 											setCurrentEndpoint(endpoint);
+											setValue(0);
 										}}
 									>
 										<AiOutlineEdit fontSize="large" />

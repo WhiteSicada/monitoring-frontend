@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Grid, makeStyles, Button, MenuItem } from "@material-ui/core";
+import {
+	Grid,
+	makeStyles,
+	Button,
+	MenuItem,
+	IconButton,
+	Icon,
+	TextField as TextFieldFormParam,
+} from "@material-ui/core";
+import RemoveIcon from "@material-ui/icons/Remove";
+import AddIcon from "@material-ui/icons/Add";
+import { v4 as uuidv4 } from "uuid";
 import { Formik, Field, Form } from "formik";
+import { Controls } from "../../components/controls/controls";
 import { validationSchemaEndpoint } from "./validationSchemaEndpoint";
 import { TextField } from "formik-material-ui";
+import { BiMinusCircle, BiPlusCircle } from "react-icons/bi";
 
 const initialValuesForEndpoint = {
 	id: 0,
@@ -36,6 +49,72 @@ function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
 }
 
+function FormRow({
+	inputParamsFields,
+	inputParamsField,
+	setInputParamsFields,
+}) {
+	const handleChangeInput = (id, event) => {
+		const newInputFields = inputParamsFields.map((i) => {
+			if (id === i.id) {
+				i[event.target.name] = event.target.value;
+			}
+			return i;
+		});
+
+		setInputParamsFields(newInputFields);
+	};
+
+	const handleAddFields = () => {
+		setInputParamsFields([
+			...inputParamsFields,
+			{ id: uuidv4(), variable: "", value: "" },
+		]);
+	};
+
+	const handleRemoveFields = (id) => {
+		const values = [...inputParamsFields];
+		values.splice(
+			values.findIndex((value) => value.id === id),
+			1
+		);
+		setInputParamsFields(values);
+	};
+	return (
+		<React.Fragment>
+			<Grid item xs={5}>
+				<TextFieldFormParam
+					name="variable"
+					label="Param"
+					variant="outlined"
+					value={inputParamsField.variable}
+					onChange={(event) => handleChangeInput(inputParamsField.id, event)}
+				/>
+			</Grid>
+			<Grid item xs={5}>
+				<TextFieldFormParam
+					name="value"
+					label="Param Value"
+					variant="outlined"
+					value={inputParamsField.value}
+					onChange={(event) => handleChangeInput(inputParamsField.id, event)}
+				/>
+			</Grid>
+			<Grid item xs={2} style={{ margin: "auto" }}>
+				<IconButton
+					disabled={inputParamsFields.length === 1}
+					onClick={() => handleRemoveFields(inputParamsField.id)}
+				>
+					<BiMinusCircle />
+				</IconButton>
+				<IconButton onClick={handleAddFields}>
+					<BiPlusCircle />
+				</IconButton>
+			</Grid>
+		</React.Fragment>
+	);
+}
+
 function EndpointForm({
 	endpointList,
 	setEndpointList,
@@ -46,6 +125,7 @@ function EndpointForm({
 	endpointListAdded,
 	endpointListUpdated,
 	endpointListDeleted,
+	setValue,
 }) {
 	const classes = useStyles();
 	const endpointMethods = [
@@ -85,6 +165,9 @@ function EndpointForm({
 		setFormValues(initialValuesForEndpoint);
 		setUpdate(false);
 	};
+	const [inputParamsFields, setInputParamsFields] = useState([
+		{ id: uuidv4(), variable: "", value: "" },
+	]);
 
 	const submitForm = (values, { resetForm }) => {
 		if (update) {
@@ -103,8 +186,18 @@ function EndpointForm({
 				{ ...values },
 			]);
 			customReset();
+			setValue(1);
 		} else {
-			const generatedId = getRandomInt(1000);
+			// format the params into the final url
+			inputParamsFields.forEach((inputParamsField) => {
+				if (values.url.includes(inputParamsField.variable)) {
+					values.url = values.url.replace(
+						"{" + inputParamsField.variable + "}",
+						inputParamsField.value
+					);
+				}
+			});
+			const generatedId = getRandomInt(10000);
 			setEndpointList((endpointList) => [
 				...endpointList,
 				{ ...values, id: generatedId },
@@ -119,9 +212,10 @@ function EndpointForm({
 				},
 			]);
 			resetForm();
-			console.log(endpointList);
+			setValue(1);
 		}
 	};
+
 	return (
 		<div>
 			<Formik
@@ -132,7 +226,7 @@ function EndpointForm({
 				{({ values, dirty, isValid, resetForm }) => (
 					<Form autoComplete="off" id="endpointForm" className={classes.root}>
 						<Grid container spacing={3}>
-							<Grid item xs={12}>
+							<Grid item xs={6}>
 								<Field
 									required
 									name="name"
@@ -142,7 +236,7 @@ function EndpointForm({
 									label="Endpoint Name"
 								/>
 							</Grid>
-							<Grid item xs={4}>
+							<Grid item xs={6}>
 								<Field
 									required
 									name="method"
@@ -163,7 +257,7 @@ function EndpointForm({
 									))}
 								</Field>
 							</Grid>
-							<Grid item xs={8}>
+							<Grid item xs={6}>
 								<Field
 									required
 									name="url"
@@ -172,6 +266,17 @@ function EndpointForm({
 									InputLabelProps={{ shrink: true }}
 									label="Endpoint Url"
 								/>
+							</Grid>
+
+							<Grid container item xs={12} spacing={3}>
+								{inputParamsFields.map((inputParamsField, index) => (
+									<FormRow
+										key={inputParamsField.id}
+										inputParamsFields={inputParamsFields}
+										inputParamsField={inputParamsField}
+										setInputParamsFields={setInputParamsFields}
+									/>
+								))}
 							</Grid>
 							<Grid item xs={12}>
 								<Field
