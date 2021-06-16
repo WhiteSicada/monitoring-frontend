@@ -2,12 +2,7 @@ import "./App.scss";
 import React from "react";
 import CustomDrawer from "./components/Header/CustomDrawer";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import {
-	makeStyles,
-	CssBaseline,
-	createMuiTheme,
-	ThemeProvider,
-} from "@material-ui/core";
+import { CssBaseline, createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { Main as ListTeams } from "./components/Teams/Main";
 import { Main as ItResponsables } from "./components/ItResponsables/Main";
 import { Main as WorkResponsables } from "./components/WorkResponsable/Main";
@@ -16,6 +11,7 @@ import { Main as Projects } from "./components/Projects/Main";
 import { Main as Anomalies } from "./components/Anomalies/Main";
 import { Main as Tests } from "./components/Tests/Main";
 import { Main as Auth } from "./components/Auth/Main";
+import { Main as Scans } from "./components/Scans/Main";
 import {
 	ItResponsablesLink,
 	TeamLink,
@@ -25,8 +21,8 @@ import {
 	AnomalieLink,
 	TestLink,
 	AuthLink,
+	ScansLink,
 } from "./components/Header/StaticLinks";
-
 const theme = createMuiTheme({
 	palette: {
 		primary: {
@@ -34,7 +30,7 @@ const theme = createMuiTheme({
 			light: "#fcd1b6",
 		},
 		secondary: {
-			main: "#f83245",
+			main: "#4682B4",
 			light: "#f8324526",
 		},
 		background: {
@@ -78,6 +74,7 @@ function App() {
 						<Route path={AnomalieLink} exact component={Anomalies}></Route>
 						<Route path={TestLink} exact component={Tests}></Route>
 						<Route path={AuthLink} exact component={Auth}></Route>
+						<Route path={ScansLink} exact component={Scans}></Route>
 					</Switch>
 				</div>
 				<CssBaseline />

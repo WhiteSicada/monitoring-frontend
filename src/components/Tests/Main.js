@@ -12,6 +12,7 @@ import { deleteTest, getTests } from "../../redux/actions/TestActions";
 import { getAPIs } from "../../redux/actions/ApiActions";
 import TestForm from "../../Forms/Test/TestForm";
 import TestCreationForm from "../../Forms/Test/TestFormCreation";
+import ManageApisTransferList from "./ManageApisTransferList";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -30,7 +31,8 @@ const headCells = [
 	// { id: "id", label: "Team Id" },
 	{ id: "name", label: "Test Name" },
 	{ id: "interval", label: "Test Interval" },
-	{ id: "apis", label: "Test Apis" },
+	{ id: "number_apis", label: "Number of Apis" },
+	{ id: "apis_names", label: "Test Apis" },
 	{ id: "actions", label: "Actions", disableSorting: true },
 ];
 
@@ -60,6 +62,8 @@ export function Main() {
 		setTestForEdit(test);
 		setOpenUpdatePopup(true);
 	};
+	const [openTransferListPopup, setOpenTransferListPopup] = useState(false);
+	// const [openListScan, setOpenListScan] = useState(false);
 	const handleSearch = (e) => {
 		let target = e.target;
 		setFilterFn({
@@ -69,6 +73,14 @@ export function Main() {
 			},
 		});
 	};
+	const openInTransferListPopup = (test) => {
+		setTestForEdit(test);
+		setOpenTransferListPopup(true);
+	};
+	// const openInListScan = (test) => {
+	// 	setTestForEdit(test);
+	// 	setOpenListScan(true);
+	// };
 	const onDelete = (id) => {
 		setConfirmDialog({
 			...confirmDialog,
@@ -135,6 +147,8 @@ export function Main() {
 					<TestTable
 						recordsAfterPadingAndSorting={recordsAfterPadingAndSorting}
 						openInPopup={openInPopup}
+						openInTransferListPopup={openInTransferListPopup}
+						// openInListScan={openInListScan}
 						onDelete={onDelete}
 						setConfirmDialog={setConfirmDialog}
 					/>
@@ -161,6 +175,18 @@ export function Main() {
 					testForEdit={testForEdit}
 					setOpenPopup={setOpenUpdatePopup}
 					setNotify={setNotify}
+				/>
+			</Controls.Popup>
+			<Controls.Popup
+				title="Test Manage APIs"
+				openPopup={openTransferListPopup}
+				setOpenPopup={setOpenTransferListPopup}
+			>
+				<ManageApisTransferList
+					apis={apis}
+					testForEdit={testForEdit}
+					setTestForEdit={setTestForEdit}
+					setOpenTransferListPopup={setOpenTransferListPopup}
 				/>
 			</Controls.Popup>
 			<Controls.Notification notify={notify} setNotify={setNotify} />

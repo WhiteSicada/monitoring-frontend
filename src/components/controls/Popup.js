@@ -41,7 +41,7 @@ export default function Popup(props) {
 					</Typography>
 					<ActionButton
 						text="Close"
-						color="secondary"
+						color="primary"
 						onClick={() => {
 							setOpenPopup(false);
 						}}

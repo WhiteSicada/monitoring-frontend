@@ -8,6 +8,10 @@ const getTests = () => {
 	return customAxios.get("/tests");
 };
 
+const getTestScans = (id) => {
+	return customAxios.get(`/tests/${id}/scans`);
+};
+
 const deleteTest = (id) => {
 	return customAxios.delete(`/test/${id}`);
 };
@@ -31,6 +35,7 @@ const TestService = {
 	updateTest,
 	addApisToTest,
 	removeApisFromTest,
+	getTestScans,
 };
 
 export default TestService;

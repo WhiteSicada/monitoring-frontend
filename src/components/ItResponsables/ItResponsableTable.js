@@ -28,7 +28,7 @@ export default function WorkResponsableTable({
 						</Controls.ActionButton>
 						<Controls.ActionButton
 							text={"Delete"}
-							color="secondary"
+							color="primary"
 							onClick={() => {
 								setConfirmDialog({
 									isOpen: true,

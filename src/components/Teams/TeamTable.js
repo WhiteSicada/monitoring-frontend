@@ -29,7 +29,7 @@ function TeamTable({
 						<Controls.ActionButton
 							id={`delete${index}`}
 							text={"Delete"}
-							color="secondary"
+							color="primary"
 							onClick={() => {
 								setConfirmDialog({
 									isOpen: true,

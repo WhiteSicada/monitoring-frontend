@@ -3,18 +3,21 @@ import { render } from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import store from "./redux/store/index";
+import { store, persistor } from "./redux/store/index";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 render(
 	<Provider store={store}>
-		<App />
+		<PersistGate persistor={persistor}>
+			<App />
+		</PersistGate>
 	</Provider>,
 	document.getElementById("root")
 );
 
 if (window.Cypress) {
-  window.store = store
+	window.store = store;
 }
 
 // If you want to start measuring performance in your app, pass a function
