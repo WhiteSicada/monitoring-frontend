@@ -8,14 +8,10 @@ import {
 } from "@material-ui/core";
 import { FaCheckCircle } from "react-icons/fa";
 import { AiFillCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
-import { Controls } from "../controls/controls";
-import { useHistory } from "react-router-dom";
+
+import { green,red } from "@material-ui/core/colors";
 
 function ScansTable({ recordsAfterPadingAndSorting, openInViewPopup }) {
-	const history = useHistory();
-	// function goToScanList(test) {
-	// 	history.push(`/tests/${test.id}`);
-	// }
 	return (
 		<TableBody>
 			{recordsAfterPadingAndSorting().map((scan, index) => (
@@ -26,21 +22,27 @@ function ScansTable({ recordsAfterPadingAndSorting, openInViewPopup }) {
 					<TableCell>
 						{scan.successful == "Successful" ? (
 							<Chip
-								variant="outlined"
-								icon={<FaCheckCircle style={{ color: "green" }} />}
 								label={scan.successful}
+								avatar={<FaCheckCircle style={{ color: "white" }} />}
+								style={{
+									backgroundColor: green[600],
+									color: "white",
+								}}
 							/>
 						) : (
 							<Chip
-								variant="outlined"
-								icon={<AiFillCloseCircle style={{ color: "red" }} />}
 								label={scan.successful}
+								avatar={<AiFillCloseCircle style={{ color: "white" }} />}
+								style={{
+									backgroundColor: red[600],
+									color: "white",
+								}}
 							/>
 						)}
 					</TableCell>
 					<TableCell>{scan.execution_time} ms</TableCell>
 					<TableCell>{scan.api}</TableCell>
-					<TableCell>{scan.endpoint}</TableCell>
+					<TableCell>{scan.url}</TableCell>
 					<TableCell>
 						<Button
 							variant="outlined"

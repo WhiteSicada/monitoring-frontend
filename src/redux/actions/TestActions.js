@@ -13,7 +13,7 @@ export const createTest = (test) => async (dispatch) => {
 		const response = await TestService.createTest(test);
 		dispatch({
 			type: ADD_TEST,
-			payload: response.data,
+			payload: [response.data],
 		});
 		return Promise.resolve(response.data);
 	} catch (error) {

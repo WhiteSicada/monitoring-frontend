@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Field, Form, Formik } from "formik";
+import React, { useState, useEffect, Fragment } from "react";
+import { Field, Form, Formik, FieldArray } from "formik";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
+import PropTypes from "prop-types";
+import CheckBoxContext from "../../components/Projects/customTags/CheckBoxContext";
 import {
 	makeStyles,
 	Typography,
+	Tabs,
+	Tab,
 	Stepper,
 	Step,
 	StepLabel,
@@ -16,11 +20,12 @@ import {
 	CardHeader,
 	Divider,
 	List,
+	Box,
 	ListItem,
 	ListItemIcon,
 	ListItemText,
 } from "@material-ui/core";
-import { CircleLoader } from "react-spinners";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { useDispatch } from "react-redux";
 import {
 	createProject,
@@ -35,6 +40,7 @@ const initialValues = {
 	equipe: "",
 	description: "",
 	apis: [],
+	contexts: [],
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -65,7 +71,38 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-	return ["Project Infos", "Select Project Members", "Select APIs"];
+	return ["Project Infos", "Select APIs", "Select Contexts"];
+}
+
+function TabPanel(props) {
+	const { children, value, index, ...other } = props;
+
+	return (
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`scrollable-auto-tabpanel-${index}`}
+			aria-labelledby={`scrollable-auto-tab-${index}`}
+			{...other}
+		>
+			{value === index && (
+				<Box p={3}>
+					<Typography>{children}</Typography>
+				</Box>
+			)}
+		</div>
+	);
+}
+TabPanel.propTypes = {
+	children: PropTypes.node,
+	index: PropTypes.any.isRequired,
+	value: PropTypes.any.isRequired,
+};
+function a11yProps(index) {
+	return {
+		id: `scrollable-auto-tab-${index}`,
+		"aria-controls": `scrollable-auto-tabpanel-${index}`,
+	};
 }
 
 export default function ProjectCreationForm({
@@ -78,61 +115,60 @@ export default function ProjectCreationForm({
 }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-
+	const [value, setValue] = React.useState(0);
 	const [activeStep, setActiveStep] = useState(0);
 	const steps = getSteps();
-
+	const handleChange = (event, newValue) => {
+		setValue(newValue);
+	};
 	const handleNext = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep + 1);
 	};
-
 	const handleBack = () => {
 		setActiveStep((prevActiveStep) => prevActiveStep - 1);
 	};
-
 	const [formValues, setFormValues] = useState(initialValues);
 	// const [apiItems, setApiItems] = useState([]);
-
 	const submitForm = (values, { setSubmitting, resetForm }) => {
 		// console.log(values.id + " " + values.apis);
 		setSubmitting(true);
-		dispatch(createProject(values))
-			.then((response) => {
-				if (values.apis.length !== 0) {
-					dispatch(addApiToProject(response.id, { apis: values.apis }))
-						.then((e) => {
-							resetForm();
-							setSubmitting(false);
-							setOpenPopup(false);
-							setNotify({
-								isOpen: true,
-								message: "Created Successfully",
-								type: "success",
-							});
-						})
-						.catch((error) => {
-							resetForm();
-							setSubmitting(false);
-							console.log(error);
-						});
-				} else {
-					resetForm();
-					setSubmitting(false);
-					setOpenPopup(false);
-					setNotify({
-						isOpen: true,
-						message: "Created Successfully",
-						type: "success",
-					});
-				}
-			})
-			.catch((error) => {
-				resetForm();
-				setSubmitting(false);
-				console.log(error);
-			});
+		console.log(JSON.stringify(values));
+		// dispatch(createProject(values))
+		// 	.then((response) => {
+		// 		if (values.apis.length !== 0) {
+		// 			dispatch(addApiToProject(response.id, { apis: values.apis }))
+		// 				.then((e) => {
+		// 					resetForm();
+		// 					setSubmitting(false);
+		// 					setOpenPopup(false);
+		// 					setNotify({
+		// 						isOpen: true,
+		// 						message: "Created Successfully",
+		// 						type: "success",
+		// 					});
+		// 				})
+		// 				.catch((error) => {
+		// 					resetForm();
+		// 					setSubmitting(false);
+		// 					console.log(error);
+		// 				});
+		// 		} else {
+		// 			resetForm();
+		// 			setSubmitting(false);
+		// 			setOpenPopup(false);
+		// 			setNotify({
+		// 				isOpen: true,
+		// 				message: "Created Successfully",
+		// 				type: "success",
+		// 			});
+		// 		}
+		// 	})
+		// 	.catch((error) => {
+		// 		resetForm();
+		// 		setSubmitting(false);
+		// 		console.log(error);
+		// 	});
 	};
-
 	const itResponsableItems = itResponsables.map((itResponsable) => {
 		return {
 			value: itResponsable.name,
@@ -151,6 +187,13 @@ export default function ProjectCreationForm({
 			label: teamsItem.name,
 		};
 	});
+	const findContent = (api) => {
+		for (let k = 0; k < apis.length; k++) {
+			if (apis[k].name === api) {
+				return apis[k].contexts;
+			}
+		}
+	};
 
 	return (
 		<div>
@@ -180,7 +223,18 @@ export default function ProjectCreationForm({
 						<Form autoComplete="off" id="projectForm" className={classes.root}>
 							<Grid container spacing={8}>
 								{activeStep === 0 && (
-									<Grid item xs={12}>
+									<Grid
+										item
+										xs={12}
+										md={6}
+										lg={6}
+										style={{
+											width: "50%",
+											marginLeft: "auto",
+											marginRight: "auto",
+											height: 500,
+										}}
+									>
 										<Field
 											required
 											name="name"
@@ -189,21 +243,7 @@ export default function ProjectCreationForm({
 											InputLabelProps={{ shrink: true }}
 											label="Name of Project"
 										/>
-										<Field
-											required
-											name="description"
-											component={TextField}
-											multiline
-											rows={4}
-											variant="outlined"
-											InputLabelProps={{ shrink: true }}
-											label="Description"
-										/>
-									</Grid>
-								)}
 
-								{activeStep === 1 && (
-									<Grid item xs={12}>
 										<Field
 											required
 											name="responsableIt"
@@ -249,10 +289,20 @@ export default function ProjectCreationForm({
 												</MenuItem>
 											))}
 										</Field>
+										<Field
+											required
+											name="description"
+											component={TextField}
+											multiline
+											rows={4}
+											variant="outlined"
+											InputLabelProps={{ shrink: true }}
+											label="Description"
+										/>
 									</Grid>
 								)}
 
-								{activeStep === 2 && (
+								{activeStep === 1 && (
 									<Grid item xs={12}>
 										<Card className={classes.card}>
 											<CardHeader
@@ -287,6 +337,65 @@ export default function ProjectCreationForm({
 									</Grid>
 								)}
 
+								{activeStep === 2 && (
+									<Grid item xs={12}>
+										{values.apis && values.apis.length > 0 ? (
+											<div>
+												<Tabs
+													value={value}
+													onChange={handleChange}
+													indicatorColor="primary"
+													textColor="primary"
+													centered
+												>
+													{values.apis.map((api, index) => (
+														<Tab label={api} {...a11yProps(index)} />
+													))}
+												</Tabs>
+												{values.apis.map((api, index) => (
+													<TabPanel value={value} index={index}>
+														<FieldArray
+															name="contexts"
+															render={(arrayHelpers) => (
+																<Fragment>
+																	{findContent(api).map((context, index) => {
+																		return (
+																			<Field
+																				key={`${context.name}_${index}`}
+																				name={context.name}
+																				render={({ field }) => {
+																					return (
+																						<CheckBoxContext
+																							{...field}
+																							endpoints={
+																								context.endpoints.length
+																							}
+																							id={`${context.name}_${index}`}
+																							name={context.name}
+																							label={context.name}
+																							arrayHelpers={arrayHelpers}
+																						/>
+																					);
+																				}}
+																			/>
+																		);
+																	})}
+																</Fragment>
+															)}
+														/>
+													</TabPanel>
+												))}
+											</div>
+										) : (
+											<div>
+												<center>
+													<h3>No API selected. 😲</h3>
+												</center>
+											</div>
+										)}
+									</Grid>
+								)}
+
 								<Grid container justify="center">
 									<Button
 										disabled={activeStep === 0}
@@ -307,7 +416,9 @@ export default function ProjectCreationForm({
 											}}
 										>
 											{isSubmitting ? (
-												<CircleLoader size={10} color="#ef630b" />
+												<CircularProgress
+													size={24}
+												/>
 											) : (
 												"Submit"
 											)}

@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
 		"& thead th": {
 			fontWeight: "600",
 			color: theme.palette.primary.main,
-			// backgroundColor: theme.palette.primary.light,
+			fontSize : 17
 		},
 		"& tbody td": {
-			fontWeight: "300",
+			fontWeight: "400",
 		},
 		"& tbody tr:hover": {
 			backgroundColor: "#fffbf2",

@@ -39,17 +39,30 @@ function ViewScan({ currentScan }) {
 	];
 	return (
 		<div>
-			<h2
-				style={{
-					display: "flex",
-					alignItems: "center",
-					flexWrap: "wrap",
-					color: "green",
-				}}
-			>
-				<FaCheckCircle />
-				<span style={{ marginLeft: 10 }}>{currentScan.successful}</span>
-			</h2>
+			<List>
+				<ListItem>
+					<ListItemAvatar>
+						<Avatar style={{ background: "transparent" }}>
+							{currentScan.successful == "Successful" ? (
+								<FaCheckCircle size="large" style={{ color: "green" }} />
+							) : (
+								<AiFillCloseCircle size="large" style={{ color: "red" }} />
+							)}
+						</Avatar>
+					</ListItemAvatar>
+					{currentScan.successful == "Successful" ? (
+						<ListItemText
+							primary="Successful"
+							secondary="Test Passed successfully"
+						/>
+					) : (
+						<ListItemText
+							primary="UnSuccessful"
+							secondary="Test Passed Unsuccessfully"
+						/>
+					)}
+				</ListItem>
+			</List>
 			<br />
 			<h3>Execution Details</h3>
 			<Grid container spacing={3}>
@@ -68,7 +81,7 @@ function ViewScan({ currentScan }) {
 			<List>
 				<ListItem>
 					<ListItemAvatar>
-						<Avatar style={{background : "transparent"}}>
+						<Avatar style={{ background: "transparent" }}>
 							{currentScan.successful == "Successful" ? (
 								<AiOutlineCheckCircle size="large" style={{ color: "green" }} />
 							) : (
@@ -94,7 +107,7 @@ function ViewScan({ currentScan }) {
 				</ListItem>
 				<ListItem>
 					<ListItemAvatar>
-						<Avatar style={{background : "transparent"}}>
+						<Avatar style={{ background: "transparent" }}>
 							{currentScan.successful == "Successful" ? (
 								<AiOutlineCheckCircle size="large" style={{ color: "green" }} />
 							) : (
@@ -102,12 +115,17 @@ function ViewScan({ currentScan }) {
 							)}
 						</Avatar>
 					</ListItemAvatar>
-          {currentScan.successful == "Successful" ? (
-            <ListItemText primary="Assert Equals" secondary="apiResponse.status === '200'" />
-							) : (
-								<ListItemText primary="Assert Equals" secondary="apiResponse.status !== '200'" />
-							)}
-					
+					{currentScan.successful == "Successful" ? (
+						<ListItemText
+							primary="Assert Equals"
+							secondary="apiResponse.status === '200'"
+						/>
+					) : (
+						<ListItemText
+							primary="Assert Equals"
+							secondary="apiResponse.status !== '200'"
+						/>
+					)}
 				</ListItem>
 			</List>
 		</div>

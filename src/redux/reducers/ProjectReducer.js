@@ -16,7 +16,7 @@ function ProjectReducer(state = initialState, action) {
 	switch (type) {
 		case ADD_PROJECT:
 			return Object.assign({}, state, {
-				projects: state.projects.concat(payload),
+				projects: payload.concat(state.projects),
 			});
 
 		case GET_PROJECTS:

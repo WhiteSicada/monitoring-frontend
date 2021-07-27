@@ -14,6 +14,8 @@ import ApiTable from "./ApiTable";
 import ManageEndpoints from "./ManageEndpoints";
 import { getProjects } from "../../redux/actions/ProjectActions";
 import ApiFormUpdate from "../../Forms/Api/ApiFormUpdate";
+import { Link } from "react-router-dom";
+import { AddApiLink } from "../Header/StaticLinks";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -34,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 const headCells = [
 	// { id: "id", label: "Team Id" },
 	{ id: "name", label: "API Name" },
+	{ id: "api_issues", label: "Anomalies Unsolved" },
 	{ id: "actions", label: "Actions", disableSorting: true },
 ];
 
@@ -123,19 +126,21 @@ export function Main() {
 				type: "warning",
 			});
 		} else {
-		dispatch(deleteAPI(id))
-			.then((response) => {
-				setNotify({
-					isOpen: true,
-					message: "Deleted Successfully",
-					type: "warning",
+			dispatch(deleteAPI(id))
+				.then((response) => {
+					setNotify({
+						isOpen: true,
+						message: "Deleted Successfully",
+						type: "warning",
+					});
+				})
+				.catch((error) => {
+					console.log(error);
 				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
 		}
 	};
+	
+
 	return (
 		<div>
 			<PageHeader
@@ -159,16 +164,16 @@ export function Main() {
 						}}
 						onChange={handleSearch}
 					/>
-					<Controls.MuiButton
-						text="Add New"
-						variant="outlined"
-						startIcon={<AddIcon />}
-						className={classes.newButton}
-						onClick={() => {
+						<Controls.MuiButton
+							text="Add New"
+							variant="outlined"
+							startIcon={<AddIcon />}
+							onClick={() => {
 							setOpenPopup(true);
 							setApiForEdit(null);
 						}}
-					/>
+							className={classes.newButton}
+						/>
 				</Toolbar>
 				<TblContainer>
 					<TblHead />
@@ -189,10 +194,7 @@ export function Main() {
 				openPopup={openPopup}
 				setOpenPopup={setOpenPopup}
 			>
-				<ApiForm
-					setOpenPopup={setOpenPopup}
-					setNotify={setNotify}
-				/>
+				<ApiForm setOpenPopup={setOpenPopup} setNotify={setNotify} />
 			</Controls.Popup>
 			<Controls.Popup
 				title="Api Form Update"

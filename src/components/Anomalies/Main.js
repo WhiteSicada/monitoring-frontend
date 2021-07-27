@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaCubes } from "react-icons/fa";
 import PageHeader from "../Header/PageHeader";
 import { Paper, makeStyles, Toolbar, InputAdornment } from "@material-ui/core";
 import { Controls } from "../controls/controls";
 import { Search } from "@material-ui/icons";
+import AnomalyHelper from "./AnomalyHelper";
+import useTable from "../controls/useTable";
+import AnomalyTable from "./AnomalyTable";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -19,22 +22,21 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export function Main() {
+export function Main({ match }) {
 	const classes = useStyles();
 	const [filterFn, setFilterFn] = useState({
 		fn: (anomalies) => {
 			return anomalies;
 		},
 	});
-	const handleSearch = (e) => {
-		let target = e.target;
-		setFilterFn({
-			fn: (anomalies) => {
-				if (target.value == "") return anomalies;
-				else return anomalies.filter((x) => x.name.includes(target.value));
-			},
-		});
-	};
+	const [apiAnomalies, setApiAnomalies] = useState([]);
+
+	useEffect(() => {
+		AnomalyHelper.getApiAnomalies(match.params.api_id, setApiAnomalies);
+	}, [match.params.api_id]);
+
+	const { TblContainer, TblHead, TblPagination, recordsAfterPadingAndSorting } =
+		useTable(apiAnomalies, AnomalyHelper.headCells, filterFn);
 	return (
 		<div>
 			<PageHeader
@@ -42,35 +44,23 @@ export function Main() {
 				subTitle="Manage your Anomalies"
 				icon={<FaCubes />}
 			/>
+
+			{apiAnomalies.length == 0 && (
+				<h2 style={{ marginLeft: "30%", marginTop: "5%" }}>
+					No Anomalies detected. 😄 👍
+				</h2>
+			)}
+			{apiAnomalies.length > 0 && (
 			<Paper className={classes.pageContent}>
-				{/* <EmployeeForm /> */}
-				<Toolbar>
-					<Controls.Input
-						label="Select API"
-						className={classes.searchInput}
-						id="search"
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position="start">
-									<Search />
-								</InputAdornment>
-							),
-						}}
-						onChange={handleSearch}
-					/>
-				</Toolbar>
-				{/* <TblContainer>
+				<TblContainer>
 					<TblHead />
-					<ApiTable
+					<AnomalyTable
 						recordsAfterPadingAndSorting={recordsAfterPadingAndSorting}
-						openInPopup={openInPopup}
-						openInViewPopup={openInViewPopup}
-						onDelete={onDelete}
-						setConfirmDialog={setConfirmDialog}
 					/>
 				</TblContainer>
-				<TblPagination /> */}
+				<TblPagination />
 			</Paper>
+			)}
 		</div>
 	);
 }

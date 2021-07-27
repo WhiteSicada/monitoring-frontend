@@ -3,9 +3,9 @@ import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
 import { Grid, makeStyles, Button } from "@material-ui/core";
-import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
-import { createAPI, getAPIs, updateAPI } from "../../redux/actions/ApiActions";
+import { updateAPI } from "../../redux/actions/ApiActions";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const initialValuesForApi = {
 	id: null,
@@ -13,13 +13,13 @@ const initialValuesForApi = {
 	description: "",
 	ip: "",
 	port: 0,
-	context: "",
+	context: [""],
+	token: "",
 	status: false,
 	db: false,
 	diskspace: false,
 	ping: false,
-	endpoints: [],
-  "anomalies": [],
+	anomalies: [],
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -106,14 +106,16 @@ export default function ApiFormUpdate({ apiForEdit, setNotify, setOpenPopup }) {
 									label="API Port"
 								/>
 							</Grid>
-							<Grid item xs={5}>
+							<Grid item xs={12}>
 								<Field
 									required
-									name="context"
+									multiline
+									rows={8}
+									name="token"
 									component={TextField}
 									variant="outlined"
 									InputLabelProps={{ shrink: true }}
-									label="API Context"
+									label="API Token"
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -140,7 +142,10 @@ export default function ApiFormUpdate({ apiForEdit, setNotify, setOpenPopup }) {
 									}}
 								>
 									{isSubmitting ? (
-										<CircleLoader size={15} color="#ef630b" />
+										<CircularProgress
+											size={24}
+											className={classes.buttonProgress}
+										/>
 									) : (
 										"Submit"
 									)}

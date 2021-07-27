@@ -37,7 +37,7 @@ export function Main({ match }) {
 		setFilterFn({
 			fn: (testScans) => {
 				if (target.value == "") return testScans;
-				else return testScans.filter((x) => x.api.includes(target.value));
+				else return testScans.filter((x) => x.endpoint.includes(target.value));
 			},
 		});
 	};
@@ -52,7 +52,7 @@ export function Main({ match }) {
 				{/* <EmployeeForm /> */}
 				<Toolbar>
 					<Controls.Input
-						label="Search Test"
+						label="Search Endpoint"
 						className={classes.searchInput}
 						id="search"
 						InputProps={{

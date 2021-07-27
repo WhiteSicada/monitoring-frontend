@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import {
 	Drawer,
 	AppBar,
@@ -8,6 +10,12 @@ import {
 	List,
 	ListItem,
 	ListItemText,
+	IconButton,
+	Menu,
+	MenuItem,
+	ListItemIcon,
+	Divider,
+	Collapse,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import bcpIcon from "../../images/bcp-icon.png";
@@ -16,11 +24,18 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import CustomSubDrawer from "./CustomSubDrawer";
 import { DrawerData } from "./DrawersData";
+import { AiOutlineClockCircle } from "react-icons/ai";
+import { BsClock } from "react-icons/bs";
+import Countdown from "react-countdown";
+import { getTests } from "../../redux/actions/TestActions";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
-		
+	},
+	avatar: {
+		backgroundColor: "transparent",
+		color: "#2c0b06",
 	},
 	appBar: {
 		flexGrow: 1,
@@ -42,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "inline - flex",
 		minWidth: 0,
 		flexShrink: 0,
+		paddingLeft: "1rem",
 	},
 	nested: {
 		paddingLeft: theme.spacing(4),
@@ -57,11 +73,64 @@ const useStyles = makeStyles((theme) => ({
 		width: 40,
 		marginRight: 16,
 	},
+	grow: {
+		flexGrow: 1,
+	},
+	sectionDesktop: {
+		display: "none",
+		[theme.breakpoints.up("xs")]: {
+			display: "flex",
+		},
+	},
 }));
 
 function CustomDrawer() {
+	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(getTests());
+	}, []);
+	const tests = useSelector((state) => state.testState.tests);
 	const classes = useStyles();
+	const [anchorEl, setAnchorEl] = useState(null);
 
+	const isMenuOpen = Boolean(anchorEl);
+
+	const handleProfileMenuOpen = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleMenuClose = () => {
+		setAnchorEl(null);
+	};
+	const Completionist = () => <span>You are good to go!</span>;
+	const renderer = ({ hours, minutes, seconds, completed, api }) => {
+		if (completed) {
+			// Render a complete state
+			return <Completionist />	
+		} else {
+			// Render a countdown
+			return (
+				<span>
+					{hours}:{minutes}:{seconds}
+				</span>
+			);
+		}
+	};
+	const menuId = "primary-search-account-menu";
+	const renderMenu = (
+		<Menu
+			anchorEl={anchorEl}
+			anchorOrigin={{ vertical: "top", horizontal: "right" }}
+			id={menuId}
+			keepMounted
+			transformOrigin={{ vertical: "top", horizontal: "right" }}
+			open={isMenuOpen}
+			onClose={handleMenuClose}
+		>
+			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+		</Menu>
+	);
 	return (
 		<div className={classes.root}>
 			<CssBaseline />
@@ -74,8 +143,22 @@ function CustomDrawer() {
 							className={classes.largeLogo}
 						/>
 					</Link>
+					<div className={classes.grow} />
+					<div className={classes.sectionDesktop}>
+						<IconButton
+							edge="end"
+							aria-label="account of current user"
+							aria-controls={menuId}
+							aria-haspopup="true"
+							onClick={handleProfileMenuOpen}
+							color="inherit"
+						>
+							<AccountCircle />
+						</IconButton>
+					</div>
 				</Toolbar>
 			</AppBar>
+			{renderMenu}
 			<Drawer
 				className={classes.drawer}
 				variant="permanent"
@@ -84,25 +167,53 @@ function CustomDrawer() {
 				}}
 			>
 				<Toolbar />
-				<div className={classes.drawerContainer}>
-					<List>
-						<Link to="/" style={{ textDecoration: "none", color: "#2c0b06" }}>
-							<ListItem button>
-								<ListItemAvatar>
-									<Avatar
-										alt={"BCP Icon"}
-										src={bcpIcon}
-										className={classes.bcpIcon}
+
+				<List>
+					<Link to="/" style={{ textDecoration: "none", color: "#2c0b06" }}>
+						<ListItem button>
+							<ListItemAvatar>
+								<Avatar
+									alt={"BCP Icon"}
+									src={bcpIcon}
+									className={classes.bcpIcon}
+								/>
+							</ListItemAvatar>
+							<ListItemText primary={"Home"} />
+						</ListItem>
+					</Link>
+					{DrawerData.map((item, index) => {
+						return <CustomSubDrawer item={item} key={index} />;
+					})}
+					<ListItem button>
+						<ListItemIcon>
+							<AiOutlineClockCircle
+								style={{ fontSize: 35, color: "#2c0b06" }}
+							/>
+						</ListItemIcon>
+						<ListItemText primary={"Tests Timer"} />
+					</ListItem>
+					<Collapse in timeout="auto" unmountOnExit>
+						<List component="div" disablePadding>
+							{tests.map((test, index) => (
+								<ListItem button className={classes.nested}>
+									<ListItemIcon>
+										<BsClock style={{ fontSize: 20, color: "#ec6413" }} />
+									</ListItemIcon>
+									<ListItemText
+										primary={test.name}
+										secondary={
+											<Countdown
+												date={Date.now() + test.interval * 500}
+												renderer={renderer}
+											/>
+										}
 									/>
-								</ListItemAvatar>
-								<ListItemText primary={"Home"} />
-							</ListItem>
-						</Link>
-						{DrawerData.map((item, index) => {
-							return <CustomSubDrawer item={item} key={index} />;
-						})}
-					</List>
-				</div>
+								</ListItem>
+							))}
+						</List>
+					</Collapse>
+					<Divider />
+				</List>
 			</Drawer>
 		</div>
 	);

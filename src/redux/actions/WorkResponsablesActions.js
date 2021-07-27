@@ -13,7 +13,7 @@ export const createWorkResponsable = (workResponsable) => async (dispatch) => {
 		);
 		dispatch({
 			type: ADD_WORK_RESPONSABLE,
-			payload: response.data,
+			payload: [response.data],
 		});
 		return Promise.resolve(response.data);
 	} catch (error) {

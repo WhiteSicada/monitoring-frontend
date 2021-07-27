@@ -10,13 +10,14 @@ import {
 	makeStyles,
 	ListItemText,
 } from "@material-ui/core";
-import { BiCube } from "react-icons/bi";
+import { BiCube,BiDoorOpen } from "react-icons/bi";
 import { FaCube } from "react-icons/fa";
 import { SiAuth0 } from "react-icons/si";
 import { RiEditLine } from "react-icons/ri";
+import { useHistory } from "react-router-dom";
 import { IoEyeOutline } from "react-icons/io5";
 import { Controls } from "../controls/controls";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineDelete, AiOutlineBug } from "react-icons/ai";
 
 const useStyles = makeStyles((theme) => ({
 	avatar: {
@@ -36,9 +37,19 @@ function ApiTable({
 	onDelete,
 	openInViewPopup,
 	openInManageEndpoints,
-	openInUpdatePopup
+	openInUpdatePopup,
 }) {
 	const classes = useStyles();
+	const history = useHistory();
+	function goToAnomalyList(api) {
+		history.push(`/APIs/${api.id}/anomalies`);
+	}
+	function goToManageContextEndpoints(id){
+		history.push(`/APIs/${id}/ManageEndpoints`);
+	}
+	function goToManageContexts(id){
+		history.push(`/APIs/${id}/ManageContexts`);
+	}
 	return (
 		<TableBody>
 			{recordsAfterPadingAndSorting().map((api, index) => (
@@ -59,20 +70,32 @@ function ApiTable({
 						</List>
 					</TableCell>
 					<TableCell>
+						{api.anomalies ? api.anomalies.length : "No Anomalies"}
+					</TableCell>
+					<TableCell>
 						<Controls.ActionButton
-							text={"Consulter l'erreur"}
-							color="primary"
-							// onClick={() => {
-							// 	openInPopup();
-							// }}
-						>
-							Consulter l'erreur
-						</Controls.ActionButton>
-						<Controls.ActionButton
-							text={"Manage Endponts"}
+							text={"List of Anomalies"}
 							color="primary"
 							onClick={() => {
-								openInManageEndpoints(api);
+								goToAnomalyList(api);
+							}}
+						>
+							<AiOutlineBug fontSize="large" />
+						</Controls.ActionButton>
+						<Controls.ActionButton
+							text={"Manage Contexts"}
+							color="primary"
+							onClick={() => {
+								goToManageContexts(api.id);
+							}}
+						>
+							<BiDoorOpen fontSize="large" />
+						</Controls.ActionButton>
+						<Controls.ActionButton
+							text={"Manage Endpoints"}
+							color="primary"
+							onClick={() => {
+								goToManageContextEndpoints(api.id);
 							}}
 						>
 							<BiCube fontSize="large" />
@@ -95,15 +118,7 @@ function ApiTable({
 						>
 							<AiOutlineEdit fontSize="large" />
 						</Controls.ActionButton>
-						<Controls.ActionButton
-							text={"Update Token"}
-							color="primary"
-							onClick={() => {
-								openInPopup(api);
-							}}
-						>
-							<SiAuth0 fontSize="large" />
-						</Controls.ActionButton>
+						
 						<Controls.ActionButton
 							text={"Delete"}
 							color="primary"

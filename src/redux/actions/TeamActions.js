@@ -11,7 +11,7 @@ export const createTeam = (team) => async (dispatch) => {
 		const response = await TeamService.createTeam(team);
 		dispatch({
 			type: ADD_TEAM,
-			payload: response.data,
+			payload: [response.data],
 		});
 		return Promise.resolve(response.data);
 	} catch (error) {

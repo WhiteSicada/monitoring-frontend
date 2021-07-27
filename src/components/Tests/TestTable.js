@@ -1,9 +1,15 @@
-import React from "react";
-import { TableBody, TableRow, TableCell } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+	TableBody,
+	TableRow,
+	TableCell,
+	CircularProgress,
+} from "@material-ui/core";
 import { Controls } from "../controls/controls";
 import { BiCube } from "react-icons/bi";
-import * as AiIcons from "react-icons/ai";
-import { FaTasks } from "react-icons/fa";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { FaTasks, FaPlay } from "react-icons/fa";
+import ScanService from "../../services/ScanService";
 import { useHistory } from "react-router-dom";
 
 function TestTable({
@@ -14,10 +20,17 @@ function TestTable({
 	openInTransferListPopup,
 	// openInListScan
 }) {
+	const [loading, setLoading] = useState(false);
 	const history = useHistory();
 	function goToScanList(test) {
-		history.push(`/tests/${test.id}`);
+		history.push(`/tests/${test.id}/scans`);
 	}
+	const launchScan = (id) => {
+		setLoading(true);
+		ScanService.launchScan(id).then((response) => {
+			setLoading(false);
+		});
+	};
 	return (
 		<TableBody>
 			{recordsAfterPadingAndSorting().map((test, index) => (
@@ -38,6 +51,38 @@ function TestTable({
 					</TableCell>
 					<TableCell>
 						<Controls.ActionButton
+							text={"Launch Scan"}
+							color="primary"
+							onClick={() => {
+								launchScan(test.id);
+							}}
+						>
+							{loading && (
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										flexWrap: "wrap",
+									}}
+								>
+									<CircularProgress size={18} />
+									<span style={{ marginLeft: 5 }}>Scanning ...</span>
+								</div>
+							)}
+							{!loading && (
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										flexWrap: "wrap",
+									}}
+								>
+									<FaPlay fontSize="large" color="green" />
+									<span style={{ marginLeft: 5 }}>Launch Scan</span>
+								</div>
+							)}
+						</Controls.ActionButton>
+						<Controls.ActionButton
 							text={"List of Scans"}
 							color="primary"
 							onClick={() => {
@@ -46,6 +91,7 @@ function TestTable({
 						>
 							<FaTasks fontSize="large" />
 						</Controls.ActionButton>
+
 						<Controls.ActionButton
 							text={"Manage Endpoints"}
 							color="primary"
@@ -63,7 +109,7 @@ function TestTable({
 								openInPopup(test);
 							}}
 						>
-							<AiIcons.AiOutlineEdit fontSize="large" />
+							<AiOutlineEdit fontSize="large" />
 						</Controls.ActionButton>
 						<Controls.ActionButton
 							id={`delete${index}`}
@@ -80,7 +126,7 @@ function TestTable({
 								});
 							}}
 						>
-							<AiIcons.AiOutlineDelete fontSize="large" />
+							<AiOutlineDelete fontSize="large" />
 						</Controls.ActionButton>
 					</TableCell>
 				</TableRow>

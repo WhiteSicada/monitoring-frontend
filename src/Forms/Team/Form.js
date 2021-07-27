@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Field, Form, Formik } from "formik";
+import clsx from 'clsx';
 import { TextField } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { CircleLoader } from "react-spinners";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { green } from "@material-ui/core/colors";
 import { useDispatch } from "react-redux";
 import {
 	createTeam,
@@ -37,16 +39,18 @@ const useStyles = makeStyles((theme) => ({
 function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(false);
+	
 
 	const [formValues, setFormValues] = useState(initialValues);
 	const [update, setUpdate] = useState(false);
 
 	const submitForm = (values, { setSubmitting, resetForm }) => {
-		setSubmitting(true);
+		setLoading(true);
 		if (update) {
 			dispatch(updateTeam(values.id, values)).then((response) => {
 				resetForm();
-				setSubmitting(false);
+				setLoading(false);
 				setOpenPopup(false);
 				dispatch(getTeams());
 				setNotify({
@@ -59,7 +63,7 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 			dispatch(createTeam(values))
 				.then((response) => {
 					resetForm();
-					setSubmitting(false);
+					setLoading(false);
 					setOpenPopup(false);
 					setNotify({
 						isOpen: true,
@@ -69,7 +73,7 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 				})
 				.catch((error) => {
 					resetForm();
-					setSubmitting(false);
+					setLoading(false);
 					console.log("error");
 				});
 		}
@@ -100,7 +104,7 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 									required
 									autoFocus={true}
 									name="name"
-									id='name'
+									id="name"
 									className={classes.field}
 									component={TextField}
 									variant="outlined"
@@ -109,6 +113,7 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 								/>
 							</Grid>
 							<Grid container justify="center">
+								
 								<Button
 									variant="outlined"
 									color="primary"
@@ -116,8 +121,11 @@ function TeamForm({ teamForEdit, setNotify, setOpenPopup }) {
 									type="submit"
 									className={classes.button}
 								>
-									{isSubmitting ? (
-										<CircleLoader size={10} color="#ef630b" />
+									{loading ? (
+										<CircularProgress
+											size={24}
+											className={classes.buttonProgress}
+										/>
 									) : (
 										"Submit"
 									)}

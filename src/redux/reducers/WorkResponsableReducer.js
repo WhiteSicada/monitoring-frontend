@@ -14,7 +14,7 @@ function WorkResponsableReducer(state = initialState, action) {
 	switch (type) {
 		case ADD_WORK_RESPONSABLE:
 			return Object.assign({}, state, {
-				workResponsables: state.workResponsables.concat(payload),
+				workResponsables: payload.concat(state.workResponsables),
 			});
 
 		case GET_WORK_RESPONSABLES:

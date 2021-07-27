@@ -17,7 +17,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 const useStyles = makeStyles((theme) => ({
-	root: { marginTop: 31, height: 400 },
+	root: { marginTop: "1%",padding : 20, height: 400 },
 	avatar: {
 		border: "2px solid #ef630b",
 		backgroundColor: "transparent",
@@ -34,7 +34,8 @@ function ListEndpoints({
 	setEndpointList,
 	setEndpointListAdded,
 	endpointListAdded,
-	setEndpointListDeleted,setValue
+	setEndpointListDeleted,
+	setOpenPopup
 }) {
 	const classes = useStyles();
 	const methodColor = (type) => {
@@ -66,55 +67,62 @@ function ListEndpoints({
 		}
 		setEndpointList(endpointList.filter((item) => item.id !== endpoint.id));
 	};
+	
 	return (
 		<div className={classes.root}>
-			<List dense>
+			<List>
 				<Grid container spacing={2}>
-					{endpointList.map((endpoint, index) => (
-						<Grid item xs={4} key={index}>
-							<ListItem className={classes.endpointStyle}>
-								<ListItemAvatar>
-									<Avatar className={classes.avatar}>
-										<RiRemoteControlLine />
-									</Avatar>
-								</ListItemAvatar>
-								<ListItemText
-									primary={endpoint.name}
-									secondary={
-										<Typography
-											type="body2"
-											style={{ color: methodColor(endpoint.method) }}
+					{endpointList &&
+						endpointList.map((endpoint, index) => (
+							<Grid item xs={12} md={6} lg={4} key={index}>
+								<ListItem className={classes.endpointStyle}>
+									<ListItemAvatar>
+										<Avatar className={classes.avatar}>
+											<RiRemoteControlLine />
+										</Avatar>
+									</ListItemAvatar>
+									<ListItemText
+										primary={endpoint.name}
+										secondary={
+											<Typography
+												type="body2"
+												style={{ color: methodColor(endpoint.method) }}
+											>
+												{endpoint.method}
+											</Typography>
+										}
+									/>
+									<ListItemSecondaryAction>
+										<Controls.ActionButton
+											text={"Edit"}
+											color="secondary"
+											onClick={() => {
+												setCurrentEndpoint(endpoint);
+												setOpenPopup(true);
+											}}
 										>
-											{endpoint.method}
-										</Typography>
-									}
-								/>
-								<ListItemSecondaryAction>
-									<Controls.ActionButton
-										text={"Edit"}
-										color="secondary"
-										onClick={() => {
-											setCurrentEndpoint(endpoint);
-											setValue(0);
-										}}
-									>
-										<AiOutlineEdit fontSize="large" />
-									</Controls.ActionButton>
-									<Controls.ActionButton
-										text={"Delete"}
-										color="secondary"
-										onClick={() => {
-											deleteEndpoint(endpoint);
-										}}
-									>
-										<AiOutlineDelete fontSize="large" />
-									</Controls.ActionButton>
-								</ListItemSecondaryAction>
-							</ListItem>
-						</Grid>
-					))}
+											<AiOutlineEdit fontSize="large" />
+										</Controls.ActionButton>
+										<Controls.ActionButton
+											text={"Delete"}
+											color="secondary"
+											onClick={() => {
+												deleteEndpoint(endpoint);
+											}}
+										>
+											<AiOutlineDelete fontSize="large" />
+										</Controls.ActionButton>
+									</ListItemSecondaryAction>
+								</ListItem>
+							</Grid>
+						))}
 				</Grid>
 			</List>
+			{endpointList.length == 0 && (
+				<center>
+					<h3>No Endpoints available.</h3>
+				</center>
+			) }
 		</div>
 	);
 }

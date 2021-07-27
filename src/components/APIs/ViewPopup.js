@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: "transparent",
 		color: "#2c0b06",
 	},
+	iconStyle : {
+		color: "green",
+	}
 }));
 
 export default function ViewPopup({ apiForEdit }) {
@@ -90,7 +93,7 @@ export default function ViewPopup({ apiForEdit }) {
 					<ListItem>
 						<ListItemAvatar>
 							<Avatar className={classes.avatar}>
-								<GoIcons.GoPrimitiveDot className={"iconStyle"} />
+								<GoIcons.GoPrimitiveDot className={classes.iconStyle} />
 							</Avatar>
 						</ListItemAvatar>
 						<ListItemText
@@ -103,7 +106,7 @@ export default function ViewPopup({ apiForEdit }) {
 					<ListItem>
 						<ListItemAvatar>
 							<Avatar className={classes.avatar}>
-								<GoIcons.GoPrimitiveDot className={"iconStyle"} />
+								<GoIcons.GoPrimitiveDot className={classes.iconStyle} />
 							</Avatar>
 						</ListItemAvatar>
 						<ListItemText
@@ -116,7 +119,7 @@ export default function ViewPopup({ apiForEdit }) {
 					<ListItem>
 						<ListItemAvatar>
 							<Avatar className={classes.avatar}>
-								<GoIcons.GoPrimitiveDot className={"iconStyle"} />
+								<GoIcons.GoPrimitiveDot className={classes.iconStyle} />
 							</Avatar>
 						</ListItemAvatar>
 						<ListItemText
@@ -129,7 +132,7 @@ export default function ViewPopup({ apiForEdit }) {
 					<ListItem>
 						<ListItemAvatar>
 							<Avatar className={classes.avatar}>
-								<GoIcons.GoPrimitiveDot className={"iconStyle"} />
+								<GoIcons.GoPrimitiveDot className={classes.iconStyle} />
 							</Avatar>
 						</ListItemAvatar>
 						<ListItemText

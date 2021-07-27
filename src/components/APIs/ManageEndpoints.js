@@ -99,44 +99,44 @@ function ManageEndpoints({ apiForEdit, setNotify }) {
 		[],
 		"endpointListDeleted"
 	);
-	const submit = () => {
-		if (endpointListDeleted.length > 0) {
-			dispatch(
-				removeEndpointsToApi(apiForEdit.id, { endpoints: endpointListDeleted })
-			).then((response) => {
-				setNotify({
-					isOpen: true,
-					message: "Operations executed successfully",
-					type: "success",
-				});
-			});
-			setEndpointListDeleted([]);
-		}
-		if (endpointListAdded.length > 0) {
-			dispatch(
-				addEndpointToApi(apiForEdit.id, { endpoints: endpointListAdded })
-			).then((response) => {
-				setNotify({
-					isOpen: true,
-					message: "Operations executed successfully",
-					type: "success",
-				});
-			});
-			setEndpointListAdded([]);
-		}
-		if (endpointListUpdated.length > 0) {
-			dispatch(
-				updateEndpointsForApi(apiForEdit.id, { endpoints: endpointListUpdated })
-			).then((response) => {
-				setNotify({
-					isOpen: true,
-					message: "Operations executed successfully",
-					type: "success",
-				});
-			});
-			setEndpointListUpdated([]);
-		}
-	};
+	// const submit = () => {
+	// 	if (endpointListDeleted.length > 0) {
+	// 		dispatch(
+	// 			removeEndpointsToApi(apiForEdit.id, { endpoints: endpointListDeleted })
+	// 		).then((response) => {
+	// 			setNotify({
+	// 				isOpen: true,
+	// 				message: "Operations executed successfully",
+	// 				type: "success",
+	// 			});
+	// 		});
+	// 		setEndpointListDeleted([]);
+	// 	}
+	// 	if (endpointListAdded.length > 0) {
+	// 		dispatch(
+	// 			addEndpointToApi(apiForEdit.id, { endpoints: endpointListAdded })
+	// 		).then((response) => {
+	// 			setNotify({
+	// 				isOpen: true,
+	// 				message: "Operations executed successfully",
+	// 				type: "success",
+	// 			});
+	// 		});
+	// 		setEndpointListAdded([]);
+	// 	}
+	// 	if (endpointListUpdated.length > 0) {
+	// 		dispatch(
+	// 			updateEndpointsForApi(apiForEdit.id, { endpoints: endpointListUpdated })
+	// 		).then((response) => {
+	// 			setNotify({
+	// 				isOpen: true,
+	// 				message: "Operations executed successfully",
+	// 				type: "success",
+	// 			});
+	// 		});
+	// 		setEndpointListUpdated([]);
+	// 	}
+	// };
 	const [value, setValue] = React.useState(0);
 
 	const handleChange = (event, newValue) => {
@@ -187,26 +187,25 @@ function ManageEndpoints({ apiForEdit, setNotify }) {
 					setValue={setValue}
 				/>
 				<Grid container spacing={5} alignItems="center">
-						<Grid item xs={6} className={classes.center}>
-							<Button
-								variant="contained"
-								color="primary"
-								id="submitAllEndpoints"
-								className={classes.button}
-								onClick={() => {
-									submit();
-								}}
-							>
-								Submit
-							</Button>
-						</Grid>
-						<Grid item xs={6}>
-							{endpointListAdded.length} Added ,{" "}
-							{endpointListUpdated.length} Updated ,{" "}
-							{endpointListDeleted.length} Deleted.
-						</Grid>
+					<Grid item xs={6} className={classes.center}>
+						<Button
+							variant="contained"
+							color="primary"
+							id="submitAllEndpoints"
+							className={classes.button}
+							onClick={() => {
+								// submit();
+							}}
+						>
+							Submit
+						</Button>
 					</Grid>
-			</TabPanel>	
+					<Grid item xs={6}>
+						{endpointListAdded.length} Added , {endpointListUpdated.length}{" "}
+						Updated , {endpointListDeleted.length} Deleted.
+					</Grid>
+				</Grid>
+			</TabPanel>
 		</div>
 	);
 }

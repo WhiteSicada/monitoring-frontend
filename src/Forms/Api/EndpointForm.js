@@ -5,14 +5,10 @@ import {
 	Button,
 	MenuItem,
 	IconButton,
-	Icon,
 	TextField as TextFieldFormParam,
 } from "@material-ui/core";
-import RemoveIcon from "@material-ui/icons/Remove";
-import AddIcon from "@material-ui/icons/Add";
 import { v4 as uuidv4 } from "uuid";
 import { Formik, Field, Form } from "formik";
-import { Controls } from "../../components/controls/controls";
 import { validationSchemaEndpoint } from "./validationSchemaEndpoint";
 import { TextField } from "formik-material-ui";
 import { BiMinusCircle, BiPlusCircle } from "react-icons/bi";
@@ -61,7 +57,6 @@ function FormRow({
 			}
 			return i;
 		});
-
 		setInputParamsFields(newInputFields);
 	};
 
@@ -125,7 +120,7 @@ function EndpointForm({
 	endpointListAdded,
 	endpointListUpdated,
 	endpointListDeleted,
-	setValue,
+	setOpenPopup,
 }) {
 	const classes = useStyles();
 	const endpointMethods = [
@@ -186,7 +181,7 @@ function EndpointForm({
 				{ ...values },
 			]);
 			customReset();
-			setValue(1);
+			setOpenPopup(false);
 		} else {
 			// format the params into the final url
 			inputParamsFields.forEach((inputParamsField) => {
@@ -212,7 +207,7 @@ function EndpointForm({
 				},
 			]);
 			resetForm();
-			setValue(1);
+			setOpenPopup(false);
 		}
 	};
 

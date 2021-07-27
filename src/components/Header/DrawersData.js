@@ -54,9 +54,9 @@ export const DrawerData = [
 			},
 		],
 	},
-	{
-		title: "Anomalies",
-		icon: <AiOutlineBug style={{ fontSize: 35, color: "#2c0b06" }} />,
-		path: AnomalieLink,
-	},
+	// {
+	// 	title: "Anomalies",
+	// 	icon: <AiOutlineBug style={{ fontSize: 35, color: "#2c0b06" }} />,
+	// 	path: AnomalieLink,
+	// },
 ];

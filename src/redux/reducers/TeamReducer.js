@@ -14,7 +14,7 @@ function TeamReducer(state = initialState, action) {
 	switch (type) {
 		case ADD_TEAM:
 			return Object.assign({}, state, {
-				teams: state.teams.concat(payload),
+				teams: payload.concat(state.teams),
 			});
 
 		case GET_TEAMS:

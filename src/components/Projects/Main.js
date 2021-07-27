@@ -16,6 +16,7 @@ import useTable from "../controls/useTable";
 import ProjectCreationForm from "../../Forms/Project/ProjectCreationForm";
 import ProjectUpdateForm from "../../Forms/Project/ProjectUpdateForm";
 import ManageApisTransferList from "./ManageApisTransferList";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -39,6 +40,10 @@ const headCells = [
 export function Main() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const history = useHistory();
+	function addProjectLink() {
+		history.push("AddProject");
+	}
 	const [notify, setNotify] = useState({
 		isOpen: false,
 		message: "",
@@ -152,8 +157,9 @@ export function Main() {
 						startIcon={<AddIcon />}
 						className={classes.newButton}
 						onClick={() => {
-							setOpenPopup(true);
-							setProjectForEdit(null);
+							addProjectLink()
+							// setOpenPopup(true);
+							// setProjectForEdit(null);
 						}}
 					/>
 				</Toolbar>

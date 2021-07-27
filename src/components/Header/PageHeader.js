@@ -6,6 +6,9 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: "#fdfdff",
 		marginLeft: "30%",
 	},
+	rootNoMargin: {
+		backgroundColor: "#fdfdff",
+	},
 	pageHeader: {
 		paddingTop: theme.spacing(2),
 		display: "flex",
@@ -29,10 +32,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function PageHeader(props) {
+	const { title, subTitle, icon, noMargin } = props;
 	const classes = useStyles();
-	const { title, subTitle, icon } = props;
+	
 	return (
-		<Paper elevation={0} square className={classes.root} style={{}}>
+		<Paper elevation={0} square className={noMargin ? classes.rootNoMargin : classes.root}>
 			<div className={classes.pageHeader}>
 				<Card className={classes.pageIcon}>{icon}</Card>
 				<div className={classes.pageTitle}>

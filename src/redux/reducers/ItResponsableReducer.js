@@ -14,7 +14,7 @@ function ItResponsableReducer(state = initialState, action) {
 	switch (type) {
 		case ADD_IT_RESPONSABLE:
 			return Object.assign({}, state, {
-				itResponsables: state.itResponsables.concat(payload),
+				itResponsables: payload.concat(state.itResponsables),
 			});
 
 		case GET_IT_RESPONSABLES:

@@ -13,7 +13,7 @@ export const createItResponsable = (itResponsable) => async (dispatch) => {
 		);
 		dispatch({
 			type: ADD_IT_RESPONSABLE,
-			payload: response.data,
+			payload: [response.data],
 		});
 		return Promise.resolve(response.data);
 	} catch (error) {
@@ -47,7 +47,10 @@ export const deleteItResponsable = (id) => async (dispatch) => {
 
 export const updateItResponsable = (id, itResponsable) => async (dispatch) => {
 	try {
-		const response = await ItResponsableService.updateItResponsable(id, itResponsable);
+		const response = await ItResponsableService.updateItResponsable(
+			id,
+			itResponsable
+		);
 		dispatch({
 			type: UPDATE_IT_RESPONSABLE,
 			payload: itResponsable,

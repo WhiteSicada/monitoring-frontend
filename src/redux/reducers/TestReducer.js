@@ -16,7 +16,7 @@ function TestReducer(state = initialState, action) {
 	switch (type) {
 		case ADD_TEST:
 			return Object.assign({}, state, {
-				tests: state.tests.concat(payload),
+				tests: payload.concat(state.tests),
 			});
 
 		case GET_TESTS:
