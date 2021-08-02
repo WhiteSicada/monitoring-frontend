@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
-import { Grid, makeStyles, Button } from "@material-ui/core";
+import { Grid, makeStyles, Button, Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const initialValues = {
@@ -36,6 +36,7 @@ function ContextForm({
 	setContextListAdded,
 	setContextListUpdated,
 	setCurrentContext,
+	currentApi,
 }) {
 	const classes = useStyles();
 	const [loading, setLoading] = useState(false);
@@ -97,8 +98,19 @@ function ContextForm({
 					submitForm(values, { setSubmitting, resetForm })
 				}
 			>
-				{({ isSubmitting, dirty, isValid, resetForm }) => (
+				{({ values, isSubmitting, dirty, isValid, resetForm }) => (
 					<Form id="contextForm" autoComplete="off" className={classes.root}>
+						<center>
+							<Typography variant="h6" gutterBottom>
+								{"http://" +
+									currentApi.ip +
+									":" +
+									currentApi.port +
+									"/" +
+									values.name}
+							</Typography>
+						</center>
+
 						<Grid container spacing={8}>
 							<Grid item xs={12}>
 								<Field
@@ -110,7 +122,7 @@ function ContextForm({
 									component={TextField}
 									variant="outlined"
 									InputLabelProps={{ shrink: true }}
-									label="Context Name"
+									label="Context Url"
 								/>
 							</Grid>
 							<Grid container justify="center">

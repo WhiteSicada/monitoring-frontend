@@ -7,7 +7,7 @@ import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
-import { createTest, updateTest } from "../../redux/actions/TestActions";
+import {  updateTest } from "../../redux/actions/TestActions";
 
 const initialValues = {
 	id: null,

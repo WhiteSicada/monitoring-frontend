@@ -10,10 +10,8 @@ import {
 	makeStyles,
 	ListItemText,
 } from "@material-ui/core";
-import { BiCube,BiDoorOpen } from "react-icons/bi";
+import { BiCube, BiDoorOpen } from "react-icons/bi";
 import { FaCube } from "react-icons/fa";
-import { SiAuth0 } from "react-icons/si";
-import { RiEditLine } from "react-icons/ri";
 import { useHistory } from "react-router-dom";
 import { IoEyeOutline } from "react-icons/io5";
 import { Controls } from "../controls/controls";
@@ -32,11 +30,9 @@ const useStyles = makeStyles((theme) => ({
 
 function ApiTable({
 	recordsAfterPadingAndSorting,
-	openInPopup,
 	setConfirmDialog,
 	onDelete,
 	openInViewPopup,
-	openInManageEndpoints,
 	openInUpdatePopup,
 }) {
 	const classes = useStyles();
@@ -44,10 +40,10 @@ function ApiTable({
 	function goToAnomalyList(api) {
 		history.push(`/APIs/${api.id}/anomalies`);
 	}
-	function goToManageContextEndpoints(id){
+	function goToManageContextEndpoints(id) {
 		history.push(`/APIs/${id}/ManageEndpoints`);
 	}
-	function goToManageContexts(id){
+	function goToManageContexts(id) {
 		history.push(`/APIs/${id}/ManageContexts`);
 	}
 	return (
@@ -118,7 +114,7 @@ function ApiTable({
 						>
 							<AiOutlineEdit fontSize="large" />
 						</Controls.ActionButton>
-						
+
 						<Controls.ActionButton
 							text={"Delete"}
 							color="primary"

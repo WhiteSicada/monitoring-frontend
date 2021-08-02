@@ -4,7 +4,6 @@ import {
 	ListItem,
 	ListItemAvatar,
 	Grid,
-	IconButton,
 	Avatar,
 	ListItemSecondaryAction,
 	ListItemText,
@@ -13,11 +12,10 @@ import {
 } from "@material-ui/core";
 import { Controls } from "../controls/controls";
 import { RiRemoteControlLine } from "react-icons/ri";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 
 const useStyles = makeStyles((theme) => ({
-	root: { marginTop: "1%",padding : 20, height: 400 },
+	root: { marginTop: "1%", padding: 20, height: 400 },
 	avatar: {
 		border: "2px solid #ef630b",
 		backgroundColor: "transparent",
@@ -35,7 +33,7 @@ function ListEndpoints({
 	setEndpointListAdded,
 	endpointListAdded,
 	setEndpointListDeleted,
-	setOpenPopup
+	setOpenPopup,
 }) {
 	const classes = useStyles();
 	const methodColor = (type) => {
@@ -67,7 +65,7 @@ function ListEndpoints({
 		}
 		setEndpointList(endpointList.filter((item) => item.id !== endpoint.id));
 	};
-	
+
 	return (
 		<div className={classes.root}>
 			<List>
@@ -118,11 +116,11 @@ function ListEndpoints({
 						))}
 				</Grid>
 			</List>
-			{endpointList.length == 0 && (
+			{endpointList.length === 0 && (
 				<center>
 					<h3>No Endpoints available.</h3>
 				</center>
-			) }
+			)}
 		</div>
 	);
 }

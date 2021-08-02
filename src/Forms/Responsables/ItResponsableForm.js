@@ -9,7 +9,6 @@ import { CircleLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import {
 	createItResponsable,
-	getItResponsables,
 	updateItResponsable,
 } from "../../redux/actions/ItResponsablesActions";
 

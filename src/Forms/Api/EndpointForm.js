@@ -5,6 +5,7 @@ import {
 	Button,
 	MenuItem,
 	IconButton,
+	Typography,
 	TextField as TextFieldFormParam,
 } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
@@ -121,6 +122,8 @@ function EndpointForm({
 	endpointListUpdated,
 	endpointListDeleted,
 	setOpenPopup,
+	currentApi,
+	currentContext,
 }) {
 	const classes = useStyles();
 	const endpointMethods = [
@@ -221,7 +224,7 @@ function EndpointForm({
 				{({ values, dirty, isValid, resetForm }) => (
 					<Form autoComplete="off" id="endpointForm" className={classes.root}>
 						<Grid container spacing={3}>
-							<Grid item xs={6}>
+							<Grid item xs={4}>
 								<Field
 									required
 									name="name"
@@ -231,7 +234,7 @@ function EndpointForm({
 									label="Endpoint Name"
 								/>
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={3}>
 								<Field
 									required
 									name="method"
@@ -252,7 +255,7 @@ function EndpointForm({
 									))}
 								</Field>
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={5}>
 								<Field
 									required
 									name="url"
@@ -261,6 +264,21 @@ function EndpointForm({
 									InputLabelProps={{ shrink: true }}
 									label="Endpoint Url"
 								/>
+							</Grid>
+							<Grid item xs={12}>
+								<center>
+									<Typography variant="h5">
+										{"http://" +
+											currentApi.ip +
+											":" +
+											currentApi.port +
+											"/" +
+											currentContext.name +
+											"/" +
+											values.url +
+											"/"}
+									</Typography>
+								</center>
 							</Grid>
 
 							<Grid container item xs={12} spacing={3}>

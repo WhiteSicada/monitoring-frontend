@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";

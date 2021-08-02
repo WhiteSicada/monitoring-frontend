@@ -14,8 +14,6 @@ import ApiTable from "./ApiTable";
 import ManageEndpoints from "./ManageEndpoints";
 import { getProjects } from "../../redux/actions/ProjectActions";
 import ApiFormUpdate from "../../Forms/Api/ApiFormUpdate";
-import { Link } from "react-router-dom";
-import { AddApiLink } from "../Header/StaticLinks";
 
 const useStyles = makeStyles((theme) => ({
 	pageContent: {
@@ -57,7 +55,7 @@ export function Main() {
 		let target = e.target;
 		setFilterFn({
 			fn: (apis) => {
-				if (target.value == "") return apis;
+				if (target.value === "") return apis;
 				else return apis.filter((x) => x.name.includes(target.value));
 			},
 		});

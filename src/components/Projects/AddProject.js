@@ -5,13 +5,11 @@ import { getItResponsables } from "../../redux/actions/ItResponsablesActions";
 import { getWorkResponsables } from "../../redux/actions/WorkResponsablesActions";
 import { getAPIs } from "../../redux/actions/ApiActions";
 import { getTeams } from "../../redux/actions/TeamActions";
-import { deleteProject, getProjects } from "../../redux/actions/ProjectActions";
 import PageHeader from "../Header/PageHeader";
 import {TiFolderOpen} from "react-icons/ti";
 function AddProject() {
 	const dispatch = useDispatch();
 	useEffect(() => {
-		dispatch(getProjects());
 		dispatch(getItResponsables());
 		dispatch(getWorkResponsables());
 		dispatch(getTeams());
@@ -22,7 +20,7 @@ function AddProject() {
 		message: "",
 		type: "",
 	});
-	const projects = useSelector((state) => state.projectState.projects);
+	
 	const teams = useSelector((state) => state.teamState.teams);
 	const apis = useSelector((state) => state.apiState.apis);
 	const itResponsables = useSelector(

@@ -14,13 +14,15 @@ export const Label = styled.label`
 	padding: 8px 12px;
 
 	:hover {
-		border-color: transparent;
-		background-color: #a4e0fd;
+		color: #fff;
+		border-color: #2c0b06;
+		background-color: #ef630b;
 	}
 
 	:active {
-		border-color: transparent;
-		background-color: #a4e0fd;
+		color: #fff;
+		border-color: #2c0b06;
+		background-color: #ef630b;
 	}
 `;
 
@@ -30,6 +32,6 @@ export const CheckBox = styled.input`
 	&:checked + ${Label} {
 		color: #fff;
 		border-color: transparent;
-		background-color: red;
+		background-color: #ef630b;
 	}
 `;

@@ -1,10 +1,9 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { Field, Form, Formik, FieldArray } from "formik";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
 import { validationSchema } from "./validationSchema";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
-import InputLabel from "@material-ui/core/InputLabel";
 import PropTypes from "prop-types";
 import CheckBoxContext from "../../components/Projects/customTags/CheckBoxContext";
 import {
@@ -22,8 +21,6 @@ import {
 	List,
 	Box,
 	ListItem,
-	ListItemIcon,
-	ListItemText,
 } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useDispatch } from "react-redux";
@@ -105,6 +102,32 @@ function a11yProps(index) {
 	};
 }
 
+function formatProjectObject(values, apis) {
+	const new_apis = [];
+	for (let i = 0; i < values.apis.length; i++) {
+		const api = apis.find((element) => element.name === values.apis[i]);
+		let custom_api = { api: api.name, contexts: [] };
+		for (let k = 0; k < values.contexts.length; k++) {
+			const context = api.contexts.find(
+				(element) => element.name === values.contexts[k]
+			);
+			if (context !== null) {
+				custom_api.contexts.push(values.contexts[k]);
+			}
+		}
+		new_apis.push(custom_api);
+	}
+	return {
+		id: values.id,
+		name: values.name,
+		responsableIt: values.responsableIt,
+		responsableMetier: values.responsableMetier,
+		equipe: values.equipe,
+		description: values.description,
+		apis: new_apis,
+	};
+}
+
 export default function ProjectCreationForm({
 	teams,
 	itResponsables,
@@ -132,7 +155,7 @@ export default function ProjectCreationForm({
 	const submitForm = (values, { setSubmitting, resetForm }) => {
 		// console.log(values.id + " " + values.apis);
 		setSubmitting(true);
-		console.log(JSON.stringify(values));
+		console.log(JSON.stringify(formatProjectObject(values, apis)));
 		// dispatch(createProject(values))
 		// 	.then((response) => {
 		// 		if (values.apis.length !== 0) {
@@ -415,13 +438,7 @@ export default function ProjectCreationForm({
 												submitForm(values, { setSubmitting, resetForm });
 											}}
 										>
-											{isSubmitting ? (
-												<CircularProgress
-													size={24}
-												/>
-											) : (
-												"Submit"
-											)}
+											{isSubmitting ? <CircularProgress size={24} /> : "Submit"}
 										</Button>
 									) : (
 										<Button

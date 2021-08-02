@@ -203,7 +203,7 @@ function CustomDrawer() {
 										primary={test.name}
 										secondary={
 											<Countdown
-												date={Date.now() + test.interval * 500}
+												date={Date.now() + test.interval * 1000}
 												renderer={renderer}
 											/>
 										}

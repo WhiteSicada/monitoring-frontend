@@ -196,6 +196,7 @@ function ContextListEndpoints({ api, currentContext, setNotify }) {
 			>
 				<EndpointForm
 					endpointList={endpointList}
+					currentApi={api}
 					currentEndpoint={currentEndpoint}
 					setEndpointList={setEndpointList}
 					setCurrentEndpoint={setCurrentEndpoint}
@@ -204,6 +205,7 @@ function ContextListEndpoints({ api, currentContext, setNotify }) {
 					endpointListAdded={endpointListAdded}
 					endpointListUpdated={endpointListUpdated}
 					endpointListDeleted={endpointListDeleted}
+					currentContext={currentContext}
 					setOpenPopup={setOpenPopup}
 				/>
 			</Controls.Popup>
